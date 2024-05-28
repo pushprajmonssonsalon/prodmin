@@ -1,0 +1,22 @@
+import axios from "axios";
+
+const API_REQUEST = async (url, method, data= null, authString= null) => {
+    
+    const response = await axios({
+        method,
+        url,
+        data,
+        headers: authString ? { 'Authorization': `Bearer ${authString}` } : {},
+        timeout: 10000
+    })
+        .then((res) => res.data)
+        .catch((error) => {
+            const errMessage = error.message;
+            console.log({ error })
+        })
+
+    if (response?.success) return response?.data;
+    return response?.message;
+}
+
+export default API_REQUEST;
