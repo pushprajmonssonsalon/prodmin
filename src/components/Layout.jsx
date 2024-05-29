@@ -14,12 +14,12 @@ const Layout = ({children}) => {
     navigate(`/${item}`)
   };
   return (
-    <div className='bg-gray-300 w-screen h-screen flex'>
+    <div className='bg-[#e7ecef] w-screen h-screen flex'>
         <Sidebar>
         <SidebarItem icon={<IoStatsChartOutline size={20}/>} text="Dashboard" active={activeItem === 'Dashboard'} onClick={() => handleItemClick('Dashboard')}/>
         <SidebarItem icon={<HiOutlineShoppingCart size={20}/>} text="Orders" active={activeItem === 'Orders'} onClick={() => handleItemClick('Orders')}/>
         </Sidebar>
-        <main>{children}</main>
+        <main className="flex-grow bg-panel bg-cover box-border">{children}</main>
     </div>
   )
 }

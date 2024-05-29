@@ -1,6 +1,6 @@
 import { RiMenuFold3Line2, RiMenuUnfold3Fill  } from "react-icons/ri";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { useContext, createContext, useState } from "react"
+import CustomPopover from "./commoncomponents/PopOver";
 
 const SidebarContext = createContext()
 
@@ -46,7 +46,7 @@ export default function Sidebar({ children }) {
               <h4 className="font-semibold">Pro Salon Cart</h4>
               <span className="text-xs text-gray-600">enquiry@theprofessionalworld.com</span>
             </div>
-            <BsThreeDotsVertical size={20} />
+            <CustomPopover />
           </div>
         </div>
       </nav>
