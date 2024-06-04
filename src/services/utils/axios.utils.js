@@ -12,7 +12,7 @@ const API_REQUEST = async (url, method, data= null, authString= null) => {
         .then((res) => res.data)
         .catch((error) => {
             const errMessage = error.message;
-            console.log({ error })
+            console.log({ errMessage })
         })
 
     if (response?.success) return response?.data;

@@ -6,8 +6,13 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const isAdminCrm = localStorage.getItem('isAdmin') === 'crm';
   const handleLogin=()=>{
-    navigate("/Dashboard")
+    if(isAdminCrm){
+      navigate("/dash-board")
+    }else{
+      navigate("/Dashboard")
+    }
   }
 
   return (
@@ -55,7 +60,7 @@ const Login = () => {
             <span className="text-[14px] font-mono">Forget Password?</span>
             </div>
             <button className="my-4 py-2 w-full rounded-full bg-blue-600 font-mono" onClick={handleLogin}>Login</button>
-            <span className="text-[14px]">Don&apos;t have an account? <span className="font-semibold cursor-pointer" onClick={() => setOpen(!open)}>Register</span></span>
+            {/* <span className="text-[14px]">Don&apos;t have an account? <span className="font-semibold cursor-pointer" onClick={() => setOpen(!open)}>Register</span></span> */}
           </form>
         </div>
         

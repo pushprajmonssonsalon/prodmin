@@ -2,6 +2,9 @@ import React from 'react'
 import Layout from '../components/Layout'
 import TopBar from '../components/commoncomponents/TopBar'
 import CustomTable from '../components/commoncomponents/Table'
+import DatePicker from '../components/commoncomponents/DatePicker';
+import Drawers from '../components/commoncomponents/Drawer';
+import { Button } from '@mui/material';
 
 const columns = [
   { id: 'name', label: 'Name' },
@@ -42,11 +45,20 @@ const rows = [
   createData('Brazil', 'BR', 210147125, 8515767),
 ];
 
+
+
 const Orders = () => {
   return (
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Orders"/>
+      <div className='w-[90%] mx-auto flex justify-between items-center'>
+        <div className='flex items-center gap-x-3'>
+          <DatePicker />
+          <Drawers />
+        </div>
+      <Button variant='contained'>Export to Excel</Button>
+    </div>
       <div className='w-[90%] mx-auto'>
         <CustomTable headings={columns} rows={rows} />
       </div>
