@@ -6,6 +6,7 @@ import Orders from './pages/Orders'
 import PrivateRoute from './components/PrivateRoute'
 import Selection from './pages/Selection'
 import ProDashboard from './pages/ProDashboard'
+import Reports from './pages/Reports'
 const App = () => {
   return (
     <Routes>
@@ -13,6 +14,7 @@ const App = () => {
       <Route path='/login' element={<Login />} />
       <Route path='/Dashboard' element={<PrivateRoute component={Dashboard} />} />
       <Route path='/dash-board' element={<PrivateRoute component={ProDashboard} />} />
+      <Route path='/reports' element={<PrivateRoute component={Reports} />} />
       <Route path='/orders' element={<PrivateRoute component={Orders} />} />
     </Routes>
   )

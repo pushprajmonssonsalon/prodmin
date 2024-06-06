@@ -7,7 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
+import { isValidElement } from 'react';
 
 export default function CustomTable({headings,rows}) {
   const [page, setPage] = React.useState(0);
@@ -49,9 +49,13 @@ export default function CustomTable({headings,rows}) {
                       const value = row[column.id];
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
+                          {isValidElement(value) 
+                            ? <div style={{ display: 'flex', justifyContent: column.align === 'right' ? 'flex-end' : 'flex-start' }}>
+                                {value}
+                              </div> 
+                            : (column.format && typeof value === 'number')
+                              ? column.format(value)
+                              : value}
                         </TableCell>
                       );
                     })}
