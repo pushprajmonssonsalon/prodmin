@@ -16,7 +16,7 @@ const API_REQUEST = async (url, method, data= null, authString= null) => {
         })
 
     if (response?.success) return response?.data;
-    return response?.message;
+    return response?.data;
 }
 
 export default API_REQUEST;

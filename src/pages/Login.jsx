@@ -2,14 +2,25 @@ import { useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
+import { LOGIN_USERS } from "../services/crm/user.service";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("")
   const navigate = useNavigate();
   const isAdminCrm = localStorage.getItem('isAdmin') === 'crm';
-  const handleLogin=()=>{
+  const handleLogin=async(e)=>{
+    e.preventDefault();
     if(isAdminCrm){
-      navigate("/dash-board")
+      const user = await LOGIN_USERS({userName,password});
+      if(user){
+        console.log("users",user)
+        localStorage.setItem('crmtoken',user)
+        navigate("/dash-board")
+      }else{
+        console.log("crm logins erorrs")
+      }
     }else{
       navigate("/Dashboard")
     }
@@ -43,13 +54,13 @@ const Login = () => {
 
         <div className={`${!open ? 'translate-y-[-280px] transition-all' : 'translate-y-[400px] transition-all'}`}>
           <h2 className="text-3xl font-blod pb-6 text-center font-mono">Login</h2>
-          <form className="flex flex-col items-center" action="">
+          <form className="flex flex-col items-center" onSubmit={handleLogin}>
             <div className="w-full relative">
-              <input className="border border-gray-200 w-full rounded-full py-2 px-4 my-2 bg-transparent" placeholder="Email" type="email" />
+              <input className="border border-gray-200 w-full rounded-full py-2 px-4 my-2 bg-transparent" placeholder="Username" type="text" value={userName} onChange={(e)=>setUserName(e.target.value)} />
               <MdMail className="absolute top-[35%] right-3"/>
             </div>
             <div className="w-full relative">
-              <input className="border border-gray-200 w-full rounded-full py-2 px-4 my-2 bg-transparent" placeholder="Password" type="password" />
+              <input className="border border-gray-200 w-full rounded-full py-2 px-4 my-2 bg-transparent" placeholder="Password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
               <FaLock className="absolute top-[35%] right-3"/>
             </div>
             <div className="flex justify-between w-full">
@@ -59,7 +70,7 @@ const Login = () => {
             </div>
             <span className="text-[14px] font-mono">Forget Password?</span>
             </div>
-            <button className="my-4 py-2 w-full rounded-full bg-blue-600 font-mono" onClick={handleLogin}>Login</button>
+            <button className="my-4 py-2 w-full rounded-full bg-blue-600 font-mono" type="submit">Login</button>
             {/* <span className="text-[14px]">Don&apos;t have an account? <span className="font-semibold cursor-pointer" onClick={() => setOpen(!open)}>Register</span></span> */}
           </form>
         </div>

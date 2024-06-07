@@ -5,16 +5,10 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { InputLabel } from '@mui/material';
 
-export default function MonthPicker() {
-    const months = [
-      "January", "February", "March", "April", "May", "June", 
-  "July", "August", "September", "October", "November", "December"
-  ];
-    const currentMonth = new Date().getMonth();
-  const [date, setDate] = React.useState(months[currentMonth]);
-
+export default function MonthPicker({months,month,setMonth}) {
+  
   const handleChange = (event) => {
-    setDate(event.target.value)
+    setMonth(event.target.value)
   };
 
   return (
@@ -24,7 +18,7 @@ export default function MonthPicker() {
         <Select
           labelId="demo-simple-select-standard-label"
           id="demo-simple-select-standard"
-          value={date}
+          value={month}
           onChange={handleChange}
           label="Filter"
         >

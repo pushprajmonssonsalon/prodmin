@@ -9,7 +9,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { isValidElement } from 'react';
 
-export default function CustomTable({headings,rows}) {
+export default function CustomTable({headings,rows,handleRowClick,handleOpen}) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -21,6 +21,10 @@ export default function CustomTable({headings,rows}) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+  const handleDoubleFunction=(id)=>{
+    handleRowClick(id);
+    handleOpen();
+  }
 
   return (
     <Paper className='overflow-hidden mt-10 '>
@@ -44,7 +48,7 @@ export default function CustomTable({headings,rows}) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={()=>handleDoubleFunction(row.id)}>
                     {headings.map((column) => {
                       const value = row[column.id];
                       return (
