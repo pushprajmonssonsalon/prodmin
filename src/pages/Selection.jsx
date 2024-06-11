@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom'
 
 const Selection = () => {
     const navigate = useNavigate();
+    const crmToken = localStorage.getItem('crmtoken');
     const handleSelection=(value)=>{
         localStorage.setItem("isAdmin",value)
-        navigate('/login')
+        if(crmToken) navigate('/dash-board')
+        else navigate('/login')
     }
   return (
     <div className='w-screen h-screen bg-selectbg bg-cover flex justify-center items-center'>

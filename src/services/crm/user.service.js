@@ -1,9 +1,7 @@
 import API_REQUEST from "../utils/axios.utils";
 
-// const baseUrl = `${process.env.NEXT_PUBLIC_BACKEND_URL}/v1/user`;
-const baseUrl = `http://192.168.2.19:4002`;
-
-
+const baseUrl = `https://crm.smartsalon.in`;
+// const baseUrl = `http://192.168.2.19:4002`;
 
 const LOGIN_USERS = async(payload)=>{
     const url =`${baseUrl}/parlor/login`;

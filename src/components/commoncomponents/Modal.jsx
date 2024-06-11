@@ -50,7 +50,7 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
     React.useEffect(()=>{
         const fetchApi=async()=>{
             const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
-            const selectedDate = updatingDate.toISOString();
+            const selectedDate = updatingDate;
             const singleParlourDetails = await SINGLE_PARLOUR_DETAILS({salonId,selectedDate});
             if(singleParlourDetails){
                 setSelectedParlorDetail(singleParlourDetails)

@@ -10,12 +10,12 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const navigate = useNavigate();
   const isAdminCrm = localStorage.getItem('isAdmin') === 'crm';
+  
   const handleLogin=async(e)=>{
     e.preventDefault();
     if(isAdminCrm){
       const user = await LOGIN_USERS({userName,password});
       if(user){
-        console.log("users",user)
         localStorage.setItem('crmtoken',user)
         navigate("/dash-board")
       }else{
@@ -63,13 +63,13 @@ const Login = () => {
               <input className="border border-gray-200 w-full rounded-full py-2 px-4 my-2 bg-transparent" placeholder="Password" type="password" value={password} onChange={(e)=>setPassword(e.target.value)}/>
               <FaLock className="absolute top-[35%] right-3"/>
             </div>
-            <div className="flex justify-between w-full">
+            {/* <div className="flex justify-between w-full">
             <div className="text-[14px] flex gap-2">
               <input type="checkbox" name="" id="" />
               <label htmlFor="" className="font-mono">Remember Me</label>
             </div>
             <span className="text-[14px] font-mono">Forget Password?</span>
-            </div>
+            </div> */}
             <button className="my-4 py-2 w-full rounded-full bg-blue-600 font-mono" type="submit">Login</button>
             {/* <span className="text-[14px]">Don&apos;t have an account? <span className="font-semibold cursor-pointer" onClick={() => setOpen(!open)}>Register</span></span> */}
           </form>

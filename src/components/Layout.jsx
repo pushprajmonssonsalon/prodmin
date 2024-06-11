@@ -33,12 +33,12 @@ const Layout = ({ children }) => {
               active={activeItem === "dash-board"}
               onClick={() => handleItemClick("dash-board")}
             />
-            <SidebarItem
+            {/* <SidebarItem
               icon={<IoStatsChartOutline size={20} />}
               text="Reports"
               active={activeItem === "Reports"}
               onClick={() => handleItemClick("Reports")}
-            />
+            /> */}
           </>
         ) : (
           <>
