@@ -4,9 +4,11 @@ import { useNavigate } from 'react-router-dom'
 const Selection = () => {
     const navigate = useNavigate();
     const crmToken = localStorage.getItem('crmtoken');
+    const proToken = localStorage.getItem('protoken');
     const handleSelection=(value)=>{
         localStorage.setItem("isAdmin",value)
-        if(crmToken) navigate('/dash-board')
+        if(crmToken) navigate('/dash-board');
+        else if(proToken) navigate('/dashboard');
         else navigate('/login')
     }
   return (

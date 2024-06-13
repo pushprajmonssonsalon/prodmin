@@ -4,8 +4,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function DatePicker() {
-  const [date, setDate] = React.useState('Today');
+export default function DatePicker({ date, setDate}) {
 
   const handleChange = (event) => {
     setDate(event.target.value)

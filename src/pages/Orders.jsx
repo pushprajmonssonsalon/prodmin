@@ -1,66 +1,108 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Layout from '../components/Layout'
 import TopBar from '../components/commoncomponents/TopBar'
 import CustomTable from '../components/commoncomponents/Table'
 import DatePicker from '../components/commoncomponents/DatePicker';
 import Drawers from '../components/commoncomponents/Drawer';
 import { Button } from '@mui/material';
+import { ORDERS_DETAILS } from '../services/pro/user.service';
+import { subDays, startOfMonth, endOfMonth } from 'date-fns';
 
 const columns = [
-  { id: 'name', label: 'Name' },
-  { id: 'code', label: 'ISO\u00a0Code'},
+  { id: 'id', label: 'ShipRocketID' },
   {
-    id: 'population',
-    label: 'Population',
+    id: 'customerDetails',
+    label: 'Customer Details',
     align: 'left',
     format: (value) => value.toLocaleString('en-US'),
   },
   {
-    id: 'size',
-    label: 'Size\u00a0(km\u00b2)',
+    id: 'productsDetails',
+    label: 'Products Details',
     align: 'left',
     format: (value) => value.toLocaleString('en-US'),
   }
 ];
 
-function createData(name, code, population, size) {
-  return { name, code, population, size };
+function createData(id, customerDetails,productsDetails) {
+  return { id, customerDetails, productsDetails};
 }
 
-const rows = [
-  createData('India', 'IN', 1324171354, 3287263),
-  createData('China', 'CN', 1403500365, 9596961),
-  createData('Italy', 'IT', 60483973, 301340),
-  createData('United States', 'US', 327167434, 9833520),
-  createData('Canada', 'CA', 37602103, 9984670),
-  createData('Australia', 'AU', 25475400, 7692024),
-  createData('Germany', 'DE', 83019200, 357578),
-  createData('Ireland', 'IE', 4857000, 70273),
-  createData('Mexico', 'MX', 126577691, 1972550),
-  createData('Japan', 'JP', 126317000, 377973),
-  createData('France', 'FR', 67022000, 640679),
-  createData('United Kingdom', 'GB', 67545757, 242495),
-  createData('Russia', 'RU', 146793744, 17098246),
-  createData('Nigeria', 'NG', 200962417, 923768),
-  createData('Brazil', 'BR', 210147125, 8515767),
-];
 
-
-
+let startDate,endDate ;
 const Orders = () => {
+  const [ ordersDetails,setOrdersDetails ] = useState([])
+  const [date, setDate] = React.useState('Today');
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const getStartAndEndDate = (dateRange) => {
+  const today = new Date();
+  switch(dateRange) {
+    case 'Today':
+      startDate = today;
+      endDate = today;
+      break;
+    case 'Yesterday':
+      startDate = subDays(today, 1);
+      endDate = subDays(today, 1);
+      break;
+    case 'last7days':
+      startDate = subDays(today, 7);
+      endDate = today;
+      break;
+    case 'last30days':
+      startDate = subDays(today, 30);
+      endDate = today;
+      break;
+    case 'thismonth':
+      startDate = startOfMonth(today);
+      endDate = today;
+      break;
+    case 'lastmonth':
+      startDate = startOfMonth(subDays(startOfMonth(today), 1));
+      endDate = endOfMonth(subDays(startOfMonth(today), 1));
+      break;
+    default:
+      startDate = today;
+      endDate = today;
+  }
+  return { startDate, endDate };
+}
+  useEffect(()=>{
+    const fetchApi=async()=>{
+      const { startDate, endDate } = getStartAndEndDate(date);
+      const orders = await ORDERS_DETAILS({startDate,endDate,page:page, limit:rowsPerPage});
+      if(orders){
+        console.log("parlors",orders.orders)
+        setOrdersDetails(orders.orders)
+        setTotalOrders(orders.totalOrders)
+      }else{
+        console.log("parlor errors")
+      }
+    }
+    fetchApi()
+  },[date,page,rowsPerPage])
+  console.log({ordersDetails})
+  const rows = ordersDetails?.map(order => createData(
+    order.numericOrderId,
+    `${order.customerName} (${order.customerPhoneNumber})`,
+    order.products.map(product => product.name).join(', ')
+  ));
+  console.log({rows})
   return (
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Orders"/>
       <div className='w-[90%] mx-auto flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
-          <DatePicker />
+          <DatePicker  date={date} setDate={setDate}/>
           <Drawers />
         </div>
       <Button variant='contained'>Export to Excel</Button>
     </div>
       <div className='w-[90%] mx-auto'>
-        <CustomTable headings={columns} rows={rows} />
+        <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders}/>
       </div>
     </div>
     </Layout>

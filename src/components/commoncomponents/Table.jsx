@@ -9,10 +9,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 import { isValidElement } from 'react';
 
-export default function CustomTable({headings,rows,handleRowClick,handleOpen}) {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+export default function CustomTable({headings,rows,handleRowClick,handleOpen,page,setPage,rowsPerPage, setRowsPerPage,totalOrders}) {
+  console.log("table-rows",rows)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -45,7 +43,6 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen}) {
           </TableHead>
           <TableBody>
             {rows
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={()=>handleDoubleFunction(row.id)}>
@@ -70,9 +67,9 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen}) {
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
+        rowsPerPageOptions={[10, 25, 50,100,200]}
         component="div"
-        count={rows.length}
+        count={totalOrders}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

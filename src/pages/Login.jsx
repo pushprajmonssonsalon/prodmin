@@ -3,6 +3,7 @@ import { FaLock, FaUser } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_USERS } from "../services/crm/user.service";
+import { PRO_LOGIN_USERS } from "../services/pro/user.service";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
@@ -22,7 +23,15 @@ const Login = () => {
         console.log("crm logins erorrs")
       }
     }else{
-      navigate("/Dashboard")
+      const user = await PRO_LOGIN_USERS({phoneNumber:userName,password});
+      if(user){
+        localStorage.setItem('protoken',user.token)
+        localStorage.setItem('prorole',user.role)
+        console.log(user)
+        navigate("/Dashboard")
+      }else{
+        console.log("pro logins erorrs")
+      }
     }
   }
 
