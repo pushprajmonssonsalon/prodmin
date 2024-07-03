@@ -1,18 +1,20 @@
 import { RiMenuFold3Line2, RiMenuUnfold3Fill  } from "react-icons/ri";
 import { useContext, createContext, useState } from "react"
 import CustomPopover from "./commoncomponents/PopOver";
+import ProLogo from '../assets/proLogo.png'
+import SmallProLogo from '../assets/smallPro.png'
 
 const SidebarContext = createContext()
 
 export default function Sidebar({ children }) {
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(true);
   
   return (
     <aside className="h-screen">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
-            src="https://res.cloudinary.com/dx6rvgytf/image/upload/v1716876766/prosaloonKartLogo_ev69gk.png"
+            src={ProLogo}
             className={`overflow-hidden transition-all text-black ${
               expanded ? "w-32" : "w-0"
             }`}
@@ -32,7 +34,7 @@ export default function Sidebar({ children }) {
 
         <div className="border-t flex p-3">
           <img
-            src="https://res.cloudinary.com/dx6rvgytf/image/upload/v1716876599/fabicon_uf0zxf.png"
+            src={SmallProLogo}
             alt=""
             className="w-10 h-10 rounded-md"
           />

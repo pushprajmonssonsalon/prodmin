@@ -30,6 +30,9 @@ const years = [
   const [open, setOpen] = React.useState(false);
   const [selectedSalonId, setSelectedSalonId] = useState(null);
   const [newUpload,setNewUpload] = useState(false)
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [totalSalons, setTotalSalons] = useState(0);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const columns = [
@@ -49,16 +52,17 @@ const years = [
   }
   useEffect(()=>{
     const fetchApi=async()=>{
-      const parlors = await PARLOUR_DETAILS();
+      const parlors = await PARLOUR_DETAILS({page:page, limit:rowsPerPage});
       if(parlors){
         console.log("parlors",parlors)
-        setSalonsDetails(parlors)
+        setSalonsDetails(parlors?.data)
+        setTotalSalons(parlors?.total)
       }else{
         console.log("parlor errors")
       }
     }
     fetchApi()
-  },[])
+  },[page,rowsPerPage])
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
@@ -136,7 +140,7 @@ const years = [
           </div>
        </div>   
       <div className='w-[90%] mx-auto '>
-      <CustomTable headings={columns} rows={rows} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
+      <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
     </div>
     <TransitionsModal open={open} setOpen={setOpen} handleOpen={handleOpen} handleClose={handleClose} newUpload={newUpload} salonId={selectedSalonId}/>

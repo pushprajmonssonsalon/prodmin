@@ -6,9 +6,9 @@ const Selection = () => {
     const crmToken = localStorage.getItem('crmtoken');
     const proToken = localStorage.getItem('protoken');
     const handleSelection=(value)=>{
-        localStorage.setItem("isAdmin",value)
-        if(crmToken) navigate('/dash-board');
-        else if(proToken) navigate('/dashboard');
+        localStorage.setItem("isAdmin",value);
+        if(value === "crm" && crmToken) navigate('/dash-board');
+        else if(value === "website" && proToken) navigate('/orders');
         else navigate('/login')
     }
   return (

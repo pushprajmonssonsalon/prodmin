@@ -4,6 +4,9 @@ import Sidebar from "./SideBar";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { IoStatsChartOutline } from "react-icons/io5";
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { FaFileInvoiceDollar } from "react-icons/fa6";
+import { FaRegEdit } from "react-icons/fa";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -33,26 +36,38 @@ const Layout = ({ children }) => {
               active={activeItem === "dash-board"}
               onClick={() => handleItemClick("dash-board")}
             />
-            {/* <SidebarItem
-              icon={<IoStatsChartOutline size={20} />}
-              text="Reports"
-              active={activeItem === "Reports"}
-              onClick={() => handleItemClick("Reports")}
-            /> */}
+            <SidebarItem
+              icon={<FaFileInvoiceDollar size={20} />}
+              text="Settelment"
+              active={activeItem === "Settelment"}
+              onClick={() => handleItemClick("Settelment")}
+            />
           </>
         ) : (
           <>
-            <SidebarItem
+            {/* <SidebarItem
               icon={<IoStatsChartOutline size={20} />}
               text="Dashboard"
               active={activeItem === "Dashboard"}
               onClick={() => handleItemClick("Dashboard")}
-            />
+            /> */}
             <SidebarItem
               icon={<HiOutlineShoppingCart size={20} />}
               text="Orders"
               active={activeItem === "Orders"}
               onClick={() => handleItemClick("Orders")}
+            />
+            <SidebarItem
+              icon={<MdOutlineFavoriteBorder size={20} />}
+              text="Products"
+              active={activeItem === "Products"}
+              onClick={() => handleItemClick("Products")}
+            />
+            <SidebarItem
+              icon={<FaRegEdit size={20} />}
+              text="Edit Status"
+              active={activeItem === "Edit"}
+              onClick={() => handleItemClick("Edit")}
             />
           </>
         )}

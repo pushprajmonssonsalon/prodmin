@@ -3,13 +3,14 @@ import Layout from '../components/Layout'
 import TopBar from '../components/commoncomponents/TopBar'
 import CustomTable from '../components/commoncomponents/Table'
 import DatePicker from '../components/commoncomponents/DatePicker';
-import Drawers from '../components/commoncomponents/Drawer';
 import { Button } from '@mui/material';
-import { ORDERS_DETAILS } from '../services/pro/user.service';
+import { ORDERS_DETAILS, ORDERS_DETAILS_FOR_EXCEL, SINGLE_ORDERS_DETAILS } from '../services/pro/user.service';
 import { subDays, startOfMonth, endOfMonth } from 'date-fns';
+import OrderModal from '../components/commoncomponents/OrderModal';
+import * as XLSX from 'xlsx';
 
 const columns = [
-  { id: 'id', label: 'ShipRocketID' },
+  { id: 'shipId', label: 'ShipRocketID' },
   {
     id: 'customerDetails',
     label: 'Customer Details',
@@ -21,21 +22,30 @@ const columns = [
     label: 'Products Details',
     align: 'left',
     format: (value) => value.toLocaleString('en-US'),
+  },
+  {
+    id: 'status',
+    label: 'Status'
   }
 ];
 
-function createData(id, customerDetails,productsDetails) {
-  return { id, customerDetails, productsDetails};
+function createData(shipId, customerDetails,productsDetails,status,id) {
+  return { shipId, customerDetails, productsDetails,status,id};
 }
 
 
 let startDate,endDate ;
 const Orders = () => {
   const [ ordersDetails,setOrdersDetails ] = useState([])
+  const [ singleOrdersDetails,setSingleOrdersDetails ] = useState([])
   const [date, setDate] = React.useState('Today');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [totalOrders, setTotalOrders] = useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [orderId, setOrderId] = React.useState('');
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const getStartAndEndDate = (dateRange) => {
   const today = new Date();
   switch(dateRange) {
@@ -84,12 +94,55 @@ const Orders = () => {
     fetchApi()
   },[date,page,rowsPerPage])
   console.log({ordersDetails})
+  const mapStatus = (status) => {
+    switch (status) {
+        case 1:
+            return 'Placed';
+        case 2:
+            return 'Cancelled';
+        case 3:
+            return 'Received';
+        case 4:
+            return 'RTO';
+        case 7:
+            return 'Shipped';
+        default:
+            return 'Not Placed';
+    }
+};
   const rows = ordersDetails?.map(order => createData(
     order.numericOrderId,
     `${order.customerName} (${order.customerPhoneNumber})`,
-    order.products.map(product => product.name).join(', ')
+    order.products.map(product => product.name).join(', '), mapStatus(order.status),order._id
   ));
+  const handleRowClick = (id) => {
+    setOrderId(id);
+  };
+  useEffect(()=>{
+    async function fetchApi(){
+      const singleOrderDetail =await SINGLE_ORDERS_DETAILS({id:orderId});
+      console.log("singleOrderDetail",singleOrderDetail);
+      setSingleOrdersDetails(singleOrderDetail)
+    }
+    fetchApi()
+  },[orderId])
   console.log({rows})
+  console.log("order id", orderId)
+  const handleExportExcel=async()=>{
+    const excel = await ORDERS_DETAILS_FOR_EXCEL({startDate,endDate});
+    console.log("excel",excel.orders)
+    const transformedOrders = excel.orders.map(order => {
+      return {
+        ...order,
+        products: order.products.map(product => product.name).join(', '),
+        addresses: order.addresses.address
+      };
+    });
+    const worksheet = XLSX.utils.json_to_sheet(transformedOrders);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
+    XLSX.writeFile(workbook, 'orders.xlsx');  
+  }
   return (
     <Layout>
     <div className='w-full flex flex-col'>
@@ -97,14 +150,15 @@ const Orders = () => {
       <div className='w-[90%] mx-auto flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           <DatePicker  date={date} setDate={setDate}/>
-          <Drawers />
+          {/* <Drawers />  */}
         </div>
-      <Button variant='contained'>Export to Excel</Button>
+      <Button variant='contained' onClick={handleExportExcel}>Export to Excel</Button>
     </div>
       <div className='w-[90%] mx-auto'>
-        <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders}/>
+        <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
     </div>
+    <OrderModal open={open} setOpen={setOpen} data={singleOrdersDetails} handleOpen={handleOpen} handleClose={handleClose}/>
     </Layout>
   )
 }
