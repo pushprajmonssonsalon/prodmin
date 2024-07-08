@@ -10,7 +10,6 @@ import TableRow from '@mui/material/TableRow';
 import { isValidElement } from 'react';
 
 export default function CustomTable({headings,rows,handleRowClick,handleOpen,page,setPage,rowsPerPage, setRowsPerPage,totalOrders}) {
-  console.log("table-rows",rows)
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

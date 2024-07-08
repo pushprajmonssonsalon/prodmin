@@ -72,6 +72,9 @@ const SingleProduct = () => {
     const handleSubmitDetails=async()=>{
         const allDetails = await EDIT_PRODUCT_DETAILS({obj:{images:newImages,desImages:newDesImages,stockQuantity:+stockQuantity},id:productDetails?._id});
         console.log("allDetails", allDetails)
+        if(allDetails){
+            toast.success("Successfully Updated!")
+        }
     }
 
     return (

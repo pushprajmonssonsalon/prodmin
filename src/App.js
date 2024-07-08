@@ -11,6 +11,7 @@ import Products from './pages/Products'
 import SingleProduct from './pages/SingleProduct'
 import EditOrder from './pages/EditOrder'
 import Settelment from './pages/Settlement'
+import Json from './pages/Json'
 const App = () => {
   return (
     <Routes>
@@ -19,7 +20,7 @@ const App = () => {
       <Route path='/Dashboard' element={<PrivateRoute component={Dashboard} />} />
       <Route path='/dash-board' element={<PrivateRoute component={ProDashboard} />} />
       <Route path='/reports' element={<PrivateRoute component={Reports} />} />
-      <Route path='/settelment' element={<PrivateRoute component={Settelment} />} />
+      <Route path='/settelment' element={<PrivateRoute component={Json} />} />
       <Route path='/orders' element={<PrivateRoute component={Orders} />} />
       <Route path='/products' element={<PrivateRoute component={Products} />} />
       <Route path='/edit' element={<PrivateRoute component={EditOrder} />} />

@@ -38,6 +38,7 @@ const years = [
   const columns = [
     { id: 'name', label: 'Name' },
     { id: 'location', label: 'Location' },
+    { id: 'address', label: 'Address' },
     {
       id: 'invoice',
     //   label: 'Size\u00a0(km\u00b2)',
@@ -47,8 +48,8 @@ const years = [
     }
   ];
   
-  function createData(name,location, invoice,id) {
-    return { name,location, invoice,id };
+  function createData(name,location,address, invoice,id) {
+    return { name,location,address, invoice,id };
   }
   useEffect(()=>{
     const fetchApi=async()=>{
@@ -104,7 +105,7 @@ const years = [
 
   
 
-   const rows = salonsDetails.map((salon)=> createData(salon.name,salon?.address2,(
+   const rows = salonsDetails.map((salon)=> createData(salon.name,salon?.address2,salon?.address,(
     (
       <>
         <FaFileUpload
@@ -129,6 +130,8 @@ const years = [
       toast.error("File not uploaded, Please try again!")
     }
   };
+  console.log("rows-per-page",rowsPerPage)
+  console.log("page",page)
   return (
     <Layout>
     <div className='w-full flex flex-col'>
