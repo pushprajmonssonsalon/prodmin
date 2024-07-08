@@ -42,6 +42,12 @@ const Layout = ({ children }) => {
               active={activeItem === "Settelment"}
               onClick={() => handleItemClick("Settelment")}
             />
+            <SidebarItem
+              icon={<FaFileInvoiceDollar size={20} />}
+              text="PO Orders" 
+              active={activeItem === "PO Orders"}
+              onClick={() => handleItemClick("POOrders")}
+            />
           </>
         ) : (
           <>

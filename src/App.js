@@ -21,6 +21,7 @@ const App = () => {
       <Route path='/dash-board' element={<PrivateRoute component={ProDashboard} />} />
       <Route path='/reports' element={<PrivateRoute component={Reports} />} />
       <Route path='/settelment' element={<PrivateRoute component={Json} />} />
+      <Route path='/POOrders' element={<PrivateRoute component={Settelment} />} />
       <Route path='/orders' element={<PrivateRoute component={Orders} />} />
       <Route path='/products' element={<PrivateRoute component={Products} />} />
       <Route path='/edit' element={<PrivateRoute component={EditOrder} />} />

@@ -91,11 +91,11 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
           <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.name} ({selectedParlorDetail?.phoneNumber})</h1>
           <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.address}</h1>
           </div>
-            <div className='w-[90%] mx-auto flex justify-between'>
+            {/* <div className='w-[90%] mx-auto flex justify-between'>
                 <MonthPicker months={months} month={month} setMonth={setMonth}/>
                 <YearPicker years={years} year={year} setYear={setYear}/>
-            </div>
-            <form className='w-full flex flex-col mt-5 '>
+            </div> */}
+            {/* <form className='w-full flex flex-col mt-5 '>
             <div className='flex justify-between items-center h-[45px] mb-3'>
                 <h1 className='font-serif w-[20%] text-xl'>Name :</h1>
                 <input type='text' className='w-[75%] border border-black rounded-md outline-none px-2 py-1 font-serif h-full' placeholder='Enter your name...'/>
@@ -113,7 +113,7 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
                 <input type='text' className='w-[75%] border border-black rounded-md outline-none px-2 py-1 font-serif h-full' placeholder='Enter your phone number...'/>
             </div>
             <Button variant='contained' type='submit'>Submit</Button>
-            </form>
+            </form> */}
             
           </Box>
         </Fade>
