@@ -45,6 +45,19 @@ const CREATE_TABLE=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
 }
+const POORDERS_TABLE=async(payload)=>{
+    const url = `${baseUrl}/finance/getAllPurchaseOrder?page=${payload.page}&limit=${payload.limit}`;
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload.data,authString);
+    return response
+}
+const SINGLE_POORDER=async(payload)=>{
+    const url = `${baseUrl}/finance/getSinglePurchaseOrderDetail`;
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+
 
 
 export {
@@ -54,5 +67,7 @@ export {
     SINGLE_PARLOUR_DETAILS,
     SINGLE_SALON_DETAILS,
     CREATE_TABLE,
-    GET_TABLE
+    GET_TABLE,
+    POORDERS_TABLE,
+    SINGLE_POORDER
 }

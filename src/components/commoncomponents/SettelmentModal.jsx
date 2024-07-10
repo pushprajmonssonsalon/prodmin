@@ -5,12 +5,14 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { SINGLE_PARLOUR_DETAILS, SINGLE_SALON_DETAILS } from '../../services/crm/user.service';
+import { SINGLE_PARLOUR_DETAILS, SINGLE_POORDER, SINGLE_SALON_DETAILS } from '../../services/crm/user.service';
 import MonthPicker from './MonthPicker';
 import YearPicker from './YearPicker';
 import { FaFileUpload } from 'react-icons/fa';
 import { Height } from '@mui/icons-material';
 import { height } from '@mui/system';
+import BasicTable from './BasicTable';
+import BasicPOTable from './BasicPOTable';
 
 const style = {
   position: 'absolute',
@@ -38,7 +40,7 @@ const years = [
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
 export default function SettelmentModal({open,setOpen,handleOpen,handleClose,newUpload,salonId}) {
-    const headings = ["File Name", "Uploaded PDF"]
+    const headings = ["name", "brand","Quantity","mrp","type"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       console.log("current month", currentMonth)
@@ -54,20 +56,18 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
         const fetchApi=async()=>{
             const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
             const selectedDate = updatingDate;
-            const singleParlourDetails = await SINGLE_SALON_DETAILS({salonId});
+            const singleParlourDetails = await SINGLE_POORDER({id:salonId});
             if(singleParlourDetails){
-                setSelectedParlorDetail(singleParlourDetails)
+                setSelectedParlorDetail(singleParlourDetails.products)
             }
         }
         fetchApi()
-    },[open,month,year,newUpload])
-    const handlePdfUrl=(url)=>{
-        window.open(url, '_blank');
-    }
-    function createData(name, url) {
-        return { name, url };
+    },[open])
+    
+    function createData(name, brand, orderedQuantity, mrp, type) {
+        return { name, brand, orderedQuantity, mrp, type };
       }
-    //   const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>))
+      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type))
     console.log("single parlour", selectedParlorDetail)
   return (
     <div>
@@ -88,32 +88,10 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
         <Fade in={open}>
           <Box sx={style}>
           <div className='w-full flex flex-col'>
-          <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.name} ({selectedParlorDetail?.phoneNumber})</h1>
+          <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.name}</h1>
           <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.address}</h1>
           </div>
-            {/* <div className='w-[90%] mx-auto flex justify-between'>
-                <MonthPicker months={months} month={month} setMonth={setMonth}/>
-                <YearPicker years={years} year={year} setYear={setYear}/>
-            </div> */}
-            {/* <form className='w-full flex flex-col mt-5 '>
-            <div className='flex justify-between items-center h-[45px] mb-3'>
-                <h1 className='font-serif w-[20%] text-xl'>Name :</h1>
-                <input type='text' className='w-[75%] border border-black rounded-md outline-none px-2 py-1 font-serif h-full' placeholder='Enter your name...'/>
-            </div>
-            <div className='flex justify-between items-center h-[45px] mb-3'>
-                <h1 className='font-serif w-[20%] text-xl'>Phone Number :</h1>
-                <input type='text' className='w-[75%] border border-black rounded-md outline-none px-2 py-1 font-serif h-full' placeholder='Enter your phone number...'/>
-            </div>
-            <div className='flex justify-between items-center h-[45px] mb-3'>
-                <h1 className='font-serif w-[20%] text-xl'>Phone Number :</h1>
-                <input type='text' className='w-[75%] border border-black rounded-md outline-none px-2 py-1 font-serif h-full' placeholder='Enter your phone number...'/>
-            </div>
-            <div className='flex justify-between items-center h-[45px] mb-3'>
-                <h1 className='font-serif w-[20%] text-xl'>Phone Number :</h1>
-                <input type='text' className='w-[75%] border border-black rounded-md outline-none px-2 py-1 font-serif h-full' placeholder='Enter your phone number...'/>
-            </div>
-            <Button variant='contained' type='submit'>Submit</Button>
-            </form> */}
+           <BasicPOTable headings={headings} rows={rows}/>
             
           </Box>
         </Fade>

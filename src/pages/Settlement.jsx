@@ -5,9 +5,12 @@ import MonthPicker from '../components/commoncomponents/MonthPicker';
 import YearPicker from '../components/commoncomponents/YearPicker';
 import CustomTable from '../components/commoncomponents/Table';
 import { FaFileUpload } from "react-icons/fa";
-import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF } from '../services/crm/user.service';
+import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF, POORDERS_TABLE } from '../services/crm/user.service';
 import toast from 'react-hot-toast';
 import SettelmentModal from '../components/commoncomponents/SettelmentModal';
+import PickDate from '../components/commoncomponents/PickDate';
+import { Button } from '@mui/material';
+import EndDate from '../components/commoncomponents/EndDate';
 const Settelment = () => {
   const months = [
     "January", "February", "March", "April", "May", "June", 
@@ -23,10 +26,9 @@ const years = [
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const [salonsDetails, setSalonsDetails] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [uploadSalonId, setUploadSalonId] = useState(null);
-  const [month, setMonth] = useState(months[currentMonth]);
-  const [year, setYear] = useState(currentYear.toString());
+  const defaultStartDate = new Date();
+  const [startDate, setStartDate] = useState(defaultStartDate);
+  const [endDate, setEndDate] = useState(defaultStartDate);
   const [open, setOpen] = React.useState(false);
   const [selectedSalonId, setSelectedSalonId] = useState(null);
   const [newUpload,setNewUpload] = useState(false)
@@ -38,87 +40,50 @@ const years = [
   const columns = [
     { id: 'name', label: 'Name' },
     { id: 'location', label: 'Location' },
-    { id: 'phoneNumber', label: 'Phone Number' }
+    { id: 'address', label: 'Address' },
+    { id: 'contactNum', label: 'Phone Number' },
+    { id: 'status', label: 'Status' },
   ];
   
-  function createData(name,location,phoneNumber,id) {
-    return { name,location,phoneNumber,id };
+  function createData(name,location,contactNum,address,status,id) {
+    return { name,location,contactNum,address,status,id };
   }
   useEffect(()=>{
     const fetchApi=async()=>{
-      const parlors = await PARLOUR_DETAILS({page:page, limit:rowsPerPage});
-      if(parlors){
-        console.log("parlors",parlors)
-        setSalonsDetails(parlors?.data)
-        setTotalSalons(parlors?.total)
-      }else{
-        console.log("parlor errors")
-      }
+      const parlors = await POORDERS_TABLE({page:page, limit:rowsPerPage,data:{startDate,endDate}});
+      console.log("parlors",parlors)
+        setSalonsDetails(parlors)
+  
     }
     fetchApi()
-  },[page,rowsPerPage])
+  },[page,rowsPerPage,startDate,endDate])
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
-  const handleFileUploadClick = (salonId) => {
-    setUploadSalonId(salonId);
-    document.getElementById(`fileInput-${salonId}`).click();
-  };
+  console.log("selected id",selectedSalonId)
+   const rows = salonsDetails?.map((salon)=> createData(salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,salon?._id));
+  //  const searchClick=()=>{
 
-  const handleFileChange = (event, salonId) => {
-    const file = event.target.files[0];
-    setSelectedFile(file);
-    setUploadSalonId(salonId);
-    handleFileUpload(file, salonId);
-  };
-
-  const handleFileUpload = async (file, salonId) => {
-    if (file && salonId) {
-      try {
-        const formData = new FormData();
-        formData.append('royaltypdf', file);
-        formData.append('salonId', salonId);
-        const selectedDate = new Date(Date.UTC(year, months.indexOf(month)));
-        formData.append('uploadedDate', selectedDate.toISOString());
-
-        // Replace with your file upload API call
-        await uploadFileApiCall(formData,salonId);
-
-        // Reset file input
-        setSelectedFile(null);
-        setUploadSalonId(null);
-
-        // Refresh the data or update UI accordingly
-        
-      } catch (error) {
-        console.error("File upload failed", error);
-      }
-    }
-  };
-
-  
-
-   const rows = salonsDetails.map((salon)=> createData(salon.name,salon?.address2,salon?.phoneNumber,salon._id))
-   const uploadFileApiCall = async (formData,salonId) => {
-    const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
-    if(uploadPDF){
-      toast.success("File Uploaded")
-      setNewUpload(!newUpload)
-    }else{
-      toast.error("File not uploaded, Please try again!")
-    }
-  };
+  //  }
+  console.log("dates",startDate,endDate)
   return (
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Settelment"/>
-      <div className='w-[90%] mx-auto flex justify-between items-center'>
-        {/* <div className='flex items-center gap-x-3'>
-          <MonthPicker months={months} month={month} setMonth={setMonth}/>
-          <YearPicker years={years} year={year} setYear={setYear}/>
-          </div> */}
+      <div className='w-[90%] mx-auto flex justify-center items-center gap-4 mt-4 absolute z-20 top-20'>
+          <div className='flex flex-col'>
+            <label>Start Date :</label>
+          <PickDate datte={startDate}
+              setDatte={setStartDate} />
+          </div>
+          <div className='flex flex-col'>
+            <label>End Date :</label>
+          <EndDate datte={endDate}
+              setDatte={setEndDate} startDate={startDate} />
+          </div>
+              {/* <Button variant="contained" className='mt-8'>Search</Button> */}
        </div>   
-      <div className='w-[90%] mx-auto '>
+      <div className='w-[90%] mx-auto mt-24'>
       <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
     </div>
