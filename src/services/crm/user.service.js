@@ -10,7 +10,7 @@ const LOGIN_USERS = async(payload)=>{
     return response;
 }
 const PARLOUR_DETAILS=async(payload)=>{
-    const url = `${baseUrl}/parlor/getAllParlorsDetail?page=${payload.page}&limit=${payload.limit}`;
+    const url = `${baseUrl}/finance/getAllParlorsDetail?page=${payload.page}&limit=${payload.limit}`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"get",null,authString);
     return response;

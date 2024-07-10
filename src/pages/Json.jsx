@@ -27,52 +27,40 @@ const Json = () => {
   const [year, setYear] = useState(currentYear.toString());
   // const [rows, setRows] = useState([]);
   const columns = [
-    { id: 'id', label: 'Salon ID', minWidth: 170 },
-    { id: 'name', label: 'Name of Salon', minWidth: 130 },
-    {
-      id: 'status',
-      label: 'Status',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
-    {
-      id: 'category',
-      label: 'Category',
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toLocaleString('en-US'),
-    },
+    { id: 'salonId', label: 'Salon ID', minWidth: 170 },
+    { id: 'name', label: 'Name of Salon', minWidth: 170 },
+    { id: 'address', label: 'Address', minWidth: 170 },
+    { id: 'address2', label: 'Address 2', minWidth: 170 },
     {
       id: 'month',
       label: 'Month',
-      minWidth: 170,
+      minWidth: 130,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'monthlyroyality',
+      id: 'A',
       label: 'Monthly Royalty (+)',
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'productSale',
+      id: 'B',
       label: 'Product Sale (+)',
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'signupconstruction',
+      id: 'C',
       label: 'Signup/Construction (+)',
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'others',
+      id: 'D',
       label: 'Others (+)',
       minWidth: 170,
       align: 'right',
@@ -86,21 +74,21 @@ const Json = () => {
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'discountonloreal',
+      id: 'E',
       label: "Discount Reimburse on L'Oreal (-)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'discountreimburse',
+      id: 'F',
       label: "Discount Reimburse on Own Brand (-)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'bonuspoint',
+      id: 'G',
       label: "Bonus Points (-)",
       minWidth: 170,
       align: 'right',
@@ -114,35 +102,35 @@ const Json = () => {
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstPayonRoyalty',
+      id: 'J',
       label: "GST Payable on Royalty (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstPayonProduct',
+      id: 'K',
       label: "GST Payable on Product (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstPayonOther',
+      id: 'L',
       label: "GST Payable on Others (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstReceiveDiscount',
+      id: 'M',
       label: "GST Receivable on Discount Reimburse (-)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'tdsReceivable',
+      id: 'N',
       label: "TDS Receivable (-)",
       minWidth: 170,
       align: 'right',
@@ -156,21 +144,21 @@ const Json = () => {
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'netecoverable',
+      id: 'netRecoverable',
       label: "Net Recoverable",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'payment',
+      id: 'O',
       label: "Payment (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'receipt',
+      id: 'P',
       label: "Receipt (-)",
       minWidth: 170,
       align: 'right',
@@ -184,56 +172,49 @@ const Json = () => {
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstPaidRoyality',
+      id: 'Q',
       label: "GST Paid on Royalty (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstPaidProduct',
+      id: 'R',
       label: "GST Paid on Product (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstPaidOthers',
+      id: 'S',
       label: "GST Paid on Others (+)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'gstReceivedDiscount',
+      id: 'T',
       label: "GST Received on Discount (-)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'tdsReceivedRoyalty',
+      id: 'U',
       label: "TDS Received  on Royalty/ Signup (-)",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'nettaxRecoverable',
+      id: 'nettax',
       label: "Net Tax Recoverable",
       minWidth: 170,
       align: 'right',
       format: (value) => value.toFixed(2),
     },
     {
-      id: 'perDayClosingBalance',
-      label: "Per Day Closing Balance",
-      minWidth: 170,
-      align: 'right',
-      format: (value) => value.toFixed(2),
-    },
-    {
-      id: 'cumulativeClosingBalance',
+      id: 'total',
       label: "Cumulative Closing Balance",
       minWidth: 170,
       align: 'right',
@@ -250,6 +231,7 @@ const Json = () => {
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const jsonData = XLSX.utils.sheet_to_json(worksheet);
+      console.log("jsonData",jsonData)
       // setRows(jsonData);
     };
     reader.readAsArrayBuffer(file);
@@ -266,12 +248,45 @@ const Json = () => {
     }
     fetchGetApi()
   },[month,year])
-  function createData(id,name) {
-    return{ id,name };
+  function createData(salonId,name,address,address2,month,A,B,C,D,totalReceivable,E,F,G,totalPayables,J,K,L,M,N,totalTaxRecoverable,netRecoverable,O,P,netTransactionAmount,Q,R,S,T,U,nettax,total) {
+    return{ salonId,name,address,address2,month,A,B,C,D,totalReceivable,E,F,G,totalPayables,J,K,L,M,N,totalTaxRecoverable,netRecoverable,O,P,netTransactionAmount,Q,R,S,T,U,nettax,total };
   }
-  // console.log("rowss",rows)
   console.log("table",generatedTable)
-  const rows = generatedTable?.map((salon)=> createData(salon.salonId,salon.name))
+  const rows = generatedTable?.map((salon)=> createData(salon.salonId,salon.name,salon.address,salon.address2,salon.month,salon.A,salon.B,salon.C,salon.D,salon["1"],salon.E,salon.F,salon.G,salon["2"],salon.J,salon.K,salon.L,salon.M,salon.N,salon["3"],salon["4"],salon.O,salon.P,salon["5"],salon.Q,salon.R,salon.S,salon.T,salon.U,salon["6"],salon.total))
+  console.log("rowss",rows)
+
+  const handleExport = () => {
+    // Create a new array with columns as headers
+    const formattedData = [columns.map(column => column.label)];
+
+    // Add data rows
+    generatedTable.forEach(row => {
+      const formattedRow = columns.map(column => {
+        if (column.label === 'Total Receivable') {
+          return row['1'];
+        }else if(column.label === 'Total Payables'){
+          return row['2'];
+        }else if(column.label === 'Total Tax Recoverable (-/+)'){
+          return row['3'];
+        }else if(column.label === 'Net Recoverable'){
+          return row['4'];
+        }else if(column.label === 'Net Transaction Amount'){
+          return row['5'];
+        }else if(column.label === 'Net Tax Recoverable'){
+          return row['6'];
+        }
+         else {
+          return row[column.id];
+        }
+      });
+      formattedData.push(formattedRow);
+    });
+
+    const worksheet = XLSX.utils.aoa_to_sheet(formattedData);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+    XLSX.writeFile(workbook, 'SettlementData.xlsx');
+  };
 
   return (
     <Layout>
@@ -289,7 +304,7 @@ const Json = () => {
               onChange={handleFileChange}
             />
             <Button variant='contained' component="span" onClick={handleCreateApiTable}>Create Table</Button>
-            <Button variant='contained'>Export Excel File</Button>
+            <Button variant='contained' onClick={handleExport}>Export Excel File</Button>
             <label htmlFor="contained-button-file">
               <Button variant='contained' component="span">Upload Excel File</Button>
             </label>

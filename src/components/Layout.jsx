@@ -46,7 +46,7 @@ const Layout = ({ children }) => {
               icon={<FaFileInvoiceDollar size={20} />}
               text="PO Orders" 
               active={activeItem === "PO Orders"}
-              onClick={() => handleItemClick("POOrders")}
+              onClick={() => handleItemClick("poorders")}
             />
           </>
         ) : (
