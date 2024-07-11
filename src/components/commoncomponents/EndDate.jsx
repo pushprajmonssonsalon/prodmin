@@ -14,7 +14,7 @@ export default function EndDate({datte,setDatte}) {
             selected={datte}
             onChange={(date) => setDatte(date)}
             startDate={datte}
-            
+            className='py-2 px-3 rounded-lg border border-black'
           />
   )
 }

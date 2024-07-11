@@ -42,9 +42,9 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
           </TableHead>
           <TableBody>
             {rows
-              .map((row) => {
+              ?.map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={()=>handleDoubleFunction(row.id)}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row?.code} onClick={()=>handleDoubleFunction(row?.id)}>
                     {headings.map((column) => {
                       const value = row[column.id];
                       return (

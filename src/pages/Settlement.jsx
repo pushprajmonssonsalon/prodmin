@@ -34,7 +34,7 @@ const years = [
   const [newUpload,setNewUpload] = useState(false)
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [totalSalons, setTotalSalons] = useState(0);
+  const [totalPO, setTotalPO] = useState(0);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const columns = [
@@ -52,7 +52,8 @@ const years = [
     const fetchApi=async()=>{
       const parlors = await POORDERS_TABLE({page:page, limit:rowsPerPage,data:{startDate,endDate}});
       console.log("parlors",parlors)
-        setSalonsDetails(parlors)
+        setSalonsDetails(parlors?.data)
+        setTotalPO(parlors?.total)
   
     }
     fetchApi()
@@ -65,26 +66,27 @@ const years = [
   //  const searchClick=()=>{
 
   //  }
+  console.log("rows",rows)
   console.log("dates",startDate,endDate)
   return (
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Settelment"/>
-      <div className='w-[90%] mx-auto flex justify-center items-center gap-4 mt-4 absolute z-20 top-20'>
+      <div className='w-[80%] mx-auto flex justify-center items-center gap-4 mt-4 absolute z-20 top-20'>
           <div className='flex flex-col'>
-            <label>Start Date :</label>
+            <label className='text-black  text-lg font-medium font-serif'>Start Date :</label>
           <PickDate datte={startDate}
               setDatte={setStartDate} />
           </div>
           <div className='flex flex-col'>
-            <label>End Date :</label>
+            <label className='text-black  text-lg font-medium font-serif'>End Date :</label>
           <EndDate datte={endDate}
               setDatte={setEndDate} startDate={startDate} />
           </div>
               {/* <Button variant="contained" className='mt-8'>Search</Button> */}
        </div>   
       <div className='w-[90%] mx-auto mt-24'>
-      <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
+      <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalPO} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
     </div>
     <SettelmentModal open={open} setOpen={setOpen} handleOpen={handleOpen} handleClose={handleClose} newUpload={newUpload} salonId={selectedSalonId}/>
