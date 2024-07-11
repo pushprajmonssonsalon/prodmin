@@ -19,7 +19,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '35%',
+  width: '60%',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -40,7 +40,7 @@ const years = [
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
 export default function SettelmentModal({open,setOpen,handleOpen,handleClose,newUpload,salonId}) {
-    const headings = ["name", "brand","Quantity","mrp","type"]
+    const headings = ["name", "brand","mrp","type",,"Quantity"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       console.log("current month", currentMonth)

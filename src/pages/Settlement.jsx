@@ -38,15 +38,17 @@ const years = [
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const columns = [
-    { id: 'name', label: 'Name' },
+    { id: 'name', label: 'Category' },
     { id: 'location', label: 'Location' },
     { id: 'address', label: 'Address' },
     { id: 'contactNum', label: 'Phone Number' },
     { id: 'status', label: 'Status' },
+    { id: 'createdAt', label: 'Ordered Date' },
+    { id: 'receivedAt', label: 'Received Date' }
   ];
   
-  function createData(name,location,contactNum,address,status,id) {
-    return { name,location,contactNum,address,status,id };
+  function createData(name,location,contactNum,address,status,createdAt,receivedAt,id) {
+    return { name,location,contactNum,address,status: status === 1 ? "PO Placed" : status,createdAt,receivedAt,id };
   }
   useEffect(()=>{
     const fetchApi=async()=>{
@@ -61,8 +63,16 @@ const years = [
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
+  function formatDateToFull(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short', // 'short' will give abbreviated month names like 'May', 'Jun'
+      year: 'numeric'
+    });
+  }
   console.log("selected id",selectedSalonId)
-   const rows = salonsDetails?.map((salon)=> createData(salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,salon?._id));
+   const rows = salonsDetails?.map((salon)=> createData(salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
   //  const searchClick=()=>{
 
   //  }

@@ -1,7 +1,7 @@
 import API_REQUEST from "../utils/axios.utils";
 
-const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.30:4002`;
+// const baseUrl = `https://crm.smartsalon.in`;
+const baseUrl = `http://192.168.2.30:4002`;
 
 const LOGIN_USERS = async(payload)=>{
     const url =`${baseUrl}/parlor/login`;
@@ -57,6 +57,12 @@ const SINGLE_POORDER=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
 }
+const UPDATE_EXCEL_FILE=async(payload)=>{
+    const url = `${baseUrl}/finance/updateSettlement`;
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
 
 
 
@@ -69,5 +75,6 @@ export {
     CREATE_TABLE,
     GET_TABLE,
     POORDERS_TABLE,
-    SINGLE_POORDER
+    SINGLE_POORDER,
+    UPDATE_EXCEL_FILE
 }

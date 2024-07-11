@@ -34,6 +34,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
+                  sx={{textTransform:"uppercase",fontWeight:700}}
                 >
                   {column.label}
                 </TableCell>

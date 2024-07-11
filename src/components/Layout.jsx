@@ -7,6 +7,7 @@ import { IoStatsChartOutline } from "react-icons/io5";
 import { MdOutlineFavoriteBorder } from "react-icons/md";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
+import { TbShoppingCartFilled } from "react-icons/tb";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -32,7 +33,7 @@ const Layout = ({ children }) => {
           <>
             <SidebarItem
               icon={<IoStatsChartOutline size={20} />}
-              text="Dashboard"
+              text="Invoices"
               active={activeItem === "dash-board"}
               onClick={() => handleItemClick("dash-board")}
             />
@@ -43,7 +44,7 @@ const Layout = ({ children }) => {
               onClick={() => handleItemClick("Settelment")}
             />
             <SidebarItem
-              icon={<FaFileInvoiceDollar size={20} />}
+              icon={<TbShoppingCartFilled size={20} />}
               text="PO Orders" 
               active={activeItem === "poorders"}
               onClick={() => handleItemClick("poorders")}
