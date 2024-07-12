@@ -8,8 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-
-export default function SettelmentTable({headings,rows}) {
+export default function SettelmentTable({ headings, rows }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
@@ -22,8 +21,10 @@ export default function SettelmentTable({headings,rows}) {
     setPage(0);
   };
 
+  const highlightColumns = ['totalReceivable', 'totalPayables', 'totalTaxRecoverable', 'netRecoverable', 'netTransactionAmount', 'nettax', 'total'];
+
   return (
-    <Paper sx={{ width: "75vw", overflow: 'hidden' }}>
+    <Paper sx={{ width: '75vw', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -33,7 +34,11 @@ export default function SettelmentTable({headings,rows}) {
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
-                  sx={{textTransform:"uppercase",fontWeight:"700"}}
+                  sx={{
+                    textTransform: 'uppercase',
+                    fontWeight: '700',
+                    backgroundColor: highlightColumns.includes(column.id.toString()) ? 'skyblue' : 'inherit',
+                  }}
                 >
                   {column.label}
                 </TableCell>
@@ -49,10 +54,14 @@ export default function SettelmentTable({headings,rows}) {
                     {headings.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
-                          {column.format && typeof value === 'number'
-                            ? column.format(value)
-                            : value}
+                        <TableCell
+                          key={column.id}
+                          align={column.align}
+                          sx={{
+                            backgroundColor: highlightColumns.includes(column.id.toString()) ? 'yellow' : 'inherit',
+                          }}
+                        >
+                          {column.format && typeof value === 'number' ? column.format(value) : value}
                         </TableCell>
                       );
                     })}

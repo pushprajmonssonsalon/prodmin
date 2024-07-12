@@ -35,7 +35,7 @@ const years = [
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
 export default function TransitionsModal({open,setOpen,handleOpen,handleClose,newUpload,salonId}) {
-    const headings = ["File Name", "Uploaded PDF"]
+    const headings = ["File Name", "Uploaded PDF","Uploaded Date"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       console.log("current month", currentMonth)
@@ -61,10 +61,10 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
     const handlePdfUrl=(url)=>{
         window.open(url, '_blank');
     }
-    function createData(name, url) {
-        return { name, url };
+    function createData(name, url,date) {
+        return { name, url,date };
       }
-      const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>))
+      const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>,item?.uploadedDate))
     console.log("single parlour", selectedParlorDetail)
   return (
     <div>

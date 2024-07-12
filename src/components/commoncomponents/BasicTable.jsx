@@ -8,6 +8,14 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function BasicTable({ headings, rows }) {
+  function formatDateToFull(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      day: 'numeric',
+      month: 'short', // 'short' will give abbreviated month names like 'May', 'Jun'
+      year: 'numeric'
+    });
+  }
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 350 }} aria-label="simple table">
@@ -28,6 +36,7 @@ export default function BasicTable({ headings, rows }) {
                 {row.name}
               </TableCell>
               <TableCell align="right">{row.url}</TableCell>
+              <TableCell align="">{formatDateToFull(row.date)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -37,7 +37,8 @@ export default function BasicPOTable({ headings, rows }) {
               <TableCell align="">{row.brand}</TableCell>
               <TableCell align="">{row.mrp}</TableCell>
               <TableCell align="">{row.type}</TableCell>
-              <TableCell align="">{row.orderedQuantity}</TableCell>
+              <TableCell align="center">{row.orderedQuantity}</TableCell>
+              <TableCell align="center">{row?.receivedQuantity}</TableCell>
             </TableRow>
           ))}
         </TableBody>

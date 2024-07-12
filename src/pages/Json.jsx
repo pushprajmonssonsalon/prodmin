@@ -28,13 +28,14 @@ const Json = () => {
   const [generatedTable, setGeneratedTable] = useState([]);
   const [year, setYear] = useState(currentYear.toString());
   const [loading, setLoading] = useState(false);
+  const [creating,setCreating] = useState(false)
   const [updatedBool, setUpdatedBool] = useState(false);
   const [createdBool, setCreatedBool] = useState(false);
   // const [rows, setRows] = useState([]);
   const [updatedRows, setUpdatedRows] = useState([]);
   const columns = [
     { id: "salonId", label: "Salon ID", minWidth: 170 },
-    { id: "name", label: "Name of Salon", minWidth: 170 },
+    { id: "name", label: "Category", minWidth: 170 },
     { id: "address", label: "Address", minWidth: 170 },
     { id: "address2", label: "Address 2", minWidth: 170 },
     {
@@ -271,12 +272,18 @@ const Json = () => {
     reader.readAsArrayBuffer(file);
   };
   const handleCreateApiTable = async () => {
+    setCreating(true)
     const createTable = await CREATE_TABLE({
       month: month.slice(0, 3),
       year: +year,
     });
     if (createTable) {
       setCreatedBool(!createdBool);
+      setCreating(false)
+      toast.success("Table is created")
+    }else{
+      toast.error("Table is already created for this month!")
+      setCreating(false)
     }
     console.log("createTable", createTable);
   };
@@ -442,7 +449,7 @@ const Json = () => {
               component="span"
               onClick={handleCreateApiTable}
             >
-              Create Table
+              {creating ? "Creating..." : "Create Table"}
             </Button>
             <Button variant="contained" onClick={handleExport}>
               Export Excel File

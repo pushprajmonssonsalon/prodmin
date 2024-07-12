@@ -5,7 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { SINGLE_PARLOUR_DETAILS, SINGLE_POORDER, SINGLE_SALON_DETAILS } from '../../services/crm/user.service';
+import { CHANGE_PO_STATUS, SINGLE_PARLOUR_DETAILS, SINGLE_POORDER, SINGLE_SALON_DETAILS } from '../../services/crm/user.service';
 import MonthPicker from './MonthPicker';
 import YearPicker from './YearPicker';
 import { FaFileUpload } from 'react-icons/fa';
@@ -13,6 +13,8 @@ import { Height } from '@mui/icons-material';
 import { height } from '@mui/system';
 import BasicTable from './BasicTable';
 import BasicPOTable from './BasicPOTable';
+import EditStatusModal from './EditStatusModal';
+import toast from 'react-hot-toast';
 
 const style = {
   position: 'absolute',
@@ -40,13 +42,18 @@ const years = [
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
 export default function SettelmentModal({open,setOpen,handleOpen,handleClose,newUpload,salonId}) {
-    const headings = ["name", "brand","mrp","type",,"Quantity"]
+    const headings = ["name", "brand","mrp","type","Ordered Quantity","Recieved Quantity"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       console.log("current month", currentMonth)
       const [month, setMonth] = React.useState();
       const [year, setYear] = React.useState();
       const [selectedParlorDetail,setSelectedParlorDetail] =React.useState([]);
+      const [status, setStatus] = React.useState('');
+
+  const handleChange = (event) => {
+    setStatus(event.target.value);
+  };
     console.log("salon_id",salonId);
     React.useEffect(()=>{
         setMonth(months[currentMonth])
@@ -64,11 +71,18 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
         fetchApi()
     },[open])
     
-    function createData(name, brand, orderedQuantity, mrp, type) {
-        return { name, brand, orderedQuantity, mrp, type };
+    function createData(name, brand, orderedQuantity, mrp, type,receivedQuantity) {
+        return { name, brand, orderedQuantity, mrp, type, receivedQuantity };
       }
-      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type))
+      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type,item?.receivedQuantity))
     console.log("single parlour", selectedParlorDetail)
+    const handleApplyStatus =async()=>{
+      const changestatus = await CHANGE_PO_STATUS({status:+status,id:salonId});
+      if(changestatus){
+        toast.success("Status Changed Successfully!")
+        setStatus('')
+      }
+    }
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -87,9 +101,9 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
       >
         <Fade in={open}>
           <Box sx={style}>
-          <div className='w-full flex flex-col'>
-          <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.name}</h1>
-          <h1 className='text-center font-serif text-xl'>{selectedParlorDetail?.address}</h1>
+          <div className='w-full flex mb-10 justify-evenly items-center'>
+          <EditStatusModal status={status} setStatus={setStatus} handleChange={handleChange}/>
+          <Button variant='contained' onClick={handleApplyStatus}>Apply</Button>
           </div>
            <BasicPOTable headings={headings} rows={rows}/>
             

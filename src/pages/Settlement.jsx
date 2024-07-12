@@ -5,12 +5,14 @@ import MonthPicker from '../components/commoncomponents/MonthPicker';
 import YearPicker from '../components/commoncomponents/YearPicker';
 import CustomTable from '../components/commoncomponents/Table';
 import { FaFileUpload } from "react-icons/fa";
+import { MdEditSquare } from "react-icons/md";
 import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF, POORDERS_TABLE } from '../services/crm/user.service';
 import toast from 'react-hot-toast';
 import SettelmentModal from '../components/commoncomponents/SettelmentModal';
 import PickDate from '../components/commoncomponents/PickDate';
 import { Button } from '@mui/material';
 import EndDate from '../components/commoncomponents/EndDate';
+import EditStatusModal from '../components/commoncomponents/EditStatusModal';
 const Settelment = () => {
   const months = [
     "January", "February", "March", "April", "May", "June", 
@@ -38,6 +40,7 @@ const years = [
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const columns = [
+    { id: 'poId', label: 'PO Number' },
     { id: 'name', label: 'Category' },
     { id: 'location', label: 'Location' },
     { id: 'address', label: 'Address' },
@@ -47,8 +50,8 @@ const years = [
     { id: 'receivedAt', label: 'Received Date' }
   ];
   
-  function createData(name,location,contactNum,address,status,createdAt,receivedAt,id) {
-    return { name,location,contactNum,address,status: status === 1 ? "PO Placed" : status,createdAt,receivedAt,id };
+  function createData(poId,name,location,contactNum,address,status,createdAt,receivedAt,id) {
+    return { poId,name,location,contactNum,address,status:getStatus(status),createdAt,receivedAt,id };
   }
   useEffect(()=>{
     const fetchApi=async()=>{
@@ -59,10 +62,28 @@ const years = [
   
     }
     fetchApi()
-  },[page,rowsPerPage,startDate,endDate])
+  },[page,rowsPerPage,startDate,endDate,open])
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
+  function getStatus(statusCode) {
+    switch (statusCode) {
+      case 1:
+        return "Placed";
+      case 2:
+        return "Received/Delivered";
+      case 3:
+        return "Canceled";
+      case 4:
+        return "Accepted";
+      case 5:
+        return "Packaging";
+      case 6:
+        return "Dispatch";
+      default:
+        return "Unknown Status";
+    }
+  }
   function formatDateToFull(dateString) {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -72,7 +93,7 @@ const years = [
     });
   }
   console.log("selected id",selectedSalonId)
-   const rows = salonsDetails?.map((salon)=> createData(salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
+   const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
   //  const searchClick=()=>{
 
   //  }
@@ -81,7 +102,7 @@ const years = [
   return (
     <Layout>
     <div className='w-full flex flex-col'>
-      <TopBar title="Settelment"/>
+      <TopBar title="PO Orders"/>
       <div className='w-[80%] mx-auto flex justify-center items-center gap-4 mt-4 absolute z-20 top-20'>
           <div className='flex flex-col'>
             <label className='text-black  text-lg font-medium font-serif'>Start Date :</label>
@@ -99,6 +120,7 @@ const years = [
       <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalPO} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
     </div>
+    {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
     <SettelmentModal open={open} setOpen={setOpen} handleOpen={handleOpen} handleClose={handleClose} newUpload={newUpload} salonId={selectedSalonId}/>
     </Layout>
   )
