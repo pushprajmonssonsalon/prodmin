@@ -58,7 +58,7 @@ export default function SettelmentTable({ headings, rows }) {
                           key={column.id}
                           align={column.align}
                           sx={{
-                            backgroundColor: highlightColumns.includes(column.id.toString()) ? 'yellow' : 'inherit',
+                            backgroundColor: highlightColumns.includes(column.id.toString()) ? 'skyblue' : 'inherit',
                           }}
                         >
                           {column.format && typeof value === 'number' ? column.format(value) : value}

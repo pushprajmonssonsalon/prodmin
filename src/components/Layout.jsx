@@ -49,6 +49,12 @@ const Layout = ({ children }) => {
               active={activeItem === "poorders"}
               onClick={() => handleItemClick("poorders")}
             />
+            <SidebarItem
+              icon={<TbShoppingCartFilled size={20} />}
+              text="Salon Details" 
+              active={activeItem === "salondet"}
+              onClick={() => handleItemClick("salondet")}
+            />
           </>
         ) : (
           <>
