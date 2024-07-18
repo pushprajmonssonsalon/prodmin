@@ -10,9 +10,11 @@ import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF, POORDERS_TABLE } from '../services
 import toast from 'react-hot-toast';
 import SettelmentModal from '../components/commoncomponents/SettelmentModal';
 import PickDate from '../components/commoncomponents/PickDate';
-import { Button } from '@mui/material';
+import { Button, TextField } from '@mui/material';
 import EndDate from '../components/commoncomponents/EndDate';
 import EditStatusModal from '../components/commoncomponents/EditStatusModal';
+import SalonSelect from '../components/commoncomponents/SalonSelect';
+import StatusSelect from '../components/commoncomponents/StatusSelect';
 const Settelment = () => {
   const months = [
     "January", "February", "March", "April", "May", "June", 
@@ -37,6 +39,9 @@ const years = [
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [totalPO, setTotalPO] = useState(0);
+  const [status,setStatus] = useState("")
+  const [salonType,setSalonType] = useState("")
+  const [search,setSearch] = useState("")
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const columns = [
@@ -94,6 +99,12 @@ const years = [
   }
   console.log("selected id",selectedSalonId)
    const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
+   const handleStatusChange = (event) => {
+    setStatus(event.target.value);
+  };
+   const handleSalonTypeChange = (event) => {
+    setSalonType(event.target.value);
+  };
   //  const searchClick=()=>{
 
   //  }
@@ -115,8 +126,13 @@ const years = [
               setDatte={setEndDate} startDate={startDate} />
           </div>
               {/* <Button variant="contained" className='mt-8'>Search</Button> */}
-       </div>   
-      <div className='w-[90%] mx-auto mt-24'>
+       </div>
+       <div className="w-[90%] mx-auto flex justify-between items-center mt-32">
+       <TextField id="outlined-basic" label="search..." variant="outlined" className='w-[350px]'value={search} onChange={(e)=>setSearch(e.target.value)} />
+        <SalonSelect value={salonType} setValue={setSalonType} handleChange={handleSalonTypeChange}/>
+        <StatusSelect value={status} setValue={setStatus} handleChange={handleStatusChange}/>
+      </div>   
+      <div className='w-[90%] mx-auto'>
       <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalPO} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
     </div>
