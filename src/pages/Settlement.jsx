@@ -6,7 +6,7 @@ import YearPicker from '../components/commoncomponents/YearPicker';
 import CustomTable from '../components/commoncomponents/Table';
 import { FaFileUpload } from "react-icons/fa";
 import { MdEditSquare } from "react-icons/md";
-import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF, POORDERS_TABLE } from '../services/crm/user.service';
+import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF, POORDERS_FILTER, POORDERS_TABLE } from '../services/crm/user.service';
 import toast from 'react-hot-toast';
 import SettelmentModal from '../components/commoncomponents/SettelmentModal';
 import PickDate from '../components/commoncomponents/PickDate';
@@ -108,6 +108,17 @@ const years = [
   //  const searchClick=()=>{
 
   //  }
+  useEffect(()=>{
+    async function useApi(){
+      const pofilters = await POORDERS_FILTER({search,salonType,status,data:{payload:"payload"}});
+      if(pofilters){
+        console.log("successfull filter",pofilters)
+      }else{
+        console.log("something went wrong!")
+      }
+    }
+    useApi()
+  },[search,status,salonType])
   console.log("rows",rows)
   console.log("dates",startDate,endDate)
   return (

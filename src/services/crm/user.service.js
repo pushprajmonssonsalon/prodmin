@@ -69,6 +69,12 @@ const CHANGE_PO_STATUS=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
 }
+const POORDERS_FILTER=async(payload)=>{
+    const url = `${baseUrl}/finance/getAllPurchaseOrder?search=${payload.search}&status=${payload.status}&salon=${payload.salonType}`;
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload.data,authString);
+    return response
+}
 
 
 
@@ -83,5 +89,6 @@ export {
     POORDERS_TABLE,
     SINGLE_POORDER,
     UPDATE_EXCEL_FILE,
-    CHANGE_PO_STATUS
+    CHANGE_PO_STATUS,
+    POORDERS_FILTER
 }

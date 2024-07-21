@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function StatusSelect({status,setStatus,handleChange}) {
+export default function StatusSelect({value,setValue,handleChange}) {
   
 //   console.log(status)
 
@@ -16,7 +16,7 @@ export default function StatusSelect({status,setStatus,handleChange}) {
         <Select
           labelId="demo-simple-select-label"
           id="demo-simple-select"
-          value={status}
+          value={value}
           label="Status"
           onChange={handleChange}
         >
