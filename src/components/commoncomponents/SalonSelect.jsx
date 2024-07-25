@@ -21,9 +21,9 @@ export default function SalonSelect({value,setValue,handleChange}) {
           onChange={handleChange}
         >
           
-          <MenuItem value={'smartsalon'}>Smart Salon</MenuItem>
-          <MenuItem value={'monsoonsalon'}>Monsoon Salon</MenuItem>
-          <MenuItem value={'monsoonsalonpro'}>Monsoon Salon Pro</MenuItem>
+          <MenuItem value={'Smart Salon'}>Smart Salon</MenuItem>
+          <MenuItem value={'Monsoon Salon'}>Monsoon Salon</MenuItem>
+          <MenuItem value={'Monsoon Salon Pro'}>Monsoon Salon Pro</MenuItem>
         </Select>
       </FormControl>
     </Box>

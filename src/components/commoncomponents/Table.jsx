@@ -19,7 +19,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
     setPage(0);
   };
   const handleDoubleFunction=(id)=>{
-    console.log("id---------",id)
+    // console.log("id---------",id)
     handleRowClick(id);
     handleOpen();
   }
@@ -63,6 +63,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
                     })}
                   </TableRow>
                 );
+          
               })}
           </TableBody>
         </Table>

@@ -8,6 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function BasicPOTable({ headings, rows }) {
+  console.log('rowscoming',rows)
   function capitalizeFirstLetter(str) {
     return str
       .toLowerCase()
@@ -39,6 +40,9 @@ export default function BasicPOTable({ headings, rows }) {
               <TableCell align="">{row.type}</TableCell>
               <TableCell align="center">{row.orderedQuantity}</TableCell>
               <TableCell align="center">{row?.receivedQuantity}</TableCell>
+              <TableCell align="center">{row.mrp*row.orderedQuantity}</TableCell>
+              <TableCell align="center">{row.orderedQuantity }{"%"}</TableCell>
+              <TableCell align="center">{row.mrp*row.orderedQuantity-10}</TableCell>
             </TableRow>
           ))}
         </TableBody>

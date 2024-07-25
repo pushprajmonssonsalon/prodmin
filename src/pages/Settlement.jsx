@@ -46,28 +46,31 @@ const years = [
   const handleClose = () => setOpen(false);
   const columns = [
     { id: 'poId', label: 'PO Number' },
+    { id: 'trade', label: 'Trade Name' },
     { id: 'name', label: 'Category' },
     { id: 'location', label: 'Location' },
     { id: 'address', label: 'Address' },
     { id: 'contactNum', label: 'Phone Number' },
     { id: 'status', label: 'Status' },
     { id: 'createdAt', label: 'Ordered Date' },
-    { id: 'receivedAt', label: 'Received Date' }
-  ];
+    { id: 'receivedAt', label: 'Received Date' },
   
-  function createData(poId,name,location,contactNum,address,status,createdAt,receivedAt,id) {
-    return { poId,name,location,contactNum,address,status:getStatus(status),createdAt,receivedAt,id };
+  ];
+  console.log("salonsDetails",salonsDetails)
+  function createData(poId,trade,name,location,contactNum,address,status,createdAt,receivedAt,id) {
+    return { poId,trade,name,location,contactNum,address,status:getStatus(status),createdAt,receivedAt,id };
   }
   useEffect(()=>{
     const fetchApi=async()=>{
-      const parlors = await POORDERS_TABLE({page:page, limit:rowsPerPage,data:{startDate,endDate}});
-      console.log("parlors",parlors)
+      const parlors = await POORDERS_FILTER ({search,salonType,status,startDate,endDate,page,rowsPerPage});
+      console.log("parlors",parlors.data)
         setSalonsDetails(parlors?.data)
         setTotalPO(parlors?.total)
+        
   
     }
     fetchApi()
-  },[page,rowsPerPage,startDate,endDate,open])
+  },[page,rowsPerPage,startDate,endDate,open,search,salonType,status])
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
@@ -96,29 +99,18 @@ const years = [
       month: 'short', // 'short' will give abbreviated month names like 'May', 'Jun'
       year: 'numeric'
     });
+    
   }
+  // salon?.trade
   console.log("selected id",selectedSalonId)
-   const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
+   const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.trade,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
    const handleStatusChange = (event) => {
     setStatus(event.target.value);
   };
    const handleSalonTypeChange = (event) => {
     setSalonType(event.target.value);
   };
-  //  const searchClick=()=>{
 
-  //  }
-  useEffect(()=>{
-    async function useApi(){
-      const pofilters = await POORDERS_FILTER({search,salonType,status,data:{payload:"payload"}});
-      if(pofilters){
-        console.log("successfull filter",pofilters)
-      }else{
-        console.log("something went wrong!")
-      }
-    }
-    useApi()
-  },[search,status,salonType])
   console.log("rows",rows)
   console.log("dates",startDate,endDate)
   return (
@@ -145,6 +137,7 @@ const years = [
       </div>   
       <div className='w-[90%] mx-auto'>
       <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalPO} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
+      
       </div>
     </div>
     {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}

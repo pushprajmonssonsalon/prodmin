@@ -42,7 +42,7 @@ const years = [
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
 export default function SettelmentModal({open,setOpen,handleOpen,handleClose,newUpload,salonId}) {
-    const headings = ["name", "brand","mrp","type","Ordered Quantity","Recieved Quantity"]
+    const headings = ["name", "brand","mrp","type","Ordered Quantity","Recieved Quantity","Total Amount","Discount % per product","Order Value"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
       console.log("current month", currentMonth)
@@ -74,7 +74,7 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
     function createData(name, brand, orderedQuantity, mrp, type,receivedQuantity) {
         return { name, brand, orderedQuantity, mrp, type, receivedQuantity };
       }
-      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type,item?.receivedQuantity))
+      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type,item?.receivedQuantity,))
     console.log("single parlour", selectedParlorDetail)
     const handleApplyStatus =async()=>{
       const changestatus = await CHANGE_PO_STATUS({status:+status,id:salonId});

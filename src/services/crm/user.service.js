@@ -1,7 +1,7 @@
 import API_REQUEST from "../utils/axios.utils";
 
-const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.30:4002`;
+// const baseUrl = `https://crm.smartsalon.in`;
+const baseUrl = `http://192.168.2.30:4002`;
 
 const LOGIN_USERS = async(payload)=>{
     const url =`${baseUrl}/parlor/login`;
@@ -45,12 +45,12 @@ const CREATE_TABLE=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
 }
-const POORDERS_TABLE=async(payload)=>{
-    const url = `${baseUrl}/finance/getAllPurchaseOrder?page=${payload.page}&limit=${payload.limit}`;
-    const authString = localStorage.getItem("crmtoken");
-    const response = await API_REQUEST(url,"post",payload.data,authString);
-    return response
-}
+// const POORDERS_TABLE=async(payload)=>{
+//     const url = `${baseUrl}/finance/getAllPurchaseOrder?page=${payload.page}&limit=${payload.limit}`;
+//     const authString = localStorage.getItem("crmtoken");
+//     const response = await API_REQUEST(url,"post",payload.data,authString);
+//     return response
+// }
 const SINGLE_POORDER=async(payload)=>{
     const url = `${baseUrl}/finance/getSinglePurchaseOrderDetail`;
     const authString = localStorage.getItem("crmtoken");
@@ -69,14 +69,27 @@ const CHANGE_PO_STATUS=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
 }
-const POORDERS_FILTER=async(payload)=>{
-    const url = `${baseUrl}/finance/getAllPurchaseOrder?search=${payload.search}&status=${payload.status}&salon=${payload.salonType}`;
+const POORDERS_FILTER = async (payload) => {
+    // console.log("payload.salonType", payload.salonType !== "" ? payload.salonType : null);
+
+    // Construct query parameters based on payload values
+    let queryParams = [];
+    if (payload.salonType !== "") queryParams.push(`salon=${encodeURIComponent(payload.salonType)}`);
+    if (payload.page) queryParams.push(`page=${encodeURIComponent(payload.page)}`);
+    if (payload.rowsPerPage) queryParams.push(`limit=${encodeURIComponent(payload.rowsPerPage)}`);
+    if (payload.status !== "") queryParams.push(`status=${encodeURIComponent(payload.status)}`);
+    if (payload.search !== "") queryParams.push(`poId=${encodeURIComponent(payload.search)}`);
+
+    // Join query parameters with '&'
+    const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+    // Construct the URL with query parameters
+    const url = `${baseUrl}/finance/getAllPurchaseOrder${queryString}`;
+
     const authString = localStorage.getItem("crmtoken");
-    const response = await API_REQUEST(url,"post",payload.data,authString);
-    return response
-}
-
-
+    const response = await API_REQUEST(url, "post", payload, authString);
+    return response;
+};
 
 export {
     LOGIN_USERS,
@@ -86,7 +99,7 @@ export {
     SINGLE_SALON_DETAILS,
     CREATE_TABLE,
     GET_TABLE,
-    POORDERS_TABLE,
+   
     SINGLE_POORDER,
     UPDATE_EXCEL_FILE,
     CHANGE_PO_STATUS,
