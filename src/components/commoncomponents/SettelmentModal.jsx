@@ -15,6 +15,9 @@ import BasicTable from './BasicTable';
 import BasicPOTable from './BasicPOTable';
 import EditStatusModal from './EditStatusModal';
 import toast from 'react-hot-toast';
+import { MdCancel } from "react-icons/md";
+import axios from 'axios';
+
 
 const style = {
   position: 'absolute',
@@ -50,10 +53,57 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
       const [year, setYear] = React.useState();
       const [selectedParlorDetail,setSelectedParlorDetail] =React.useState([]);
       const [status, setStatus] = React.useState('');
+      const [images, setImages] = React.useState([]);
+      const [parlorDetails, setParlorDetails] = React.useState([]);
+      const [imageFile, setImageFile] = React.useState(null);
+      const handleFileChange = async(e) => {
+        setImageFile(e.target.files[0]);
+        console.log(e.target.files[0]);
+        let imageData = e.target.files[0]
+        const formData = new FormData();
+        formData.append('image', imageData);
+        console.log("imageData------",imageData)
+  
+      
+        // try {
+        //   // const response = await fetch('http://192.168.2.19:4002/upload', {
+        //   //   method: 'POST',
+        //   //   body: formData,
+        //   // });
+      
+        //   // if (response.ok) {
+        //   //   console.log("images link", response.data)
+        //   //   // alert('Image uploaded successfully');
+        //   //   setImageKey(imageData.name); 
+        //   // } else {
+        //   //   alert('Failed to upload image');
+        //   // }
+        //   // http://192.168.2.19:4002
+        //   // https://crm.smartsalon.in
+        //   const response = await axios.post("https://crm.smartsalon.in/upload",formData,{
+        //     headers: {
+        //       'Authorization': `Bearer ${token}`
+        //     }
+        //   });
+          
+        //   if(response){
+        //     console.log("resp------->",response.data.data)
+        //     setImages((prevUrls) => [...prevUrls, response.data.data]);
+        //   }
+        // } catch (error) {
+        //   console.error('Error uploading image:', error);
+        // }
+      };
+
 
   const handleChange = (event) => {
     setStatus(event.target.value);
   };
+  const handleCancelImages=(index)=>{
+    images.splice(index,1);
+    setImages([...images]);
+    // handleSubmit()
+  }
     console.log("salon_id",salonId);
     React.useEffect(()=>{
         setMonth(months[currentMonth])
@@ -105,6 +155,23 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
           <EditStatusModal status={status} setStatus={setStatus} handleChange={handleChange}/>
           <Button variant='contained' onClick={handleApplyStatus}>Apply</Button>
           </div>
+          <input
+                      type="file"
+                      id="image"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="w-full px-3 py-2 border rounded-md"
+                    />
+          <div className='flex justify-evenly items-center flex-wrap w-full'>
+        {
+          parlorDetails?.images?.map((image,index)=>(
+            <div className='w-1/4 h-[150px] relative'>
+              <img src={image} alt="img" className='w-full h-full bg-cover'/>
+              <MdCancel className='absolute text-2xl text-black top-0 right-0 cursor-pointer' onClick={()=>handleCancelImages(index)}/>
+            </div>
+          ))
+        }
+        </div>
            <BasicPOTable headings={headings} rows={rows}/>
             
           </Box>

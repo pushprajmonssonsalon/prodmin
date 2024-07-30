@@ -36,9 +36,12 @@ const years = [
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const columns = [
+    { id: 'salonId', label: 'salonId' },
     { id: 'name', label: 'Name' },
     { id: 'location', label: 'Location' },
     { id: 'address', label: 'Address' },
+    { id: 'tradeName', label: 'tradeName' },
+  
     {
       id: 'invoice',
     //   label: 'Size\u00a0(km\u00b2)',
@@ -48,9 +51,7 @@ const years = [
     }
   ];
   
-  function createData(name,location,address, invoice,id) {
-    return { name,location,address, invoice,id };
-  }
+  
   useEffect(()=>{
     const fetchApi=async()=>{
       const parlors = await PARLOUR_DETAILS({page:page, limit:rowsPerPage});
@@ -103,9 +104,12 @@ const years = [
     }
   };
 
-  
+  function createData(salonId,name,location,address,tradeName, invoice) {
+    // console.log("getting table value",_id,name,location,address,id, invoice)
+    return {salonId, name,location,address,tradeName,invoice};
+  }
 
-   const rows = salonsDetails.map((salon)=> createData(salon.name,salon?.address2,salon?.address,(
+   const rows = salonsDetails.map((salon)=> createData(salon._id,salon.name,salon?.address2,salon?.address,salon?.trade,(
     (
       <>
         <FaFileUpload
@@ -121,6 +125,7 @@ const years = [
       </>
     )
    ),salon._id))
+    console.log("rows",rows)
    const uploadFileApiCall = async (formData,salonId) => {
     const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
     if(uploadPDF){

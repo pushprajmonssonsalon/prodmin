@@ -47,6 +47,7 @@ const years = [
   const columns = [
     { id: 'poId', label: 'PO Number' },
     { id: 'trade', label: 'Trade Name' },
+    { id: 'salonid', label: 'salonid' },
     { id: 'name', label: 'Category' },
     { id: 'location', label: 'Location' },
     { id: 'address', label: 'Address' },
@@ -57,8 +58,8 @@ const years = [
   
   ];
   console.log("salonsDetails",salonsDetails)
-  function createData(poId,trade,name,location,contactNum,address,status,createdAt,receivedAt,id) {
-    return { poId,trade,name,location,contactNum,address,status:getStatus(status),createdAt,receivedAt,id };
+  function createData(poId,trade,salonid,name,location,contactNum,address,status,createdAt,receivedAt,id) {
+    return { poId,trade,salonid,name,location,contactNum,address,status:getStatus(status),createdAt,receivedAt,id };
   }
   useEffect(()=>{
     const fetchApi=async()=>{
@@ -103,7 +104,7 @@ const years = [
   }
   // salon?.trade
   console.log("selected id",selectedSalonId)
-   const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.trade,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
+   const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.trade,salon?._id,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id));
    const handleStatusChange = (event) => {
     setStatus(event.target.value);
   };

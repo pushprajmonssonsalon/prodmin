@@ -41,8 +41,8 @@ export default function BasicPOTable({ headings, rows }) {
               <TableCell align="center">{row.orderedQuantity}</TableCell>
               <TableCell align="center">{row?.receivedQuantity}</TableCell>
               <TableCell align="center">{row.mrp*row.orderedQuantity}</TableCell>
-              <TableCell align="center">{row.orderedQuantity }{"%"}</TableCell>
-              <TableCell align="center">{row.mrp*row.orderedQuantity-10}</TableCell>
+              {/* <TableCell align="center">{row.orderedQuantity }{"%"}</TableCell> */}
+              {/* <TableCell align="center">{row.mrp*row.orderedQuantity-10}</TableCell> */}
             </TableRow>
           ))}
         </TableBody>

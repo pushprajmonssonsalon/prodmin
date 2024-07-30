@@ -21,7 +21,8 @@ export default function EditStatusModal({status,setStatus,handleChange}) {
           onChange={handleChange}
         >
           
-          <MenuItem value={4}>Accepted</MenuItem>
+          <MenuItem value={4}>Accepted</MenuItem>  
+          <MenuItem value={7}>Waiting For Payment</MenuItem>
           <MenuItem value={5}>Pacakging</MenuItem>
           <MenuItem value={6}>Dispatch</MenuItem>
         </Select>
