@@ -16,7 +16,15 @@ const PARLOUR_DETAILS=async(payload)=>{
     return response;
 }
 const PARLOUR_UPLOADSPDF=async(payload)=>{
+    console.log("payload",payload)
     const url = `${baseUrl}/uploadPdf`;
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response;
+}
+const PO_UPLOADSPDF=async(payload)=>{
+    console.log("payloadcoming",payload)
+    const url = `${baseUrl}/uploadPO`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"post",payload,authString);
     return response;
@@ -103,5 +111,6 @@ export {
     SINGLE_POORDER,
     UPDATE_EXCEL_FILE,
     CHANGE_PO_STATUS,
-    POORDERS_FILTER
+    POORDERS_FILTER,
+    PO_UPLOADSPDF
 }
