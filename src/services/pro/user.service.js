@@ -1,6 +1,6 @@
 import API_REQUEST from "../utils/axios.utils";
 
-const baseUrl = `https://prosaloncart.com`;
+const baseUrl = `https://crm.smartsalon.in`;
 // const baseUrl = `http://192.168.2.24:4001`;
 
 const PRO_LOGIN_USERS = async(payload)=>{

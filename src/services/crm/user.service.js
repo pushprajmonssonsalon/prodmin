@@ -1,7 +1,7 @@
 import API_REQUEST from "../utils/axios.utils";
 
-// const baseUrl = `https://crm.smartsalon.in`;
-const baseUrl = `http://192.168.2.30:4002`;
+const baseUrl = `https://crm.smartsalon.in`;
+// const baseUrl = `http://192.168.2.30:4002`;
 
 const LOGIN_USERS = async(payload)=>{
     const url =`${baseUrl}/parlor/login`;

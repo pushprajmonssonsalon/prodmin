@@ -217,7 +217,7 @@ const Settelment = () => {
       id: id,
     };
     const response = await axios.post(
-      "http://192.168.2.30:4002/finance/deletePOtrackimg",
+      "https://crm.smartsalon.in/finance/deletePOtrackimg",
       data,
       {
         headers: {
@@ -252,7 +252,7 @@ const Settelment = () => {
       // http://192.168.2.19:4002
       // https://crm.smartsalon.in
       const response = await axios.post(
-        "http://192.168.2.30:4002/uploadPO",
+        'https://crm.smartsalon.in/uploadPO',
         formData,
         {
           headers: {
