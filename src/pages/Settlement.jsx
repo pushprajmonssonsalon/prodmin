@@ -126,9 +126,10 @@ const Settelment = () => {
     { id: "status", label: "Status" },
     { id: "createdAt", label: "Ordered Date" },
     { id: "receivedAt", label: "Received Date" },
-    // {id:'pod',label:"pod"},
     { id: "pod", label: "pod" },
-    { id: "downInvoice", lable: "downInvoice" },
+    // { id: "downInvoice", lable: "downInvoice" },
+    { id: "downInvoice", label: "downInvoice" },
+
   ];
 
   const authString = localStorage.getItem("crmtoken");
@@ -237,20 +238,6 @@ const Settelment = () => {
     console.log("imageData------", imageData);
 
     try {
-      // const response = await fetch('http://192.168.2.19:4002/upload', {
-      //   method: 'POST',
-      //   body: formData,
-      // });
-
-      // if (response.ok) {
-      //   console.log("images link", response.data)
-      //   // alert('Image uploaded successfully');
-      //   setImageKey(imageData.name);
-      // } else {
-      //   alert('Failed to upload image');
-      // }
-      // http://192.168.2.19:4002
-      // https://crm.smartsalon.in
       const response = await axios.post(
         'https://crm.smartsalon.in/uploadPO',
         formData,

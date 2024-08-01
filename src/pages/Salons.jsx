@@ -35,7 +35,7 @@ const Salons = () => {
          page:page, 
          limit:rowsPerPage
           }
-         const parlors= await axios.post('https://crm.smartsalon.in/api/suggestionForParlors',data)
+         const parlors= await axios.post('https://smartsalon.in/api/suggestionForParlors',data)
          console.log("parlors---------",parlors)
           if(parlors){
             console.log("parlors",parlors)
