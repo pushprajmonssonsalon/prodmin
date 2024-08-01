@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { MdCancel } from "react-icons/md";
 import TopBar from "../components/commoncomponents/TopBar";
 import MonthPicker from "../components/commoncomponents/MonthPicker";
 import YearPicker from "../components/commoncomponents/YearPicker";
 import CustomTable from "../components/commoncomponents/Table";
-import { FaFileUpload } from "react-icons/fa";
+import { FaFileImage, FaFileUpload } from "react-icons/fa";
 import { MdEditSquare } from "react-icons/md";
 import {
   PARLOUR_DETAILS,
@@ -22,6 +22,7 @@ import EditStatusModal from "../components/commoncomponents/EditStatusModal";
 import SalonSelect from "../components/commoncomponents/SalonSelect";
 import StatusSelect from "../components/commoncomponents/StatusSelect";
 import axios from "axios";
+import { BsFileEarmarkImage } from "react-icons/bs";
 const Settelment = () => {
   const months = [
     "January",
@@ -90,6 +91,8 @@ const Settelment = () => {
     "2049",
     "2050",
   ];
+  const fileInputRef = useRef(null);
+
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const [salonsDetails, setSalonsDetails] = useState([]);
@@ -129,8 +132,8 @@ const Settelment = () => {
     { id: "pod", label: "pod" },
     // { id: "downInvoice", lable: "downInvoice" },
     { id: "downInvoice", label: "downInvoice" },
-
   ];
+  console.log("salondetails");
 
   const authString = localStorage.getItem("crmtoken");
   function createData(
@@ -145,8 +148,10 @@ const Settelment = () => {
     createdAt,
     receivedAt,
     id,
-    pod
+    pod,
+    invoiceImg
   ) {
+    // console.log(invoiceImg,"invoiceImg",pod)
     return {
       poId,
       trade,
@@ -160,6 +165,7 @@ const Settelment = () => {
       receivedAt,
       id,
       pod,
+      downInvoice: invoiceImg,
     };
   }
   useEffect(() => {
@@ -187,10 +193,31 @@ const Settelment = () => {
     salonType,
     status,
     imagefile,
+    
   ]);
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
+
+  const download = async(imageUrl) => {
+     // Create a new anchor element
+     const link = document.createElement('a');
+     link.href = imageUrl;
+     link.target="_blank"
+ 
+     // Set the download attribute with a filename
+     link.download = 'Invoice.jpg';
+ 
+     // Append the anchor to the document body
+     document.body.appendChild(link);
+ 
+     // Programmatically click the anchor to trigger the download
+     link.click();
+ 
+     // Remove the anchor from the document body
+     document.body.removeChild(link);
+  };
+
   function getStatus(statusCode) {
     switch (statusCode) {
       case 1:
@@ -209,23 +236,30 @@ const Settelment = () => {
         return "Unknown Status";
     }
   }
-  const handleFileUploadClick = (poId) => {
-    setUploadSalonId(poId);
-    document.getElementById(`fileInput-${poId}`).click();
-  };
+ 
   const handleCancelImages = async (id) => {
     const data = {
       id: id,
     };
-    const response = await axios.post(
-      "https://crm.smartsalon.in/finance/deletePOtrackimg",
-      data,
-      {
-        headers: {
-          Authorization: `Bearer ${authString}`,
-        },
-      }
-    );
+    try{
+      const response = await axios.post(
+        "https://crm.smartsalon.in/finance/deletePOtrackimg",
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${authString}`,
+          },
+        }
+      );
+     setImageFile(null)
+     if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+    }
+    catch{
+
+    }
+ 
   };
 
   const handleFileChange = async (e) => {
@@ -239,7 +273,7 @@ const Settelment = () => {
 
     try {
       const response = await axios.post(
-        'https://crm.smartsalon.in/uploadPO',
+        "https://crm.smartsalon.in/uploadPO",
         formData,
         {
           headers: {
@@ -261,7 +295,7 @@ const Settelment = () => {
             page,
             rowsPerPage,
           });
-          setSalonsDetails(parlors?.data);
+          // setSalonsDetails(parlors?.data);
           setTotalPO(parlors?.total);
         };
         fetchApi();
@@ -270,37 +304,8 @@ const Settelment = () => {
       console.error("Error uploading image:", error);
     }
   };
-  const uploadFileApiCall = async (formData, poId) => {
-    const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
-    if (uploadPDF) {
-      toast.success("File Uploaded");
-      setNewUpload(!newUpload);
-    } else {
-      toast.error("File not uploaded, Please try again!");
-    }
-  };
-  const handleFileUpload = async (file, poId) => {
-    if (file && poId) {
-      try {
-        const formData = new FormData();
-        formData.append("royaltypdf", file);
-        formData.append("salonId", poId);
-        // const selectedDate = new Date(Date.UTC(year, months.indexOf(month)));
-        // formData.append('uploadedDate', selectedDate.toISOString());
-
-        // Replace with your file upload API call
-        await uploadFileApiCall(formData, poId);
-
-        // Reset file input
-        setSelectedFile(null);
-        setUploadSalonId(null);
-
-        // Refresh the data or update UI accordingly
-      } catch (error) {
-        console.error("File upload failed", error);
-      }
-    }
-  };
+ 
+ 
 
   function formatDateToFull(dateString) {
     const date = new Date(dateString);
@@ -318,6 +323,7 @@ const Settelment = () => {
   const rows = salonsDetails?.map((salon) =>
     createData(
       salon?.poId,
+
       salon?.trade,
       salon?.salonId,
       salon?.name,
@@ -340,6 +346,9 @@ const Settelment = () => {
             type="file"
             id="image"
             accept="image/*"
+            className="mb-2"
+            ref={fileInputRef} // Add the ref here
+
             onChange={handleFileChange}
             // className="w-full px-3 py-2 border rounded-md"
           />
@@ -347,35 +356,73 @@ const Settelment = () => {
           {salonsDetails?.map((image, index) => {
             console.log("imagescoming", image);
             return (
-              salon?._id === image._id && (
+              salon?._id === image._id && salon?.trackImg &&(
                 <div
                   key={salon._id}
                   style={{
                     position: "relative",
-                    background:'whitsmoke',
-                     height: "120px", width: "120px" 
+                    background: "whitsmoke",
+                    height: "120px",
+                    width: "120px",
                   }}
                 >
                   {
                     <img
                       src={salon.trackImg}
+                      
                       alt="img"
-                      style={{height: "120px", width: "120px" }}
+                      style={{ height: "100px", width: "100px" }}
                     />
                   }
-                     <MdCancel
-                    className="absolute text-2xl text-black top-0 right-0 cursor-pointer"
+                  <MdCancel
+                    className="absolute text-2xl text-black -top-1 -right-2 cursor-pointer"
                     onClick={() => handleCancelImages(salon._id)}
                   />
-
-               
                 </div>
               )
             );
           })}
         </div>
       </>,
-      salon._id
+
+      <>
+        <div
+          onClick={() => {
+            setfileId(salon?._id);
+          }}
+        >
+          {salonsDetails?.map((item, index) => {
+            {/* console.log("imagescoming", item.invoiceImg); */}
+            return (
+              salon?._id === item?._id &&
+              item?.invoiceImg?.length > 0 && (
+                <div
+                  className="flex gap-2 flex-wrap"
+                  key={index}
+                  style={{
+                    position: "relative",
+                    background: "whitsmoke",
+                    height: "120px",
+                    width: "180px",
+                    overflowY:"auto"
+                  }}
+                >
+                  {item?.invoiceImg?.map((image, index) => {
+                  
+                    return (
+
+                      <BsFileEarmarkImage
+                      style={{height:"40%",width:"fit-content"}} className="" onClick={()=>download(image)}/>
+                   
+                    
+                    );
+                  })}
+                </div>
+              )
+            );
+          })}
+        </div>
+      </>
     )
   );
 
@@ -385,15 +432,11 @@ const Settelment = () => {
   const handleSalonTypeChange = (event) => {
     setSalonType(event.target.value);
   };
-  // const handleFileChange = (event, poId) => {
-  //   const file = event.target.files[0];
-  //   setSelectedFile(file);
-  //   setUploadSalonId(poId);
-  //   handleFileUpload(file, poId);
-  // };
+
 
   console.log("rows", rows);
   console.log("dates", startDate, endDate);
+  console.log(imagefile,"file")
   return (
     <Layout>
       <div className="w-full flex flex-col">

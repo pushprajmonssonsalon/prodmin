@@ -21,7 +21,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
   const handleDoubleFunction=(id)=>{
     // console.log("id---------",id)
     handleRowClick(id);
-    handleOpen();
+    // handleOpen();
   }
 
   return (
@@ -45,6 +45,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
           <TableBody>
             {rows
               ?.map((row) => {
+                console.log(rows,"rows")
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?.code} onClick={()=>handleDoubleFunction(row?.id)}>
                     {headings.map((column) => {
