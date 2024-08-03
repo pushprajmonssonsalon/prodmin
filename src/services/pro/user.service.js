@@ -51,6 +51,13 @@ const UPLOAD_PRODUCT=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response;
 }
+const CREATE_PRODUCT=async(payload)=>{
+    const url = `${baseUrl}/product/createProduct`;
+    const authString = localStorage.getItem("protoken");
+    console.log("protoken",authString)
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response;
+}
 const EDIT_PRODUCT_DETAILS=async(payload)=>{
     const url = `${baseUrl}/form/updateProductInfo`;
     const authString = localStorage.getItem("protoken");
@@ -81,6 +88,7 @@ export {
     SEARCH_PRODUCT,
     SINGLE_PRODUCT_DETAILS,
     UPLOAD_PRODUCT,
+    CREATE_PRODUCT,
     EDIT_PRODUCT_DETAILS,
     EDIT_ORDER_STATUS,
     EDIT_STOCK_QUANTITY

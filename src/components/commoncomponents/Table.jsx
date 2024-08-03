@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -25,8 +24,8 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
   }
 
   return (
-    <Paper className='overflow-hidden mt-10 '>
-      <TableContainer sx={{ maxHeight: 440 }}>
+    <Paper  sx={{width:"100%",maxWidth:1000,margin:"60px auto" }} className='overflow-hidden mt-10 '>
+      <TableContainer sx={{ maxHeight: 300 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

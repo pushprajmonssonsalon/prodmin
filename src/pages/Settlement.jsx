@@ -2,23 +2,12 @@ import React, { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { MdCancel } from "react-icons/md";
 import TopBar from "../components/commoncomponents/TopBar";
-import MonthPicker from "../components/commoncomponents/MonthPicker";
-import YearPicker from "../components/commoncomponents/YearPicker";
 import CustomTable from "../components/commoncomponents/Table";
-import { FaFileImage, FaFileUpload } from "react-icons/fa";
-import { MdEditSquare } from "react-icons/md";
-import {
-  PARLOUR_DETAILS,
-  PARLOUR_UPLOADSPDF,
-  POORDERS_FILTER,
-  POORDERS_TABLE,
-} from "../services/crm/user.service";
-import toast from "react-hot-toast";
+import { POORDERS_FILTER } from "../services/crm/user.service";
 import SettelmentModal from "../components/commoncomponents/SettelmentModal";
 import PickDate from "../components/commoncomponents/PickDate";
-import { Button, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import EndDate from "../components/commoncomponents/EndDate";
-import EditStatusModal from "../components/commoncomponents/EditStatusModal";
 import SalonSelect from "../components/commoncomponents/SalonSelect";
 import StatusSelect from "../components/commoncomponents/StatusSelect";
 import axios from "axios";
@@ -441,7 +430,11 @@ const Settelment = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="PO Orders" />
-        <div className="w-[80%] mx-auto flex justify-center items-center gap-4 mt-4 absolute z-20 top-20">
+        <div className="h-[calc(100vh-60px)]   overflow-auto">
+
+       
+       <div className="w-[80%] mx-auto">
+        <div className=" mx-auto flex justify-center items-center gap-4 mt-4 ">
           <div className="flex flex-col">
             <label className="text-black  text-lg font-medium font-serif">
               Start Date :
@@ -460,7 +453,7 @@ const Settelment = () => {
           </div>
           {/* <Button variant="contained" className='mt-8'>Search</Button> */}
         </div>
-        <div className="w-[90%] mx-auto flex justify-between items-center mt-32">
+        <div className=" mx-auto flex justify-between items-center mt-32">
           <TextField
             id="outlined-basic"
             label="search..."
@@ -480,7 +473,7 @@ const Settelment = () => {
             handleChange={handleStatusChange}
           />
         </div>
-        <div className="w-[90%] mx-auto">
+        <div className=" mx-auto">
           <CustomTable
             headings={columns}
             rows={rows}
@@ -493,9 +486,8 @@ const Settelment = () => {
             handleOpen={handleOpen}
           />
         </div>
-      </div>
-
-      {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
+        </div>
+            {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
       <SettelmentModal
         open={open}
         setOpen={setOpen}
@@ -504,6 +496,10 @@ const Settelment = () => {
         newUpload={newUpload}
         salonId={selectedSalonId}
       />
+      </div>
+
+  
+       </div>
     </Layout>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SidebarItem } from "./SideBar";
 import Sidebar from "./SideBar";
 import { HiOutlineShoppingCart } from "react-icons/hi";
@@ -14,7 +14,8 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname.substring(1); // get the current path without the leading "/"
   const [activeItem, setActiveItem] = useState(currentPath || "Dashboard");
-
+  console.log(currentPath,activeItem,"activeItem path")
+ 
   useEffect(() => {
     setActiveItem(currentPath || "Dashboard");
   }, [currentPath]);
@@ -27,7 +28,7 @@ const Layout = ({ children }) => {
   };
   const isAdminCrm = localStorage.getItem("isAdmin") === "crm";
   return (
-    <div className="bg-[#e7ecef] w-screen h-screen flex ">
+    <div className="bg-[#e7ecef] w-screen h-screen  flex">
       <Sidebar>
         {isAdminCrm ? (
           <>
@@ -81,6 +82,13 @@ const Layout = ({ children }) => {
               text="Edit Status"
               active={activeItem === "Edit"}
               onClick={() => handleItemClick("Edit")}
+            />
+
+            <SidebarItem
+              icon={<FaRegEdit size={20} />}
+              text="Add Product"
+              active={activeItem === "Add"}
+              onClick={() => handleItemClick("Add")}
             />
           </>
         )}

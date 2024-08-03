@@ -14,6 +14,7 @@ import Settelment from './pages/Settlement'
 import Json from './pages/Json'
 import Salons from './pages/Salons'
 import SingleSalon from './pages/SingleSalon'
+import AddProduct from './pages/AddProduct'
 const App = () => {
   return (
     <Routes>
@@ -28,6 +29,7 @@ const App = () => {
       <Route path='/orders' element={<PrivateRoute component={Orders} />} />
       <Route path='/products' element={<PrivateRoute component={Products} />} />
       <Route path='/edit' element={<PrivateRoute component={EditOrder} />} />
+      <Route path='/add' element={<PrivateRoute component={AddProduct} />} />
       <Route path='/product/:shortUrl' element={<PrivateRoute component={SingleProduct} />} />
       <Route path='/salon/:shortUrl' element={<PrivateRoute component={SingleSalon} />} />
     </Routes>

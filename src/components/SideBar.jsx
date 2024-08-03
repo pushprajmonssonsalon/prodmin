@@ -1,9 +1,8 @@
-import { RiMenuFold3Line2, RiMenuUnfold3Fill  } from "react-icons/ri";
-import { useContext, createContext, useState } from "react"
+import { RiMenuFold3Line2, RiMenuUnfold3Fill } from "react-icons/ri";
+import { useContext, createContext, useState } from "react";
 import CustomPopover from "./commoncomponents/PopOver";
-import ProLogo from '../assets/proLogo.png'
-import SmallProLogo from '../assets/smallPro.png'
-
+import ProLogo from '../assets/proLogo.png';
+import SmallProLogo from '../assets/smallPro.png';
 const SidebarContext = createContext()
 
 export default function Sidebar({ children }) {
@@ -58,6 +57,7 @@ export default function Sidebar({ children }) {
 
 export function SidebarItem({ icon, text, active, alert,onClick }) {
   const { expanded } = useContext(SidebarContext)
+  // console.log("expanded", expanded,text,active,alert,onClick)
   
   return (
     <li
