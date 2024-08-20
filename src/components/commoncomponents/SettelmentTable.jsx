@@ -7,11 +7,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
+import { useAppContext } from '../../services/context/AppContext';
 
 export default function SettelmentTable({ headings, rows }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+ const {expanded}=useAppContext();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -24,7 +25,12 @@ export default function SettelmentTable({ headings, rows }) {
   const highlightColumns = ['totalReceivable', 'totalPayables', 'totalTaxRecoverable', 'netRecoverable', 'netTransactionAmount', 'nettax', 'total'];
 
   return (
-    <Paper sx={{ width: '75vw', overflow: 'hidden' }}>
+    <Paper sx={{
+      maxWidth:expanded?'calc(100vw - 470px)':'calc(100vw - 220px)', // calculate width on large screens
+      
+      overflow: 'hidden',
+    }}
+>
       <TableContainer sx={{ maxHeight: 440 }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
@@ -37,7 +43,7 @@ export default function SettelmentTable({ headings, rows }) {
                   sx={{
                     textTransform: 'uppercase',
                     fontWeight: '700',
-                    backgroundColor: highlightColumns.includes(column.id.toString()) ? 'skyblue' : 'inherit',
+                    backgroundColor: highlightColumns.includes(column.id.toString()) ? 'skyblue' : 'white',
                   }}
                 >
                   {column.label}
@@ -74,7 +80,7 @@ export default function SettelmentTable({ headings, rows }) {
       <TablePagination
         rowsPerPageOptions={[10, 25, 50, 100]}
         component="div"
-        count={rows.length}
+        count={rows?.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

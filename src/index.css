@@ -19,5 +19,8 @@ code {
     monospace;
 }
 
+.react-datepicker-popper {
+  z-index: 3!important;
+}
 
 

@@ -3,11 +3,16 @@ import API_REQUEST from "../utils/axios.utils";
 const baseUrl = `https://crm.smartsalon.in`;
 // const baseUrl = `http://192.168.2.30:4002`;
 
-
+const baseUrl2=`https://app.smartsalon.in`
 const LOGIN_USERS = async(payload)=>{
-    const url =`${baseUrl}/parlor/login`;
+    const url =`${baseUrl}/admin/login`;
     console.log({payload});
     const response = await API_REQUEST(url,"post",payload)
+    return response;
+}
+const GET_BRANDS= async()=>{
+    const url =`${baseUrl}/user/getBrands`;
+    const response = await API_REQUEST(url,"get")
     return response;
 }
 const PARLOUR_DETAILS=async(payload)=>{
@@ -60,6 +65,32 @@ const CREATE_TABLE=async(payload)=>{
 //     const response = await API_REQUEST(url,"post",payload.data,authString);
 //     return response
 // }
+const UPLOAD_VIDEO=async(payload)=>{
+    const url =`${baseUrl2}/operation/uploadTrainingVideo`
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+const CREATE_VEDIO=async(payload)=>{
+    const url =`${baseUrl2}/operation/createVideo`
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+const UPLOAD_THUMBNAIL=async(payload)=>{
+    const url =`${baseUrl2}/operation/uploadThumbnail`
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+const EDIT_INVENTORY=async(payload)=>{
+    const url =`${baseUrl2}/operation/editInventoryProduct`;
+
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+
 const SINGLE_POORDER=async(payload)=>{
     const url = `${baseUrl}/finance/getSinglePurchaseOrderDetail`;
     const authString = localStorage.getItem("crmtoken");
@@ -68,6 +99,12 @@ const SINGLE_POORDER=async(payload)=>{
 }
 const UPDATE_EXCEL_FILE=async(payload)=>{
     const url = `${baseUrl}/finance/updateSettlement`;
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+const CREATE_BULK_PRODUCT=async(payload)=>{
+    const url = `${baseUrl}/operation/addProductToInventory`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
@@ -108,7 +145,12 @@ export {
     SINGLE_SALON_DETAILS,
     CREATE_TABLE,
     GET_TABLE,
-   
+    CREATE_BULK_PRODUCT,
+    GET_BRANDS,
+    UPLOAD_VIDEO,
+    CREATE_VEDIO,
+    EDIT_INVENTORY,
+    UPLOAD_THUMBNAIL,
     SINGLE_POORDER,
     UPDATE_EXCEL_FILE,
     CHANGE_PO_STATUS,

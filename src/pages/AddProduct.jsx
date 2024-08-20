@@ -94,7 +94,10 @@ const AddProduct = () => {
   };
 
   const handleSubmit = (e) => {
+   
     e.preventDefault();
+    const isEveryEmpty =Object.keys(formData).some((key)=>formData[key]===""||formData[key]===0)
+    if(isEveryEmpty) return toast.error("Please fill all the fields");
     (async () => {
       try {
         await CREATE_PRODUCT(formData);
@@ -124,7 +127,7 @@ const AddProduct = () => {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 p-16 h-[calc(100%-65px)] overflow-y-auto"
+          className="space-y-4 p-16 h-[calc(100vh-65px)] overflow-y-auto"
         >
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4 capitalize">
             {Object.keys(formData).map((key) =>
@@ -143,7 +146,7 @@ const AddProduct = () => {
                     name={key}
                     value={formData[key]}
                     onChange={handleChange}
-                    className="border border-gray-300 p-2 rounded-md"
+                    className="border border-gray-300 outline-none focus:ring-2 p-2 rounded-md"
                   />
                 </div>
               )  : key === "type" ? (

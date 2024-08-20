@@ -1,7 +1,6 @@
-import React from 'react'
-import Layout from '../components/Layout'
-import TopBar from '../components/commoncomponents/TopBar'
-import CustomCard from '../components/commoncomponents/Card'
+import Layout from '../components/Layout';
+import TopBar from '../components/commoncomponents/TopBar';
+import CustomCard from '../components/commoncomponents/Card';
 import { BsCartCheckFill } from "react-icons/bs";
 import { ImStatsBars2 } from "react-icons/im";
 import { TfiStatsUp } from "react-icons/tfi";
@@ -11,7 +10,7 @@ const Dashboard = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Dashboard"/>
-      <div className='w-[90%] mx-auto my-10 flex justify-between items-center'>
+      <div className='w-[90%] h-[calc(100vh-65px)] overflow-y-auto mx-auto my-10 flex justify-between items-center'>
         <CustomCard icon={<BsCartCheckFill />} title="Today's Orders" price="1000" bg="#8338ec"/>
         <CustomCard icon={<HiShoppingBag />} title="Total Orders" price="1000" bg="#a2d2ff"/>
         <CustomCard icon={<ImStatsBars2 />} title="Today's Revenues" price="1000" bg="#ffbe0b"/>

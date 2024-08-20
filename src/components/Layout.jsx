@@ -3,11 +3,11 @@ import { SidebarItem } from "./SideBar";
 import Sidebar from "./SideBar";
 import { HiOutlineShoppingCart } from "react-icons/hi";
 import { useLocation, useNavigate } from "react-router-dom";
-import { IoStatsChartOutline } from "react-icons/io5";
-import { MdOutlineFavoriteBorder } from "react-icons/md";
-import { FaFileInvoiceDollar } from "react-icons/fa6";
+import { MdCreate } from "react-icons/md";
 import { FaRegEdit } from "react-icons/fa";
-import { TbShoppingCartFilled } from "react-icons/tb";
+import { crmroles } from "../services/utils/roles";
+import { BsBoxes } from "react-icons/bs";
+import { GrDeliver } from "react-icons/gr";
 
 const Layout = ({ children }) => {
   const navigate = useNavigate();
@@ -27,35 +27,23 @@ const Layout = ({ children }) => {
     }
   };
   const isAdminCrm = localStorage.getItem("isAdmin") === "crm";
+  const activeRole =localStorage.getItem("role")||"admin";
   return (
     <div className="bg-[#e7ecef] w-screen h-screen  flex">
-      <Sidebar>
+      <Sidebar >
         {isAdminCrm ? (
           <>
+           
+          {crmroles[activeRole]?.map((item,index)=>(
             <SidebarItem
-              icon={<IoStatsChartOutline size={20} />}
-              text="Invoices"
-              active={activeItem === "dash-board"}
-              onClick={() => handleItemClick("dash-board")}
+              icon={item.icon}
+              text={item.text} 
+              active={activeItem === item.activeItem}
+              onClick={() => handleItemClick(item.activeItem)}
             />
-            <SidebarItem
-              icon={<FaFileInvoiceDollar size={20} />}
-              text="Settelment" 
-              active={activeItem === "Settelment"}
-              onClick={() => handleItemClick("Settelment")}
-            />
-            <SidebarItem
-              icon={<TbShoppingCartFilled size={20} />}
-              text="PO Orders" 
-              active={activeItem === "poorders"}
-              onClick={() => handleItemClick("poorders")}
-            />
-            <SidebarItem
-              icon={<TbShoppingCartFilled size={20} />}
-              text="Salon Details" 
-              active={activeItem === "salondet"}
-              onClick={() => handleItemClick("salondet")}
-            />
+          ))} 
+           
+         
           </>
         ) : (
           <>
@@ -66,13 +54,13 @@ const Layout = ({ children }) => {
               onClick={() => handleItemClick("Dashboard")}
             /> */}
             <SidebarItem
-              icon={<HiOutlineShoppingCart size={20} />}
+              icon={<GrDeliver size={20} />}
               text="Orders"
               active={activeItem === "Orders"}
               onClick={() => handleItemClick("Orders")}
             />
             <SidebarItem
-              icon={<MdOutlineFavoriteBorder size={20} />}
+              icon={<BsBoxes size={20} />}
               text="Products"
               active={activeItem === "Products"}
               onClick={() => handleItemClick("Products")}
@@ -85,7 +73,7 @@ const Layout = ({ children }) => {
             />
 
             <SidebarItem
-              icon={<FaRegEdit size={20} />}
+              icon={<MdCreate size={20} />}
               text="Add Product"
               active={activeItem === "Add"}
               onClick={() => handleItemClick("Add")}

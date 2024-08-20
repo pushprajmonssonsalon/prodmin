@@ -1,15 +1,16 @@
 import { RiMenuFold3Line2, RiMenuUnfold3Fill } from "react-icons/ri";
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext } from "react";
 import CustomPopover from "./commoncomponents/PopOver";
 import ProLogo from '../assets/proLogo.png';
 import SmallProLogo from '../assets/smallPro.png';
+import { useAppContext } from "../services/context/AppContext";
 const SidebarContext = createContext()
 
 export default function Sidebar({ children }) {
-  const [expanded, setExpanded] = useState(true);
+  const {expanded, setExpanded} = useAppContext();
   
   return (
-    <aside className="h-screen">
+    <aside className="h-screen sidebar">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
@@ -64,11 +65,11 @@ export function SidebarItem({ icon, text, active, alert,onClick }) {
       onClick={onClick}
       className={`
         relative flex items-center py-2 px-3 my-1
-        font-medium rounded-md cursor-pointer
-        transition-colors group
+        font-medium h-[40px]  rounded-md cursor-pointer
+        transition-all ease-in duration-100 delay-75 group
         ${
           active
-            ? "bg-gradient-to-tr from-indigo-200 to-indigo-100 text-indigo-800"
+            ? "bg-gradient-to-tr  from-indigo-200 to-indigo-100 text-indigo-800"
             : "hover:bg-indigo-50 text-gray-600"
         }
     `}

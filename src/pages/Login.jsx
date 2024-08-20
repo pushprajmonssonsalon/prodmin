@@ -11,13 +11,16 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const navigate = useNavigate();
   const isAdminCrm = localStorage.getItem('isAdmin') === 'crm';
-  
+
+
   const handleLogin=async(e)=>{
     e.preventDefault();
     if(isAdminCrm){
       const user = await LOGIN_USERS({userName,password});
       if(user){
-        localStorage.setItem('crmtoken',user)
+        localStorage.setItem('crmtoken',user.token)
+        console.log(typeof user.role)
+        localStorage.setItem('role',user.role==="1"?"admin":user.role==="2"?"finance":"operations")
         navigate("/dash-board")
       }else{
         console.log("crm logins erorrs")

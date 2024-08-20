@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
 import InputTextArea from "../components/commoncomponents/InputTextArea";
@@ -38,6 +38,7 @@ const EditOrder = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="Edit Status" />
+        <div className="h-[calc(100vh-65px)] overflow-y-auto">
         <div className="w-[90%] mx-auto flex items-center">
           <div className="w-[60%] mx-auto my-5">
             <InputTextArea label="Enter id's" value={ids} setProperty={setIds} />
@@ -82,6 +83,7 @@ const EditOrder = () => {
           <div>
             <Button variant="contained" onClick={handleQuantityStatus}>Submit</Button>
           </div>
+        </div>
         </div>
       </div>
     </Layout>

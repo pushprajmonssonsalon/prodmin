@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
 import InputTextArea from "../components/commoncomponents/InputTextArea";
@@ -24,15 +24,16 @@ const Products = () => {
     navigate(`/product/${item}`);
   };
   console.log("products", selectedProduct);
-  const handleAddProduct = () => {
-    navigate("/Add");
-  };
+  
 
   return (
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="Products" />
       </div>
+      <div className="h-[calc(100vh-65px)] overflow-y-auto">
+
+     
       <div className="w-[50%] flex gap-12 my-4 mx-auto relative">
         <InputTextArea
           placeholder="Enter Product..."
@@ -40,11 +41,7 @@ const Products = () => {
           value={name}
           setProperty={setName}
         />
-        <div className="">
-          <button onClick={handleAddProduct} className="bg-black rounded-md whitespace-nowrap font-medium text-xl py-2 px-6 h-full text-white">
-            Add Product
-          </button>
-        </div>
+      
         {name && (
           <div className="bg-white absolute top-16 w-full h-[150px] shadow-2xl overflow-auto">
             {product?.map((item) => (
@@ -57,6 +54,8 @@ const Products = () => {
             ))}
           </div>
         )}
+      </div>
+      
       </div>
     </Layout>
   );

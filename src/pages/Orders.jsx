@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import Layout from '../components/Layout'
-import TopBar from '../components/commoncomponents/TopBar'
-import CustomTable from '../components/commoncomponents/Table'
+import React, { useEffect, useState } from 'react';
+import Layout from '../components/Layout';
+import TopBar from '../components/commoncomponents/TopBar';
+import CustomTable from '../components/commoncomponents/Table';
 import DatePicker from '../components/commoncomponents/DatePicker';
 import { Button } from '@mui/material';
 import { ORDERS_DETAILS, ORDERS_DETAILS_FOR_EXCEL, SINGLE_ORDERS_DETAILS } from '../services/pro/user.service';
@@ -147,6 +147,7 @@ const Orders = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Orders"/>
+      <div className='h-[calc(100vh-65px)] overflow-y-auto'>
       <div className='w-[90%] mx-auto flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           <DatePicker  date={date} setDate={setDate}/>
@@ -157,6 +158,7 @@ const Orders = () => {
       <div className='w-[90%] mx-auto'>
         <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
+    </div>
     </div>
     <OrderModal open={open} setOpen={setOpen} data={singleOrdersDetails} handleOpen={handleOpen} handleClose={handleClose}/>
     </Layout>

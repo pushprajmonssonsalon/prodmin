@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -433,11 +433,15 @@ const Json = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="Settelment" />
-        <div className="w-[90%] mx-auto flex justify-between items-center">
-          <div className="flex items-center gap-x-3">
-            <MonthPicker months={months} month={month} setMonth={setMonth} />
-            <YearPicker years={years} year={year} setYear={setYear} />
-            <input
+        <div className="w-full h-[calc(100vh-65px)] p-9 md:p-16 overflow-y-auto">
+        <div className="w-full flex justify-between items-center">
+          <div className="flex flex-wrap items-center gap-x-3">
+          <div className="flex">
+          <MonthPicker months={months} month={month} setMonth={setMonth} />
+          <YearPicker years={years} year={year} setYear={setYear} />
+          </div>
+          <div className="flex gap-3">
+          <input
               accept=".xlsx, .xls"
               style={{ display: "none" }}
               id="contained-button-file"
@@ -460,9 +464,13 @@ const Json = () => {
               </Button>
             </label>
           </div>
+           
+         
+          </div>
         </div>
-        <div className="mt-10 w-[90%] mx-auto">
+        <div className="mt-10 mx-auto">
           <SettelmentTable headings={columns} rows={rows} />
+        </div>
         </div>
       </div>
     </Layout>

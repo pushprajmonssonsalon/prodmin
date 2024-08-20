@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import TopBar from '../components/commoncomponents/TopBar';
 import CustomTable from '../components/commoncomponents/Table';
-import { PARLOUR_DETAILS } from '../services/crm/user.service';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
@@ -59,6 +58,7 @@ const Salons = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Salons"/>
+      <div className='h-[calc(100vh-65px)] overflow-y-auto'>
       <div className='w-[90%] mx-auto flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           {/* <Drawers />  */}
@@ -67,6 +67,7 @@ const Salons = () => {
       <div className='w-[90%] mx-auto'>
         <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
         {/* rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders} handleRowClick={handleRowClick}/> */}
+      </div>
       </div>
     </div>
     </Layout>

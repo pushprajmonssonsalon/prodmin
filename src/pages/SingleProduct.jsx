@@ -9,10 +9,12 @@ import {
 import { useParams } from "react-router-dom";
 import { ImCross } from "react-icons/im";
 import toast from "react-hot-toast";
+import useImageUploader from "../services/utils/useImageUploader";
 
 const SingleProduct = () => {
   const params = useParams();
   const [stockQuantity, setStockQuantity] = useState(null);
+  const { compressFile } = useImageUploader();
   const [productDetails, setProductDetails] = useState({
     name: "",
     price: 0,
@@ -123,38 +125,48 @@ const SingleProduct = () => {
   }, [params.shortUrl]);
 
   const handleImageUpload = async (event) => {
-    const files = event.target.files[0];
-    const formData = new FormData();
-    formData.append("image", files);
-    formData.append("productId", productDetails?._id);
-
-    try {
-      const uploadImage = await UPLOAD_PRODUCT(formData);
-      if (uploadImage) {
-        console.log("uploadImage", uploadImage);
-        setNewImages((prevImages) => [...prevImages, uploadImage]);
-        toast.success("Successfully updated!");
+    const file = event.target.files[0];
+    
+    const newFile = await compressFile(file);
+    console.log("newFile", newFile,"oldfile",file)
+    if (newFile) {
+      const formData = new FormData();
+      formData.append("image", newFile);
+      formData.append("productId", productDetails?._id);
+      try {
+        const uploadImage = await UPLOAD_PRODUCT(formData);
+        if (uploadImage) {
+          console.log("uploadImage", uploadImage);
+          setNewImages((prevImages) => [...prevImages, uploadImage]);
+          toast.success("Successfully updated!");
+        }
+      } catch (error) {
+        console.error("Failed to upload images:", error);
       }
-    } catch (error) {
-      console.error("Failed to upload images:", error);
     }
   };
 
   const handleDesImageUpload = async (event) => {
     const files = event.target.files[0];
-    const formData = new FormData();
-    formData.append("image", files);
-    formData.append("productId", productDetails?._id);
-
-    try {
-      const uploadImage = await UPLOAD_PRODUCT(formData);
-      if (uploadImage) {
-        console.log("uploadImage", uploadImage);
-        setNewDesImages((prevImages) => [...prevImages, uploadImage]);
+    const newFile = await compressFile(files);
+    if (newFile) {
+      const formData = new FormData();
+      formData.append("image", newFile);
+      formData.append("productId", productDetails?._id);
+      try {
+        const uploadImage = await UPLOAD_PRODUCT(formData);
+        if (uploadImage) {
+          console.log("uploadImage", uploadImage);
+          setNewDesImages((prevImages) => [...prevImages, uploadImage]);
+          toast.success("Successfully updated!");
+        }
+      } catch (error) {
+        console.error("Failed to upload images:", error);
       }
-    } catch (error) {
-      console.error("Failed to upload images:", error);
     }
+   
+
+    
   };
 
   const handleRemoveImage = (index, type) => {
@@ -224,7 +236,7 @@ const SingleProduct = () => {
 
       <form
         onSubmit={handleSubmitDetails}
-        className="space-y-4 p-16 h-[calc(100%-65px)] overflow-x-hidden overflow-y-auto"
+        className="space-y-4 p-16 h-[calc(100vh-65px)] overflow-x-hidden overflow-y-auto"
       >
         <div className="grid grid-cols-1 md:grid-cols-2  gap-4 capitalize">
           {Object.keys(inputLabels).map((key) =>

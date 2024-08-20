@@ -430,11 +430,11 @@ const Settelment = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="PO Orders" />
-        <div className="h-[calc(100vh-60px)]   overflow-auto">
+        <div className="px-9 h-[calc(100vh-65px)] overflow-y-auto">
 
        
-       <div className="w-[80%] mx-auto">
-        <div className=" mx-auto flex justify-center items-center gap-4 mt-4 ">
+       <div className="w-[100%] mx-auto">
+        <div className=" mx-auto flex items-center justify-center  gap-4 mt-4 ">
           <div className="flex flex-col">
             <label className="text-black  text-lg font-medium font-serif">
               Start Date :
@@ -453,7 +453,7 @@ const Settelment = () => {
           </div>
           {/* <Button variant="contained" className='mt-8'>Search</Button> */}
         </div>
-        <div className=" mx-auto flex justify-between items-center mt-32">
+        <div className="mt-6 mx-auto flex flex-wrap justify-center gap-5 items-center ">
           <TextField
             id="outlined-basic"
             label="search..."
@@ -475,6 +475,7 @@ const Settelment = () => {
         </div>
         <div className=" mx-auto">
           <CustomTable
+            settelment={true}
             headings={columns}
             rows={rows}
             page={page}
@@ -488,7 +489,12 @@ const Settelment = () => {
         </div>
         </div>
             {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
-      <SettelmentModal
+   
+      </div>
+
+    
+       </div>
+       <SettelmentModal
         open={open}
         setOpen={setOpen}
         handleOpen={handleOpen}
@@ -496,10 +502,6 @@ const Settelment = () => {
         newUpload={newUpload}
         salonId={selectedSalonId}
       />
-      </div>
-
-  
-       </div>
     </Layout>
   );
 };
