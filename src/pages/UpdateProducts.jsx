@@ -86,7 +86,7 @@ const UpdateProducts = () => {
 
           // Convert CSV to JSON
           const jsonData = csvToJson(text);
-          const res = await EDIT_INVENTORY(jsonData);
+          const res = await EDIT_INVENTORY({products:jsonData});
           if(res){
             toast.success("File uploaded")
 

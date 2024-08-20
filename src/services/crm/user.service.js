@@ -1,6 +1,7 @@
 import API_REQUEST from "../utils/axios.utils";
 
 const baseUrl = `https://crm.smartsalon.in`;
+// const baseUrl = `http://192.168.2.215:8000`;
 // const baseUrl = `http://192.168.2.30:4002`;
 
 const baseUrl2=`https://app.smartsalon.in`
@@ -104,7 +105,7 @@ const UPDATE_EXCEL_FILE=async(payload)=>{
     return response
 }
 const CREATE_BULK_PRODUCT=async(payload)=>{
-    const url = `${baseUrl}/operation/addProductToInventory`;
+    const url = `${baseUrl2}/operation/addProductToInventory`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
