@@ -20,8 +20,9 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  const handleDoubleFunction=(id,col)=>{
-    console.log(col,"column")
+  const handleDoubleFunction=(row,col)=>{
+    const id = row?.salonId||row?.id;
+    console.log(col,col.id,"column",id)
     // console.log("id---------",id)
     handleRowClick(id);
     if(allowedcols.includes(col.id))handleOpen();
@@ -60,7 +61,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
                     {headings.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align} sx={{cursor:"pointer"}}  onClick={()=>handleDoubleFunction(row?.id,column)}>
+                        <TableCell key={column.id} align={column.align} sx={{cursor:"pointer"}}  onClick={()=>handleDoubleFunction(row,column)}>
                           {isValidElement(value) 
                             ? <div style={{ display: 'flex', justifyContent: column.align === 'right' ? 'flex-end' : 'flex-start' }}>
                                 {value}
@@ -92,4 +93,4 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
   );
 }
 
-const allowedcols =["poId","trade"]
+const allowedcols =["poId","trade","salonId","name"]

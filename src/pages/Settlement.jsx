@@ -182,29 +182,28 @@ const Settelment = () => {
     salonType,
     status,
     imagefile,
-    
   ]);
   const handleRowClick = (salonId) => {
     setSelectedSalonId(salonId);
   };
 
-  const download = async(imageUrl) => {
-     // Create a new anchor element
-     const link = document.createElement('a');
-     link.href = imageUrl;
-     link.target="_blank"
- 
-     // Set the download attribute with a filename
-     link.download = 'Invoice.jpg';
- 
-     // Append the anchor to the document body
-     document.body.appendChild(link);
- 
-     // Programmatically click the anchor to trigger the download
-     link.click();
- 
-     // Remove the anchor from the document body
-     document.body.removeChild(link);
+  const download = async (imageUrl) => {
+    // Create a new anchor element
+    const link = document.createElement("a");
+    link.href = imageUrl;
+    link.target = "_blank";
+
+    // Set the download attribute with a filename
+    link.download = "Invoice.jpg";
+
+    // Append the anchor to the document body
+    document.body.appendChild(link);
+
+    // Programmatically click the anchor to trigger the download
+    link.click();
+
+    // Remove the anchor from the document body
+    document.body.removeChild(link);
   };
 
   function getStatus(statusCode) {
@@ -221,16 +220,18 @@ const Settelment = () => {
         return "Packaging";
       case 6:
         return "Dispatch";
+      case 7:
+        return "Waiting For Payment";
       default:
         return "Unknown Status";
     }
   }
- 
+
   const handleCancelImages = async (id) => {
     const data = {
       id: id,
     };
-    try{
+    try {
       const response = await axios.post(
         "https://crm.smartsalon.in/finance/deletePOtrackimg",
         data,
@@ -240,15 +241,11 @@ const Settelment = () => {
           },
         }
       );
-     setImageFile(null)
-     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-    }
-    catch{
-
-    }
- 
+      setImageFile(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    } catch {}
   };
 
   const handleFileChange = async (e) => {
@@ -293,16 +290,36 @@ const Settelment = () => {
       console.error("Error uploading image:", error);
     }
   };
- 
- 
 
   function formatDateToFull(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "short", // 'short' will give abbreviated month names like 'May', 'Jun'
-      year: "numeric",
-    });
+    // Split the date part from the time part
+    if(dateString){
+
+    
+    const [year, month, day] = dateString?.split("T")[0].split("-");
+    console.log(year,month,day,"datestr")
+    // Convert month from "08" to "Aug" or any other short form
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthShort = monthNames[parseInt(month, 10) - 1];
+
+    // Format the date as "7 Aug 2024"
+    const formattedDate = `${parseInt(day, 10)} ${monthShort} ${year}`;
+    return formattedDate;
+  }
+  return dateString;
   }
 
   // salon?.trade
@@ -321,7 +338,7 @@ const Settelment = () => {
       salon?.address,
       salon?.status,
       formatDateToFull(salon?.createdAt),
-      salon?.receivedAt,
+      formatDateToFull(salon?.receivedDate),
       salon?._id,
 
       // salon?.trackImg
@@ -337,7 +354,6 @@ const Settelment = () => {
             accept="image/*"
             className="mb-2"
             ref={fileInputRef} // Add the ref here
-
             onChange={handleFileChange}
             // className="w-full px-3 py-2 border rounded-md"
           />
@@ -345,7 +361,8 @@ const Settelment = () => {
           {salonsDetails?.map((image, index) => {
             console.log("imagescoming", image);
             return (
-              salon?._id === image._id && salon?.trackImg &&(
+              salon?._id === image._id &&
+              salon?.trackImg && (
                 <div
                   key={salon._id}
                   style={{
@@ -358,7 +375,6 @@ const Settelment = () => {
                   {
                     <img
                       src={salon.trackImg}
-                      
                       alt="img"
                       style={{ height: "100px", width: "100px" }}
                     />
@@ -381,7 +397,9 @@ const Settelment = () => {
           }}
         >
           {salonsDetails?.map((item, index) => {
-            {/* console.log("imagescoming", item.invoiceImg); */}
+            {
+              /* console.log("imagescoming", item.invoiceImg); */
+            }
             return (
               salon?._id === item?._id &&
               item?.invoiceImg?.length > 0 && (
@@ -393,17 +411,16 @@ const Settelment = () => {
                     background: "whitsmoke",
                     height: "120px",
                     width: "180px",
-                    overflowY:"auto"
+                    overflowY: "auto",
                   }}
                 >
                   {item?.invoiceImg?.map((image, index) => {
-                  
                     return (
-
                       <BsFileEarmarkImage
-                      style={{height:"40%",width:"fit-content"}} className="" onClick={()=>download(image)}/>
-                   
-                    
+                        style={{ height: "40%", width: "fit-content" }}
+                        className=""
+                        onClick={() => download(image)}
+                      />
                     );
                   })}
                 </div>
@@ -422,79 +439,73 @@ const Settelment = () => {
     setSalonType(event.target.value);
   };
 
-
   console.log("rows", rows);
   console.log("dates", startDate, endDate);
-  console.log(imagefile,"file")
+  console.log(imagefile, "file");
   return (
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="PO Orders" />
         <div className="px-9 h-[calc(100vh-65px)] overflow-y-auto">
-
-       
-       <div className="w-[100%] mx-auto">
-        <div className=" mx-auto flex items-center justify-center  gap-4 mt-4 ">
-          <div className="flex flex-col">
-            <label className="text-black  text-lg font-medium font-serif">
-              Start Date :
-            </label>
-            <PickDate datte={startDate} setDatte={setStartDate} />
+          <div className="w-[100%] mx-auto">
+            <div className=" mx-auto flex items-center justify-center  gap-4 mt-4 ">
+              <div className="flex flex-col">
+                <label className="text-black  text-lg font-medium font-serif">
+                  Start Date :
+                </label>
+                <PickDate datte={startDate} setDatte={setStartDate} />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-black  text-lg font-medium font-serif">
+                  End Date :
+                </label>
+                <EndDate
+                  datte={endDate}
+                  setDatte={setEndDate}
+                  startDate={startDate}
+                />
+              </div>
+              {/* <Button variant="contained" className='mt-8'>Search</Button> */}
+            </div>
+            <div className="mt-6 mx-auto flex flex-wrap justify-center gap-5 items-center ">
+              <TextField
+                id="outlined-basic"
+                label="search..."
+                variant="outlined"
+                className="w-[350px]"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <SalonSelect
+                value={salonType}
+                setValue={setSalonType}
+                handleChange={handleSalonTypeChange}
+              />
+              <StatusSelect
+                value={status}
+                setValue={setStatus}
+                handleChange={handleStatusChange}
+              />
+            </div>
+            <div className=" mx-auto">
+              <CustomTable
+                settelment={true}
+                headings={columns}
+                rows={rows}
+                page={page}
+                setPage={setPage}
+                rowsPerPage={rowsPerPage}
+                setRowsPerPage={setRowsPerPage}
+                totalOrders={totalPO}
+                handleRowClick={handleRowClick}
+                handleOpen={handleOpen}
+              />
+            </div>
           </div>
-          <div className="flex flex-col">
-            <label className="text-black  text-lg font-medium font-serif">
-              End Date :
-            </label>
-            <EndDate
-              datte={endDate}
-              setDatte={setEndDate}
-              startDate={startDate}
-            />
-          </div>
-          {/* <Button variant="contained" className='mt-8'>Search</Button> */}
+          {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
         </div>
-        <div className="mt-6 mx-auto flex flex-wrap justify-center gap-5 items-center ">
-          <TextField
-            id="outlined-basic"
-            label="search..."
-            variant="outlined"
-            className="w-[350px]"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <SalonSelect
-            value={salonType}
-            setValue={setSalonType}
-            handleChange={handleSalonTypeChange}
-          />
-          <StatusSelect
-            value={status}
-            setValue={setStatus}
-            handleChange={handleStatusChange}
-          />
-        </div>
-        <div className=" mx-auto">
-          <CustomTable
-            settelment={true}
-            headings={columns}
-            rows={rows}
-            page={page}
-            setPage={setPage}
-            rowsPerPage={rowsPerPage}
-            setRowsPerPage={setRowsPerPage}
-            totalOrders={totalPO}
-            handleRowClick={handleRowClick}
-            handleOpen={handleOpen}
-          />
-        </div>
-        </div>
-            {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
-   
       </div>
-
-    
-       </div>
-       <SettelmentModal
+      <SettelmentModal
         open={open}
         setOpen={setOpen}
         handleOpen={handleOpen}

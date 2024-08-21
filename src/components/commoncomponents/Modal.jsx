@@ -3,20 +3,21 @@ import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
 import { SINGLE_PARLOUR_DETAILS } from '../../services/crm/user.service';
 import MonthPicker from './MonthPicker';
 import YearPicker from './YearPicker';
 import BasicTable from './BasicTable';
 import { FaFileUpload } from 'react-icons/fa';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '35%',
+  width: 'auto',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -35,14 +36,17 @@ const years = [
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
 export default function TransitionsModal({open,setOpen,handleOpen,handleClose,newUpload,salonId}) {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  style.width = isMobile?"80%":"auto";
+
     const headings = ["File Name", "Uploaded PDF","Uploaded Date"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
-      console.log("current month", currentMonth)
       const [month, setMonth] = React.useState();
       const [year, setYear] = React.useState();
       const [selectedParlorDetail,setSelectedParlorDetail] =React.useState([]);
-    console.log("selected id",salonId);
+    // console.log("selected id",salonId);
     React.useEffect(()=>{
         setMonth(months[currentMonth])
         setYear(currentYear.toString())
@@ -64,8 +68,9 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
     function createData(name, url,date) {
         return { name, url,date };
       }
-      const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>,item?.uploadedDate))
-    console.log("single parlour", selectedParlorDetail)
+      const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>,item?.createdAt))
+    // console.log("single parlour", selectedParlorDetail)
+    console.log(salonId,'rows')
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}

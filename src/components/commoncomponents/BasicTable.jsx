@@ -1,4 +1,3 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -9,12 +8,31 @@ import Paper from "@mui/material/Paper";
 
 export default function BasicTable({ headings, rows }) {
   function formatDateToFull(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'short', // 'short' will give abbreviated month names like 'May', 'Jun'
-      year: 'numeric'
-    });
+    if (dateString) {
+      const [year, month, day] = dateString?.split("T")[0].split("-");
+      console.log(year, month, day, "datestr");
+      // Convert month from "08" to "Aug" or any other short form
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const monthShort = monthNames[parseInt(month, 10) - 1];
+
+      // Format the date as "7 Aug 2024"
+      const formattedDate = `${parseInt(day, 10)} ${monthShort} ${year}`;
+      return formattedDate;
+    }
+    return dateString;
   }
   return (
     <TableContainer component={Paper}>

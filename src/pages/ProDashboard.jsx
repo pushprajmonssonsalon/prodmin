@@ -66,6 +66,7 @@ const years = [
     fetchApi()
   },[page,rowsPerPage])
   const handleRowClick = (salonId) => {
+    console.log(salonId,"salonid")
     setSelectedSalonId(salonId);
   };
   const handleFileUploadClick = (salonId) => {

@@ -22,7 +22,7 @@ export default function StatusSelect({value,setValue,handleChange}) {
           
           <MenuItem value={1}>Placed</MenuItem>
           <MenuItem value={2}>Received/Delivered</MenuItem>
-          <MenuItem value={2}>Canceled</MenuItem>
+          <MenuItem value={3}>Canceled</MenuItem>
           <MenuItem value={4}>Accepted</MenuItem>
           <MenuItem value={5}>Pacakging</MenuItem>
           <MenuItem value={6}>Dispatch</MenuItem>
