@@ -13,7 +13,7 @@ export default function MonthPicker({months,month,setMonth}) {
 
   return (
     <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+      <FormControl variant="standard" sx={{ m: 1,minWidth:150}}>
         <InputLabel id="demo-simple-select-standard-label">Months</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"

@@ -1,4 +1,3 @@
-import * as React from 'react';
 // import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -13,7 +12,7 @@ export default function YearPicker({years,year,setYear}) {
 
   return (
     <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 200 }}>
+      <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
         <InputLabel id="demo-simple-select-standard-label">Years</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"

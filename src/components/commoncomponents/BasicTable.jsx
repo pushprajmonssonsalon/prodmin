@@ -34,8 +34,9 @@ export default function BasicTable({ headings, rows }) {
     }
     return dateString;
   }
+  console.log(rows,"rows")
   return (
-    <TableContainer component={Paper}>
+    <TableContainer sx={{maxHeight:'calc(100vh - 200px)',overflowX:"auto"}} component={Paper}>
       <Table sx={{ minWidth: 350 }} aria-label="simple table">
         <TableHead>
           <TableRow>
@@ -45,13 +46,13 @@ export default function BasicTable({ headings, rows }) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {rows?.map((row,index) => (
             <TableRow
-              key={row.name}
+              key={index}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.name }
               </TableCell>
               <TableCell align="right">{row.url}</TableCell>
               <TableCell align="">{formatDateToFull(row.date)}</TableCell>

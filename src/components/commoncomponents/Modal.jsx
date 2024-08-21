@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -10,6 +9,8 @@ import BasicTable from './BasicTable';
 import { FaFileUpload } from 'react-icons/fa';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 
 const style = {
@@ -18,6 +19,8 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 'auto',
+  maxHeight: 'calc(100vh - 50px)',
+  overFlowX: 'auto',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
@@ -43,15 +46,15 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
     const headings = ["File Name", "Uploaded PDF","Uploaded Date"]
       const currentYear = new Date().getFullYear();
       const currentMonth = new Date().getMonth();
-      const [month, setMonth] = React.useState();
-      const [year, setYear] = React.useState();
-      const [selectedParlorDetail,setSelectedParlorDetail] =React.useState([]);
+      const [month, setMonth] = useState();
+      const [year, setYear] = useState();
+      const [selectedParlorDetail,setSelectedParlorDetail] =useState([]);
     // console.log("selected id",salonId);
-    React.useEffect(()=>{
+    useEffect(()=>{
         setMonth(months[currentMonth])
         setYear(currentYear.toString())
     },[open])
-    React.useEffect(()=>{
+    useEffect(()=>{
         const fetchApi=async()=>{
             const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
             const selectedDate = updatingDate;
@@ -70,7 +73,7 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
       }
       const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>,item?.createdAt))
     // console.log("single parlour", selectedParlorDetail)
-    console.log(salonId,'rows')
+    // console.log(salonId,rows,'rows')
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -89,7 +92,7 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
       >
         <Fade in={open}>
           <Box sx={style}>
-            <div className='w-[90%] mx-auto flex justify-between'>
+            <div className='w-[90%] mx-auto flex  justify-between'>
                 <MonthPicker months={months} month={month} setMonth={setMonth}/>
                 <YearPicker years={years} year={year} setYear={setYear}/>
             </div>

@@ -1,4 +1,3 @@
-import * as React from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -40,7 +39,9 @@ export default function BasicPOTable({ headings, rows }) {
               <TableCell align="">{row.type}</TableCell>
               <TableCell align="center">{row.orderedQuantity}</TableCell>
               <TableCell align="center">{row?.receivedQuantity}</TableCell>
-              <TableCell align="center">{row.mrp*row.orderedQuantity}</TableCell>
+              <TableCell align="center">{row?.subtotal}</TableCell>
+              <TableCell align="center">{row?.discount} %</TableCell>
+              <TableCell align="center">{row?.total}</TableCell>
               {/* <TableCell align="center">{row.orderedQuantity }{"%"}</TableCell> */}
               {/* <TableCell align="center">{row.mrp*row.orderedQuantity-10}</TableCell> */}
             </TableRow>

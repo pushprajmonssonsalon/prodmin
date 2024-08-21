@@ -4,14 +4,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import { CHANGE_PO_STATUS, SINGLE_PARLOUR_DETAILS, SINGLE_POORDER, SINGLE_SALON_DETAILS } from '../../services/crm/user.service';
-import MonthPicker from './MonthPicker';
-import YearPicker from './YearPicker';
-import { FaFileUpload } from 'react-icons/fa';
-import { Height } from '@mui/icons-material';
-import { height } from '@mui/system';
-import BasicTable from './BasicTable';
+import { CHANGE_PO_STATUS, SINGLE_POORDER } from '../../services/crm/user.service';
 import BasicPOTable from './BasicPOTable';
 import EditStatusModal from './EditStatusModal';
 import toast from 'react-hot-toast';
@@ -71,10 +64,10 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
         fetchApi()
     },[open])
     
-    function createData(name, brand, orderedQuantity, mrp, type,receivedQuantity) {
-        return { name, brand, orderedQuantity, mrp, type, receivedQuantity };
+    function createData(name, brand, orderedQuantity, mrp, type,receivedQuantity,subtotal,discount,total) {
+        return { name, brand, orderedQuantity, mrp, type, receivedQuantity,subtotal,discount,total };
       }
-      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type,item?.receivedQuantity,))
+      const rows = selectedParlorDetail?.map((item)=>createData(item.name,item.brand,item.orderedQuantity,item.mrp,item.type,item?.receivedQuantity,item?.mrp*item?.orderedQuantity,item.discount,item?.total))
     console.log("single parlour", selectedParlorDetail)
     const handleApplyStatus =async()=>{
       const changestatus = await CHANGE_PO_STATUS({status:+status,id:salonId});
@@ -83,6 +76,8 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
         setStatus('')
       }
     }
+    const orderTotal =rows.reduce((acc,item)=>acc+item?.total,0)?.toFixed(2);
+    
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -106,6 +101,14 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
           <Button variant='contained' onClick={handleApplyStatus}>Apply</Button>
           </div>
            <BasicPOTable headings={headings} rows={rows}/>
+           <div className='flex gap-5 mt-4 justify-end'>
+            <div className='font-bold '>
+              Order Total
+            </div>
+            <div className='font-medium'>
+            ₹ {orderTotal}
+            </div>
+           </div>
             
           </Box>
         </Fade>
