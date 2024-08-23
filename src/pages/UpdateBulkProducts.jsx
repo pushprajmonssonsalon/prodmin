@@ -18,8 +18,8 @@ const UpdateProducts = () => {
   };
 
   const [data, setData] = useState([
-    { id: "", mrp: "", name: "" },
-    { id: "", mrp: "", name: "" },
+    { _id: "", mrp: "", name: "" },
+    { _id: "", mrp: "", name: "" },
   ]);
 
   const generateCSV = (data) => {
@@ -131,7 +131,7 @@ const UpdateProducts = () => {
     <>
       <Layout>
         <div className="w-full flex flex-col">
-          <TopBar title="Edit Product" />
+          <TopBar title="Edit Product in Bulk" />
         </div>
         <div className="p-16 h-[calc(100vh-65px)] overflow-y-auto ">
           <button

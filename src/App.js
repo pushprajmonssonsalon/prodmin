@@ -17,7 +17,8 @@ import AddProduct from "./pages/AddProduct";
 import AddSalon from "./pages/AddSalon";
 import AddBulkProduct from "./pages/AddBulkProduct";
 import AddVedio from "./pages/AddVedio";
-import UpdateProducts from "./pages/UpdateProducts";
+import UpdateProducts from "./pages/UpdateBulkProducts";
+import UpdateProduct from "./pages/UpdateProduct";
 const App = () => {
   return (
     <Routes>
@@ -49,8 +50,12 @@ const App = () => {
         element={<PrivateRoute isCrm={true} component={AddVedio} />}
       />
       <Route
-        path="/prodedit"
+        path="/prodbedit"
         element={<PrivateRoute isCrm={true} component={UpdateProducts} />}
+      />
+      <Route
+        path="/prodedit"
+        element={<PrivateRoute isCrm={true} component={UpdateProduct} />}
       />
       <Route
         path="/prodadd"

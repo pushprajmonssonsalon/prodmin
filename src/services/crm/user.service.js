@@ -1,8 +1,8 @@
 import API_REQUEST from "../utils/axios.utils";
 
 const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.215:8000`;
-// const baseUrl = `http://192.168.2.30:4002`;
+// const baseUrl = `http://192.168.2.215:4002`;
+// const baseUrl = `http://192.168.2.38:4002`;
 
 const baseUrl2=`https://app.smartsalon.in`
 const LOGIN_USERS = async(payload)=>{
@@ -42,6 +42,7 @@ const SINGLE_PARLOUR_DETAILS=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response;
 }
+
 const SINGLE_SALON_DETAILS=async(payload)=>{
     const url = `${baseUrl}/finance/getSingleParlorDetail?id=${payload.salonId}`;
     const authString = localStorage.getItem("crmtoken");
@@ -74,6 +75,12 @@ const UPLOAD_VIDEO=async(payload)=>{
 }
 const CREATE_VEDIO=async(payload)=>{
     const url =`${baseUrl2}/operation/createVideo`
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+const GET_ALL_PRODUCTS=async(payload,itemsPerPage,currentPage)=>{
+    const url = `${baseUrl}/inventory/getAllProducts/?limit=${itemsPerPage}&page=${currentPage}`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
@@ -147,6 +154,8 @@ export {
     CREATE_TABLE,
     GET_TABLE,
     CREATE_BULK_PRODUCT,
+    GET_ALL_PRODUCTS
+    ,
     GET_BRANDS,
     UPLOAD_VIDEO,
     CREATE_VEDIO,
