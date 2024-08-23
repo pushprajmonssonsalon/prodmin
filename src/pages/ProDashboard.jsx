@@ -8,6 +8,7 @@ import { FaFileUpload } from "react-icons/fa";
 import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF } from '../services/crm/user.service';
 import toast from 'react-hot-toast';
 import TransitionsModal from '../components/commoncomponents/Modal';
+import { useAppContext } from '../services/context/AppContext';
 const ProDashboard = () => {
   const months = [
     "January", "February", "March", "April", "May", "June", 
@@ -19,7 +20,8 @@ const years = [
   "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029",
   "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039",
   "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
-];
+]; 
+  const {expanded}=useAppContext();
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const [salonsDetails, setSalonsDetails] = useState([]);
@@ -142,14 +144,16 @@ const years = [
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Dashboard"/>
-      <div className='h-[calc(100vh-65px)]  p-9 md:p-16  overflow-y-auto'>
-      <div className='w-[90%] mx-auto flex justify-between items-center'>
-        <div className='flex items-center gap-x-3'>
+      <div style={{
+          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
+        }} className='h-[calc(100vh-65px)]  p-8 md:p-16  overflow-y-auto'>
+      <div className=' flex justify-between items-center'>
+        <div className='flex flex-wrap items-center gap-x-3'>
           <MonthPicker months={months} month={month} setMonth={setMonth}/>
           <YearPicker years={years} year={year} setYear={setYear}/>
           </div>
        </div>   
-      <div className='w-[90%] mx-auto '>
+      <div className='w-full'>
       <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
       </div>

@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
 import { MdDelete } from "react-icons/md";
 import { CREATE_BULK_PRODUCT, GET_BRANDS } from "../services/crm/user.service";
+import { useAppContext } from "../services/context/AppContext";
 const initialData = {
   brand: "",
   type: "",
@@ -19,6 +20,7 @@ const initialData = {
 const AddBulkProduct = () => {
   const [productData, setProductData] = useState(initialData);
   const [brands,setBrands]=useState([])
+  const {expanded}=useAppContext();
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -96,8 +98,11 @@ const AddBulkProduct = () => {
         </div>
 
         <form
+          style={{
+          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
+        }}
           onSubmit={handleSubmit}
-          className="space-y-4 p-16 h-[calc(100vh-65px)] overflow-y-auto"
+          className="space-y-4 p-9  md:p-16 h-[calc(100vh-65px)] overflow-y-auto"
         >
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4 capitalize">
             <div className="flex flex-col">
@@ -152,11 +157,10 @@ const AddBulkProduct = () => {
 
             {productData?.products?.length > 0 &&
               productData?.products?.map((product, index) => (
-                <div key={index} className=" flex mb-5 last:mb-0">
-                  <div className="w-[90%]  border   border-gray-400 rounded p-2">
-                    <div className="flex gap-4 capitalize">
+                <div key={index} className="relative flex border w-full   p-2   border-gray-400 rounded mb-5 last:mb-0">
+                    <div className="w-full flex flex-wrap xl:flex-nowrap py-3 gap-4 capitalize">
                       {Object.keys(product).map((key) => (
-                        <div className={`${key ==="name" ?"w-[calc(100%/2)]" :"w-[calc(100%/2/3)]" } flex flex-col`}>
+                        <div className={`${key ==="name" ?`w-[calc(100%/2)] min-w-full md:min-w-[200px]` :"w-[calc(100%/2/3)]  grow" }  flex flex-col`}>
                           <label
                             htmlFor={key}
                             className="mb-2 font-medium text-gray-700"
@@ -179,12 +183,11 @@ const AddBulkProduct = () => {
                         </div>
                       ))}
                     </div>
-                  </div>
 
                   {index !== 0 && (
                     <button
                       type="button"
-                      className="w-[10%] flex mx-auto items-center"
+                      className=" top-0 hover:text-rose-600 hover:scale-105 transition-transform ease-in duration-100 right-0 absolute flex mx-auto items-center"
                       onClick={() =>
                         setProductData((prev) => ({
                           ...prev,

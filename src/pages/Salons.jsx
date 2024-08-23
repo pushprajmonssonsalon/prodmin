@@ -4,9 +4,11 @@ import TopBar from '../components/commoncomponents/TopBar';
 import CustomTable from '../components/commoncomponents/Table';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useAppContext } from '../services/context/AppContext';
 
 const Salons = () => {
     const navigate = useNavigate();
+    const {expanded}=useAppContext();
     const [page, setPage] = useState(0);
     const [open, setOpen] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -58,13 +60,15 @@ const Salons = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Salons"/>
-      <div className='h-[calc(100vh-65px)] overflow-y-auto'>
-      <div className='w-[90%] mx-auto flex justify-between items-center'>
+      <div style={{
+          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
+        }} className='p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto'>
+      <div className='flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           {/* <Drawers />  */}
         </div>
     </div>
-      <div className='w-[90%] mx-auto'>
+      <div className=''>
         <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
         {/* rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders} handleRowClick={handleRowClick}/> */}
       </div>

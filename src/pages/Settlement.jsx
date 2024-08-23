@@ -12,6 +12,7 @@ import SalonSelect from "../components/commoncomponents/SalonSelect";
 import StatusSelect from "../components/commoncomponents/StatusSelect";
 import axios from "axios";
 import { BsFileEarmarkImage } from "react-icons/bs";
+import { useAppContext } from "../services/context/AppContext";
 const Settelment = () => {
   const months = [
     "January",
@@ -81,7 +82,7 @@ const Settelment = () => {
     "2050",
   ];
   const fileInputRef = useRef(null);
-
+ const {expanded}=useAppContext();
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const [salonsDetails, setSalonsDetails] = useState([]);
@@ -446,9 +447,12 @@ const Settelment = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="PO Orders" />
-        <div className="px-9 h-[calc(100vh-65px)] overflow-y-auto">
+        <div style={{
+          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
+        }} className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto">
           <div className="w-[100%] mx-auto">
-            <div className=" mx-auto flex items-center justify-center  gap-4 mt-4 ">
+          <div className="w-[97%] mx-auto">
+            <div className=" mx-auto flex flex-wrap items-center justify-center  gap-4 mt-4 ">
               <div className="flex flex-col">
                 <label className="text-black  text-lg font-medium font-serif">
                   Start Date :
@@ -472,7 +476,7 @@ const Settelment = () => {
                 id="outlined-basic"
                 label="search..."
                 variant="outlined"
-                className="w-[350px]"
+                className="w-[350px] grow"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
               />
@@ -486,6 +490,7 @@ const Settelment = () => {
                 setValue={setStatus}
                 handleChange={handleStatusChange}
               />
+            </div>
             </div>
             <div className=" mx-auto">
               <CustomTable

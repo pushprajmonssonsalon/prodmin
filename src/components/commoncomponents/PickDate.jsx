@@ -1,7 +1,4 @@
 
-import { Button } from '@mui/material';
-import React from 'react'
-import { useState } from 'react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -14,7 +11,7 @@ export default function PickDate({datte,setDatte}) {
             selected={datte}
             onChange={(date) => setDatte(date)}
             startDate={datte}
-            className='py-2 px-3 rounded-lg border border-black'
+            className='py-2 grow outline-none px-3 rounded-lg border'
           />
   )
 }

@@ -30,12 +30,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
   }
 
   return (
-    <Paper  sx={!settelment?{width:"100%",maxWidth:expanded?'calc(100vw - 380px)':'calc(100vw- 220px)',overflow:"auto" ,margin:"20px auto" }:{
-      maxWidth: expanded?'calc(100vw - 470px)':'calc(100vw - 220px)', // calculate width on large screens
-  
-      overflow: 'hidden',
-      margin:"20px auto"
-    }} className='overflow-hidden mt-10 '>
+    <Paper  sx={{width:"97%",overflow:"auto" ,margin:"20px auto" }} className='overflow-hidden mt-10 '>
       <TableContainer sx={{ maxHeight:900}} >
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

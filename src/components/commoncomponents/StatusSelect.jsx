@@ -9,7 +9,7 @@ export default function StatusSelect({value,setValue,handleChange}) {
 //   console.log(status)
 
   return (
-    <Box sx={{ minWidth: '200px' }}>
+    <Box sx={{ minWidth: '200px',flexGrow:1 }}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Select Status...</InputLabel>
         <Select

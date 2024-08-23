@@ -26,7 +26,8 @@ export default function SettelmentTable({ headings, rows }) {
 
   return (
     <Paper sx={{
-      maxWidth:expanded?'calc(100vw - 470px)':'calc(100vw - 220px)', // calculate width on large screens
+      width:"97%",
+      margin:"0 auto", // calculate width on large screens
       
       overflow: 'hidden',
     }}

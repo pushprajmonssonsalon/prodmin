@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -10,7 +9,7 @@ export default function SalonSelect({value,setValue,handleChange}) {
 //   console.log(status)
 
   return (
-    <Box sx={{ minWidth: '200px' }}>
+    <Box sx={{ minWidth: '200px' ,flexGrow:1}}>
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Select Salon type...</InputLabel>
         <Select

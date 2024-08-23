@@ -141,9 +141,9 @@ const UpdateProduct = () => {
         style={{
           maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
         }}
-        className="py-6 mx-auto h-[calc(100vh-65px)]  overflow-y-auto "
+        className="p-8 md:p-16 mx-auto h-[calc(100vh-65px)]  overflow-y-auto "
       >
-        <div className="px-6 grid grid-cols-1  sm:grid-cols-3 gap-5">
+        <div className=" grid grid-cols-1  sm:grid-cols-3 gap-5">
           {Object.keys(inputs).map((key) =>
             key !== "name" ? (
               <select
@@ -153,7 +153,7 @@ const UpdateProduct = () => {
                 value={formData[key]}
                 onChange={handleChange}
               >
-                <option>{`Choose a ${key}`}</option>
+                <option value="">{`Choose a ${key}`}</option>
                 {key==="brand"? brands?.length > 0 &&
                   brands?.map((brand, index) => (
                     <option key={index} value={brand}>

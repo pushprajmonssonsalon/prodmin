@@ -80,7 +80,7 @@ const AddSalon = () => {
         </div>
         <form
           onSubmit={handleSubmit}
-          className="p-16 h-[calc(100vh-65px)] overflow-y-auto "
+          className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto "
         >
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
             {Object.keys(salon).map((key) => {

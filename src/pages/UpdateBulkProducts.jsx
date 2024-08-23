@@ -133,7 +133,7 @@ const UpdateProducts = () => {
         <div className="w-full flex flex-col">
           <TopBar title="Edit Product in Bulk" />
         </div>
-        <div className="p-16 h-[calc(100vh-65px)] overflow-y-auto ">
+        <div className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto ">
           <button
             onClick={handleDownload}
             className="bg-blue-500 hover:bg-blue-400 text-white py-3 px-6 rounded-md"

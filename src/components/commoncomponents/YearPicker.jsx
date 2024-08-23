@@ -11,8 +11,8 @@ export default function YearPicker({years,year,setYear}) {
   };
 
   return (
-    <div>
-      <FormControl variant="standard" sx={{ m: 1, minWidth: 150 }}>
+    <div className='grow'>
+      <FormControl variant="standard" sx={{ m: 1, width:"100%" ,minWidth: 150 }}>
         <InputLabel id="demo-simple-select-standard-label">Years</InputLabel>
         <Select
           labelId="demo-simple-select-standard-label"

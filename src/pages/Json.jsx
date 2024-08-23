@@ -12,23 +12,85 @@ import {
   UPDATE_EXCEL_FILE,
 } from "../services/crm/user.service";
 import toast from "react-hot-toast";
+import { useAppContext } from "../services/context/AppContext";
 
 const Json = () => {
   const months = [
-    "January","February","March","April","May","June","July","August","September","October","November","December",
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
   const years = [
-    "2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","2018","2019","2020","2021",
-    "2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043",
-    "2044","2045","2046","2047","2048","2049","2050",
+    "2000",
+    "2001",
+    "2002",
+    "2003",
+    "2004",
+    "2005",
+    "2006",
+    "2007",
+    "2008",
+    "2009",
+    "2010",
+    "2011",
+    "2012",
+    "2013",
+    "2014",
+    "2015",
+    "2016",
+    "2017",
+    "2018",
+    "2019",
+    "2020",
+    "2021",
+    "2022",
+    "2023",
+    "2024",
+    "2025",
+    "2026",
+    "2027",
+    "2028",
+    "2029",
+    "2030",
+    "2031",
+    "2032",
+    "2033",
+    "2034",
+    "2035",
+    "2036",
+    "2037",
+    "2038",
+    "2039",
+    "2040",
+    "2041",
+    "2042",
+    "2043",
+    "2044",
+    "2045",
+    "2046",
+    "2047",
+    "2048",
+    "2049",
+    "2050",
   ];
   const currentYear = new Date().getFullYear();
+
   const currentMonth = new Date().getMonth();
+  const { expanded } = useAppContext();
   const [month, setMonth] = useState(months[currentMonth]);
   const [generatedTable, setGeneratedTable] = useState([]);
   const [year, setYear] = useState(currentYear.toString());
   const [loading, setLoading] = useState(false);
-  const [creating,setCreating] = useState(false)
+  const [creating, setCreating] = useState(false);
   const [updatedBool, setUpdatedBool] = useState(false);
   const [createdBool, setCreatedBool] = useState(false);
   // const [rows, setRows] = useState([]);
@@ -272,18 +334,18 @@ const Json = () => {
     reader.readAsArrayBuffer(file);
   };
   const handleCreateApiTable = async () => {
-    setCreating(true)
+    setCreating(true);
     const createTable = await CREATE_TABLE({
       month: month.slice(0, 3),
       year: +year,
     });
     if (createTable) {
       setCreatedBool(!createdBool);
-      setCreating(false)
-      toast.success("Table is created")
-    }else{
-      toast.error("Table is already created for this month!")
-      setCreating(false)
+      setCreating(false);
+      toast.success("Table is created");
+    } else {
+      toast.error("Table is already created for this month!");
+      setCreating(false);
     }
     console.log("createTable", createTable);
   };
@@ -433,44 +495,57 @@ const Json = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="Settelment" />
-        <div className="w-full h-[calc(100vh-65px)] p-9 md:p-16 overflow-y-auto">
-        <div className="w-full flex justify-between items-center">
-          <div className="flex flex-wrap items-center gap-x-3">
-          <div className="flex">
-          <MonthPicker months={months} month={month} setMonth={setMonth} />
-          <YearPicker years={years} year={year} setYear={setYear} />
+        <div
+          style={{
+            maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
+          }}
+          className="w-full h-[calc(100vh-65px)] p-8 md:p-16 overflow-y-auto"
+        >
+          <div className="w-full flex justify-between items-center">
+            <div className="flex flex-wrap items-center gap-6">
+              <div className="flex gap-2 flex-wrap">
+                <MonthPicker
+                  months={months}
+                  month={month}
+                  setMonth={setMonth}
+                />
+                <YearPicker years={years} year={year} setYear={setYear} />
+              </div>
+              <div className="flex flex-wrap gap-3">
+                <input
+                  className="grow"
+                  accept=".xlsx, .xls"
+                  style={{ display: "none" }}
+                  id="contained-button-file"
+                  type="file"
+                  onChange={handleFileChange}
+                />
+                <Button
+                  style={{ flexGrow: 1 }}
+                  variant="contained"
+                  component="span"
+                  onClick={handleCreateApiTable}
+                >
+                  {creating ? "Creating..." : "Create Table"}
+                </Button>
+                <Button
+                  style={{ flexGrow: 1 }}
+                  variant="contained"
+                  onClick={handleExport}
+                >
+                  Export Excel File
+                </Button>
+                <label style={{ flexGrow: 1 }} htmlFor="contained-button-file">
+                  <Button style={{ width:"100%" }} variant="contained" component="span">
+                    {loading ? "Loading..." : "Upload Excel File"}
+                  </Button>
+                </label>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-3">
-          <input
-              accept=".xlsx, .xls"
-              style={{ display: "none" }}
-              id="contained-button-file"
-              type="file"
-              onChange={handleFileChange}
-            />
-            <Button
-              variant="contained"
-              component="span"
-              onClick={handleCreateApiTable}
-            >
-              {creating ? "Creating..." : "Create Table"}
-            </Button>
-            <Button variant="contained" onClick={handleExport}>
-              Export Excel File
-            </Button>
-            <label htmlFor="contained-button-file">
-              <Button variant="contained" component="span">
-                {loading ? "Loading..." : "Upload Excel File"}
-              </Button>
-            </label>
+          <div className="w-full mt-10 mx-auto">
+            <SettelmentTable headings={columns} rows={rows} />
           </div>
-           
-         
-          </div>
-        </div>
-        <div className="mt-10 mx-auto">
-          <SettelmentTable headings={columns} rows={rows} />
-        </div>
         </div>
       </div>
     </Layout>
