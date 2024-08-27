@@ -88,4 +88,4 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
   );
 }
 
-const allowedcols =["poId","trade","salonId","name"]
+const allowedcols =["poId","trade","salonId","name","salonid"]
