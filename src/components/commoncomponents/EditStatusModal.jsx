@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -21,10 +20,12 @@ export default function EditStatusModal({status,setStatus,handleChange}) {
           onChange={handleChange}
         >
           
+          {/* <MenuItem value={1}>Placed</MenuItem>   */}
           <MenuItem value={4}>Accepted</MenuItem>  
           <MenuItem value={7}>Waiting For Payment</MenuItem>
           <MenuItem value={5}>Pacakging</MenuItem>
           <MenuItem value={6}>Dispatch</MenuItem>
+          <MenuItem value={3}>Cancelled</MenuItem>
         </Select>
       </FormControl>
     </Box>
