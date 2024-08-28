@@ -8,6 +8,7 @@ import { ORDERS_DETAILS, ORDERS_DETAILS_FOR_EXCEL, SINGLE_ORDERS_DETAILS } from 
 import { subDays, startOfMonth, endOfMonth } from 'date-fns';
 import OrderModal from '../components/commoncomponents/OrderModal';
 import * as XLSX from 'xlsx';
+import Wrapper from '../components/commoncomponents/Wrapper';
 
 const columns = [
   { id: 'shipId', label: 'ShipRocketID' },
@@ -147,7 +148,8 @@ const Orders = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Orders"/>
-      <div className='h-[calc(100vh-65px)] overflow-y-auto'>
+      </div>
+      <Wrapper>
       <div className='w-[90%] mx-auto flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           <DatePicker  date={date} setDate={setDate}/>
@@ -158,8 +160,8 @@ const Orders = () => {
       <div className='w-[90%] mx-auto'>
         <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
-    </div>
-    </div>
+    </Wrapper>
+  
     <OrderModal open={open} setOpen={setOpen} data={singleOrdersDetails} handleOpen={handleOpen} handleClose={handleClose}/>
     </Layout>
   )

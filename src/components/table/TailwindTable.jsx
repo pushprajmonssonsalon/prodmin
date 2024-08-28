@@ -1,15 +1,23 @@
 import { useEffect, useState } from "react";
 
-const TailwindTable = ({ cols, rows, onUpdate }) => {
+const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
   const [isEdit, setIsEdit] = useState(Array(rows?.length).fill(false));
+  
   const [selectedProduct, setSelectedProduct] = useState({});
 
   const handleEdit = (idx, id) => {
     const product = rows?.find((elm) => elm?._id === id);
-    setSelectedProduct(product);
-    setIsEdit((prev) =>
-      prev.map((item, i) => (i === idx && product ? !item : false))
-    );
+
+    if(isProduct){
+      setSelectedProduct(product);
+      setIsEdit((prev) =>
+        prev.map((item, i) => (i === idx && product ? !item : false))
+      );
+    }
+    else{
+      onUpdate(product)
+    }
+    
   };
 
   const handleSave = (idx, id) => {
@@ -65,7 +73,7 @@ const TailwindTable = ({ cols, rows, onUpdate }) => {
                           className="px-6 py-4 font-medium min-w-[180px] text-gray-900 whitespace-nowrap "
                         >
                           {isEdit[index] &&
-                          row?._id === selectedProduct?._id ? (
+                          row?._id === selectedProduct?._id && isProduct? (
                             <input
                               name={col?.id}
                               type={
@@ -86,7 +94,7 @@ const TailwindTable = ({ cols, rows, onUpdate }) => {
                       return (
                         <td className="px-6 py-4 min-w-[180px]">
                           {isEdit[index] &&
-                          row?._id === selectedProduct?._id ? (
+                          row?._id === selectedProduct?._id && isProduct ? (
                             <input
                               name={col?.id}
                               type={
@@ -107,7 +115,7 @@ const TailwindTable = ({ cols, rows, onUpdate }) => {
                   })}
 
                   <td className="px-6 py-4">
-                    {isEdit[index] && row?._id === selectedProduct?._id ? (
+                    {isEdit[index] && row?._id === selectedProduct?._id && isProduct? (
                       <button
                         className="font-medium text-blue-600  hover:underline"
                         onClick={() => handleSave(index, row?._id)}

@@ -4,10 +4,10 @@ import Layout from "../components/Layout";
 import { EDIT_INVENTORY, GET_ALL_PRODUCTS, GET_BRANDS } from "../services/crm/user.service";
 import TailwindTable from "../components/table/TailwindTable";
 import { MdOutlineSearch } from "react-icons/md";
-import { useAppContext } from "../services/context/AppContext";
 import Pagination from "../components/pagination/Pagination";
 import GridRows from "../components/pagination/GridRows";
 import toast from "react-hot-toast";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const inputs = {
   name: "",
@@ -27,7 +27,6 @@ const types =[ "Retail" , "Professional"]
 
 const UpdateProduct = () => {
   const numProducts = 100;
-  const { expanded } = useAppContext();
 
   const [products, setProducts] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -137,12 +136,7 @@ const UpdateProduct = () => {
       <div className="w-full flex flex-col">
         <TopBar title="Edit Product" />
       </div>
-      <div
-        style={{
-          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
-        }}
-        className="p-8 md:p-16 mx-auto h-[calc(100vh-65px)]  overflow-y-auto "
-      >
+     <Wrapper>
         <div className=" grid grid-cols-1  sm:grid-cols-3 gap-5">
           {Object.keys(inputs).map((key) =>
             key !== "name" ? (
@@ -186,6 +180,7 @@ const UpdateProduct = () => {
             )
           )}
         </div>
+        
         <GridRows itemsPerPage={itemsPerPage} handleRowschange={handleRowschange}/>
         <TailwindTable
           cols={cols}
@@ -198,8 +193,8 @@ const UpdateProduct = () => {
         currentPage={currentPage}
         onPageChange={onPageChange}
       />}
-      </div>
-    </Layout>
+      </Wrapper>
+          </Layout>
   );
 };
 

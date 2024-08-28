@@ -11,6 +11,7 @@ import { Button } from "@mui/material";
 import toast from "react-hot-toast";
 import axios from "axios";
 import useImageUploader from "../services/utils/useImageUploader";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const SingleSalon = () => {
   const params = useParams();
@@ -143,8 +144,8 @@ const SingleSalon = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title={productDetails?.name} />
-        <div className="w-[100%] h-[calc(100vh-65px)] overflow-y-auto mx-auto">
-          <form onSubmit={handleSubmit} className="space-y-6 p-6 md:p-16">
+        <Wrapper>
+          <form onSubmit={handleSubmit} className="w-full space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700">
                 Name:
@@ -267,7 +268,7 @@ const SingleSalon = () => {
             </div>
             <Button type="submit">Save</Button>
           </form>
-        </div>
+        </Wrapper>
       </div>
     </Layout>
   );

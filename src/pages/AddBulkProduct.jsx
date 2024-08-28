@@ -3,7 +3,7 @@ import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
 import { MdDelete } from "react-icons/md";
 import { CREATE_BULK_PRODUCT, GET_BRANDS } from "../services/crm/user.service";
-import { useAppContext } from "../services/context/AppContext";
+import Wrapper from "../components/commoncomponents/Wrapper";
 const initialData = {
   brand: "",
   type: "",
@@ -20,7 +20,6 @@ const initialData = {
 const AddBulkProduct = () => {
   const [productData, setProductData] = useState(initialData);
   const [brands,setBrands]=useState([])
-  const {expanded}=useAppContext();
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -96,13 +95,10 @@ const AddBulkProduct = () => {
         <div className="w-full flex flex-col ">
           <TopBar title="Add Product" />
         </div>
-
+       <Wrapper>
         <form
-          style={{
-          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
-        }}
+         className="w-full"
           onSubmit={handleSubmit}
-          className="space-y-4 p-9  md:p-16 h-[calc(100vh-65px)] overflow-y-auto"
         >
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4 capitalize">
             <div className="flex flex-col">
@@ -141,7 +137,7 @@ const AddBulkProduct = () => {
               </select>
             </div>
           </div>
-          <div className="">
+          <div className="my-6">
             <div className="flex items-center justify-between ">
               <h2 className="mb-2 font-medium text-gray-700">
                 Products ({productData?.products?.length})
@@ -210,6 +206,7 @@ const AddBulkProduct = () => {
             Submit
           </button>{" "}
         </form>
+        </Wrapper>
       </Layout>
     </>
   );

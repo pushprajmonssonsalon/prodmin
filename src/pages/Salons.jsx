@@ -5,6 +5,7 @@ import CustomTable from '../components/commoncomponents/Table';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAppContext } from '../services/context/AppContext';
+import Wrapper from '../components/commoncomponents/Wrapper';
 
 const Salons = () => {
     const navigate = useNavigate();
@@ -60,9 +61,8 @@ const Salons = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Salons"/>
-      <div style={{
-          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
-        }} className='p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto'>
+      </div>
+      <Wrapper>
       <div className='flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           {/* <Drawers />  */}
@@ -72,8 +72,8 @@ const Salons = () => {
         <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
         {/* rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalOrders} handleRowClick={handleRowClick}/> */}
       </div>
-      </div>
-    </div>
+      </Wrapper>
+    
     </Layout>
   )
 }

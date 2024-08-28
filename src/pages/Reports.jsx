@@ -3,6 +3,7 @@ import TopBar from '../components/commoncomponents/TopBar'
 import CustomTable from '../components/commoncomponents/Table'
 import MonthPicker from '../components/commoncomponents/MonthPicker'
 import YearPicker from '../components/commoncomponents/YearPicker'
+import Wrapper from '../components/commoncomponents/Wrapper'
 
 const Reports = () => {
     const columns = [
@@ -47,7 +48,7 @@ const Reports = () => {
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Reports"/>
-      <div className='h-[calc(100vh-65px)] overflow-y-auto'>
+      <Wrapper>
       <div className='w-[90%] mx-auto flex justify-between items-center'>
         <div className='flex items-center gap-x-3'>
           <MonthPicker />
@@ -57,7 +58,7 @@ const Reports = () => {
       <div className='w-[90%] mx-auto '>
       <CustomTable headings={columns} rows={rows} />
       </div>
-      </div>
+      </Wrapper>
     </div>
     </Layout>
   )

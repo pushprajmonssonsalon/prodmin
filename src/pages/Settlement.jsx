@@ -13,6 +13,7 @@ import StatusSelect from "../components/commoncomponents/StatusSelect";
 import axios from "axios";
 import { BsFileEarmarkImage } from "react-icons/bs";
 import { useAppContext } from "../services/context/AppContext";
+import Wrapper from "../components/commoncomponents/Wrapper";
 const Settelment = () => {
   const months = [
     "January",
@@ -447,9 +448,8 @@ const Settelment = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="PO Orders" />
-        <div style={{
-          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
-        }} className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto">
+        </div>
+        <Wrapper>
           <div className="w-[100%] mx-auto">
           <div className="w-[97%] mx-auto">
             <div className=" mx-auto flex flex-wrap items-center justify-center  gap-4 mt-4 ">
@@ -508,8 +508,8 @@ const Settelment = () => {
             </div>
           </div>
           {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
-        </div>
-      </div>
+        </Wrapper>
+   
       <SettelmentModal
         open={open}
         setOpen={setOpen}

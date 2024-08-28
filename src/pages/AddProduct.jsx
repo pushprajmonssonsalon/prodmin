@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
 import { CREATE_PRODUCT } from "../services/pro/user.service";
 import toast from "react-hot-toast";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const AddProduct = () => {
   const [formData, setFormData] = useState({
@@ -125,9 +126,10 @@ const AddProduct = () => {
         <div className="w-full flex flex-col ">
           <TopBar title="Add Product" />
         </div>
+        <Wrapper>
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 p-16 h-[calc(100vh-65px)] overflow-y-auto"
+          className="w-full"
         >
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4 capitalize">
             {Object.keys(formData).map((key) =>
@@ -231,6 +233,7 @@ const AddProduct = () => {
             Submit
           </button>
         </form>
+        </Wrapper>
       </Layout>
     </>
   );

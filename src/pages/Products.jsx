@@ -4,6 +4,7 @@ import TopBar from "../components/commoncomponents/TopBar";
 import InputTextArea from "../components/commoncomponents/InputTextArea";
 import { SEARCH_PRODUCT } from "../services/pro/user.service";
 import { useNavigate } from "react-router-dom";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ const Products = () => {
       <div className="w-full flex flex-col">
         <TopBar title="Products" />
       </div>
-      <div className="h-[calc(100vh-65px)] overflow-y-auto">
+      <Wrapper>
 
      
       <div className="w-[50%] flex gap-12 my-4 mx-auto relative">
@@ -56,7 +57,7 @@ const Products = () => {
         )}
       </div>
       
-      </div>
+      </Wrapper>
     </Layout>
   );
 };

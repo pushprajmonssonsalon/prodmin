@@ -13,6 +13,7 @@ import {
 } from "../services/crm/user.service";
 import toast from "react-hot-toast";
 import { useAppContext } from "../services/context/AppContext";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const Json = () => {
   const months = [
@@ -495,59 +496,54 @@ const Json = () => {
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="Settelment" />
-        <div
-          style={{
-            maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
-          }}
-          className="w-full h-[calc(100vh-65px)] p-8 md:p-16 overflow-y-auto"
-        >
-          <div className="w-full flex justify-between items-center">
-            <div className="flex flex-wrap items-center gap-6">
-              <div className="flex gap-2 flex-wrap">
-                <MonthPicker
-                  months={months}
-                  month={month}
-                  setMonth={setMonth}
-                />
-                <YearPicker years={years} year={year} setYear={setYear} />
-              </div>
-              <div className="flex flex-wrap gap-3">
-                <input
-                  className="grow"
-                  accept=".xlsx, .xls"
-                  style={{ display: "none" }}
-                  id="contained-button-file"
-                  type="file"
-                  onChange={handleFileChange}
-                />
+      </div>
+      <Wrapper>
+        <div className="w-full flex justify-between items-center">
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex gap-2 flex-wrap">
+              <MonthPicker months={months} month={month} setMonth={setMonth} />
+              <YearPicker years={years} year={year} setYear={setYear} />
+            </div>
+            <div className="flex flex-wrap gap-3">
+              <input
+                className="grow"
+                accept=".xlsx, .xls"
+                style={{ display: "none" }}
+                id="contained-button-file"
+                type="file"
+                onChange={handleFileChange}
+              />
+              <Button
+                style={{ flexGrow: 1 }}
+                variant="contained"
+                component="span"
+                onClick={handleCreateApiTable}
+              >
+                {creating ? "Creating..." : "Create Table"}
+              </Button>
+              <Button
+                style={{ flexGrow: 1 }}
+                variant="contained"
+                onClick={handleExport}
+              >
+                Export Excel File
+              </Button>
+              <label style={{ flexGrow: 1 }} htmlFor="contained-button-file">
                 <Button
-                  style={{ flexGrow: 1 }}
+                  style={{ width: "100%" }}
                   variant="contained"
                   component="span"
-                  onClick={handleCreateApiTable}
                 >
-                  {creating ? "Creating..." : "Create Table"}
+                  {loading ? "Loading..." : "Upload Excel File"}
                 </Button>
-                <Button
-                  style={{ flexGrow: 1 }}
-                  variant="contained"
-                  onClick={handleExport}
-                >
-                  Export Excel File
-                </Button>
-                <label style={{ flexGrow: 1 }} htmlFor="contained-button-file">
-                  <Button style={{ width:"100%" }} variant="contained" component="span">
-                    {loading ? "Loading..." : "Upload Excel File"}
-                  </Button>
-                </label>
-              </div>
+              </label>
             </div>
           </div>
-          <div className="w-full mt-10 mx-auto">
-            <SettelmentTable headings={columns} rows={rows} />
-          </div>
         </div>
-      </div>
+        <div className="w-full mt-10 mx-auto">
+          <SettelmentTable headings={columns} rows={rows} />
+        </div>
+      </Wrapper>
     </Layout>
   );
 };

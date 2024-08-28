@@ -45,6 +45,11 @@ const operations = [
     icon: <RiVideoAddFill size={20} />,
   },
   {
+    text: "Edit Vedio",
+    activeItem: "vedioedit",
+    icon: <FaEdit size={20}/>,
+  },
+  {
     text: "Edit Bulk Product",
     activeItem: "prodbedit",
     icon: <FaEdit size={20} />,

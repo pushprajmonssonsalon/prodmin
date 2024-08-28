@@ -4,6 +4,7 @@ import TopBar from "../components/commoncomponents/TopBar";
 import FileInput from "../components/commoncomponents/FileInput";
 import { EDIT_INVENTORY } from "../services/crm/user.service";
 import toast from "react-hot-toast";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const UpdateProducts = () => {
   const productkeys = {
@@ -133,7 +134,7 @@ const UpdateProducts = () => {
         <div className="w-full flex flex-col">
           <TopBar title="Edit Product in Bulk" />
         </div>
-        <div className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto ">
+        <Wrapper>
           <button
             onClick={handleDownload}
             className="bg-blue-500 hover:bg-blue-400 text-white py-3 px-6 rounded-md"
@@ -148,7 +149,7 @@ const UpdateProducts = () => {
               <FileInput name="file" handleUpload={handleUpload} type="csv" />
             </div>
           </div>
-        </div>
+        </Wrapper>
       </Layout>
     </>
   );

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const AddSalon = () => {
   const [salon, setSalon] = useState({
@@ -78,9 +79,10 @@ const AddSalon = () => {
         <div className="w-full flex flex-col">
           <TopBar title="Add Salon" />
         </div>
+        <Wrapper>
         <form
           onSubmit={handleSubmit}
-          className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto "
+          className="w-full"
         >
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
             {Object.keys(salon).map((key) => {
@@ -156,6 +158,7 @@ const AddSalon = () => {
             Submit
           </button>
         </form>
+        </Wrapper>
       </Layout>
     </>
   );

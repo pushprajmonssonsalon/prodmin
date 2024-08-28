@@ -79,6 +79,18 @@ const CREATE_VEDIO=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response
 }
+const UPDATE_VEDIO=async(payload)=>{
+    const url =`${baseUrl}/operation/editProductVideo`
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response
+}
+const GET_ALL_VEDIOS=async(brand,type)=>{
+    const url =`${baseUrl}/operation/getAllVideos/?brand=${brand}&type=${type}`
+    const authString = localStorage.getItem("crmtoken");
+    const response = await API_REQUEST(url,"get",authString);
+    return response
+}
 const GET_ALL_PRODUCTS=async(payload,itemsPerPage,currentPage)=>{
     const url = `${baseUrl}/inventory/getAllProducts/?limit=${itemsPerPage}&page=${currentPage}`;
     const authString = localStorage.getItem("crmtoken");
@@ -156,9 +168,11 @@ export {
     CREATE_BULK_PRODUCT,
     GET_ALL_PRODUCTS
     ,
+    UPDATE_VEDIO,
     GET_BRANDS,
     UPLOAD_VIDEO,
     CREATE_VEDIO,
+    GET_ALL_VEDIOS,
     EDIT_INVENTORY,
     UPLOAD_THUMBNAIL,
     SINGLE_POORDER,

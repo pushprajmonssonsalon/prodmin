@@ -9,6 +9,7 @@ import { PARLOUR_DETAILS, PARLOUR_UPLOADSPDF } from '../services/crm/user.servic
 import toast from 'react-hot-toast';
 import TransitionsModal from '../components/commoncomponents/Modal';
 import { useAppContext } from '../services/context/AppContext';
+import Wrapper from '../components/commoncomponents/Wrapper';
 const ProDashboard = () => {
   const months = [
     "January", "February", "March", "April", "May", "June", 
@@ -144,9 +145,8 @@ const years = [
     <Layout>
     <div className='w-full flex flex-col'>
       <TopBar title="Dashboard"/>
-      <div style={{
-          maxWidth: expanded ? "calc(100vw - 289px)" : "calc(100vw - 69px)",
-        }} className='h-[calc(100vh-65px)]  p-8 md:p-16  overflow-y-auto'>
+      </div>
+      <Wrapper>
       <div className=' flex justify-between items-center'>
         <div className='flex flex-wrap items-center gap-x-3'>
           <MonthPicker months={months} month={month} setMonth={setMonth}/>
@@ -156,8 +156,8 @@ const years = [
       <div className='w-full'>
       <CustomTable headings={columns} rows={rows} page={page} setPage={setPage} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} totalOrders={totalSalons} handleRowClick={handleRowClick} handleOpen={handleOpen}/>
       </div>
-      </div>
-    </div>
+      </Wrapper>
+    
     <TransitionsModal open={open} setOpen={setOpen} handleOpen={handleOpen} handleClose={handleClose} newUpload={newUpload} salonId={selectedSalonId}/>
     </Layout>
   )

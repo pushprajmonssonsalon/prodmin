@@ -19,6 +19,7 @@ import AddBulkProduct from "./pages/AddBulkProduct";
 import AddVedio from "./pages/AddVedio";
 import UpdateProducts from "./pages/UpdateBulkProducts";
 import UpdateProduct from "./pages/UpdateProduct";
+import EditVedio from "./pages/EditVedio";
 const App = () => {
   return (
     <Routes>
@@ -48,6 +49,10 @@ const App = () => {
       <Route
         path="/vedioadd"
         element={<PrivateRoute isCrm={true} component={AddVedio} />}
+      />
+      <Route
+        path="/vedioedit"
+        element={<PrivateRoute isCrm={true} component={EditVedio} />}
       />
       <Route
         path="/prodbedit"

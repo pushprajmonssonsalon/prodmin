@@ -4,6 +4,7 @@ import Layout from "../components/Layout";
 import FileInput from "../components/commoncomponents/FileInput";
 import { CREATE_VEDIO, UPLOAD_THUMBNAIL, UPLOAD_VIDEO } from "../services/crm/user.service";
 import toast from "react-hot-toast";
+import Wrapper from "../components/commoncomponents/Wrapper";
 
 const initialData={
   title: "",
@@ -98,9 +99,10 @@ const AddVedio = () => {
         <div className="w-full flex flex-col">
           <TopBar title="Add Vedio" />
         </div>
+        <Wrapper>
         <form
           onSubmit={handleSubmit}
-          className="p-8 md:p-16 h-[calc(100vh-65px)] overflow-y-auto "
+          className="w-full"
         >
           <div className="grid grid-cols-1  gap-4">
             {Object.keys(videoData)
@@ -199,6 +201,7 @@ const AddVedio = () => {
             Submit
           </button>
         </form>
+        </Wrapper>
       </Layout>
     </>
   );
