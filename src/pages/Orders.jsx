@@ -7,8 +7,8 @@ import { Button } from '@mui/material';
 import { ORDERS_DETAILS, ORDERS_DETAILS_FOR_EXCEL, SINGLE_ORDERS_DETAILS } from '../services/pro/user.service';
 import { subDays, startOfMonth, endOfMonth } from 'date-fns';
 import OrderModal from '../components/commoncomponents/OrderModal';
-import * as XLSX from 'xlsx';
 import Wrapper from '../components/commoncomponents/Wrapper';
+import exportToExcel from '../services/utils/exportToExcel';
 
 const columns = [
   { id: 'shipId', label: 'ShipRocketID' },
@@ -139,10 +139,10 @@ const Orders = () => {
         addresses: order.addresses.address
       };
     });
-    const worksheet = XLSX.utils.json_to_sheet(transformedOrders);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders');
-    XLSX.writeFile(workbook, 'orders.xlsx');  
+
+    exportToExcel(transformedOrders,"Orders","orders.xlsx");
+    
+    
   }
   return (
     <Layout>

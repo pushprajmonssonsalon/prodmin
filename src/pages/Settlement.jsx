@@ -6,7 +6,7 @@ import CustomTable from "../components/commoncomponents/Table";
 import { POORDERS_FILTER } from "../services/crm/user.service";
 import SettelmentModal from "../components/commoncomponents/SettelmentModal";
 import PickDate from "../components/commoncomponents/PickDate";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import EndDate from "../components/commoncomponents/EndDate";
 import SalonSelect from "../components/commoncomponents/SalonSelect";
 import StatusSelect from "../components/commoncomponents/StatusSelect";
@@ -14,6 +14,7 @@ import axios from "axios";
 import { BsFileEarmarkImage } from "react-icons/bs";
 import { useAppContext } from "../services/context/AppContext";
 import Wrapper from "../components/commoncomponents/Wrapper";
+import exportToExcel from "../services/utils/exportToExcel";
 const Settelment = () => {
   const months = [
     "January",
@@ -440,10 +441,16 @@ const Settelment = () => {
   const handleSalonTypeChange = (event) => {
     setSalonType(event.target.value);
   };
+  const handleExportExcel=()=>{
 
-  console.log("rows", rows);
-  console.log("dates", startDate, endDate);
-  console.log(imagefile, "file");
+  
+   const  data = salonsDetails.map((elm)=>({...elm, invoiceImg: elm?.invoiceImg?.length>0? elm?.invoiceImg.join(", "):""}))
+    exportToExcel(data,"Orders","orders.xlsx");
+    
+    
+  }
+
+  
   return (
     <Layout>
       <div className="w-full flex flex-col">
@@ -452,6 +459,10 @@ const Settelment = () => {
         <Wrapper>
           <div className="w-[100%] mx-auto">
           <div className="w-[97%] mx-auto">
+          <div className="flex items-center justify-end">
+          <Button variant='contained' onClick={handleExportExcel}>Export to Excel</Button>
+
+          </div>
             <div className=" mx-auto flex flex-wrap items-center justify-center  gap-4 mt-4 ">
               <div className="flex flex-col">
                 <label className="text-black  text-lg font-medium font-serif">

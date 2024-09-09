@@ -8,6 +8,7 @@ import { CHANGE_PO_STATUS, SINGLE_POORDER } from '../../services/crm/user.servic
 import BasicPOTable from './BasicPOTable';
 import EditStatusModal from './EditStatusModal';
 import toast from 'react-hot-toast';
+import exportToExcel from '../../services/utils/exportToExcel';
 
 const style = {
   position: 'absolute',
@@ -78,6 +79,13 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
     }
     const orderTotal =rows.reduce((acc,item)=>acc+item?.total,0)?.toFixed(2);
     
+    const handleExportExcel=async()=>{
+     
+  
+      exportToExcel(selectedParlorDetail,"OrderDetails","orderdetails.xlsx");
+      
+      
+    }
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}
@@ -96,9 +104,10 @@ export default function SettelmentModal({open,setOpen,handleOpen,handleClose,new
       >
         <Fade in={open}>
           <Box sx={style}>
-          <div className='w-full flex mb-10 justify-evenly items-center'>
+          <div className='w-full flex flex-wrap mb-10 gap-3 justify-evenly items-center'>
           <EditStatusModal status={status} setStatus={setStatus} handleChange={handleChange}/>
           <Button variant='contained' onClick={handleApplyStatus}>Apply</Button>
+          <Button variant='contained' onClick={handleExportExcel}>Export</Button>
           </div>
            <BasicPOTable headings={headings} rows={rows}/>
            <div className='flex gap-5 mt-4 justify-end'>
