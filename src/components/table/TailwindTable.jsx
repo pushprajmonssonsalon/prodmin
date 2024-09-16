@@ -42,7 +42,7 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
   },[rows])
   return (
     <>
-      <div className="relative w-[97%] shadow-md sm:rounded-lg mx-auto max-h-[80vh] overflow-y-auto overflow-x-auto my-2 ">
+      <div className="relative max-w-full shadow-md sm:rounded-lg mx-auto max-h-[80vh] overflow-y-auto overflow-x-auto my-2 ">
         <table className="w-full   mx-auto text-sm text-left rtl:text-right text-gray-500 ">
           <thead className="text-xs sticky top-0 text-gray-700 uppercase bg-gray-50  ">
             <tr>

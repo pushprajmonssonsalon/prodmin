@@ -84,7 +84,7 @@ const Settelment = () => {
     "2050",
   ];
   const fileInputRef = useRef(null);
- const {expanded}=useAppContext();
+  const { expanded } = useAppContext();
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
   const [salonsDetails, setSalonsDetails] = useState([]);
@@ -296,33 +296,31 @@ const Settelment = () => {
 
   function formatDateToFull(dateString) {
     // Split the date part from the time part
-    if(dateString){
+    if (dateString) {
+      const [year, month, day] = dateString?.split("T")[0].split("-");
+      console.log(year, month, day, "datestr");
+      // Convert month from "08" to "Aug" or any other short form
+      const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      const monthShort = monthNames[parseInt(month, 10) - 1];
 
-    
-    const [year, month, day] = dateString?.split("T")[0].split("-");
-    console.log(year,month,day,"datestr")
-    // Convert month from "08" to "Aug" or any other short form
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const monthShort = monthNames[parseInt(month, 10) - 1];
-
-    // Format the date as "7 Aug 2024"
-    const formattedDate = `${parseInt(day, 10)} ${monthShort} ${year}`;
-    return formattedDate;
-  }
-  return dateString;
+      // Format the date as "7 Aug 2024"
+      const formattedDate = `${parseInt(day, 10)} ${monthShort} ${year}`;
+      return formattedDate;
+    }
+    return dateString;
   }
 
   // salon?.trade
@@ -441,28 +439,37 @@ const Settelment = () => {
   const handleSalonTypeChange = (event) => {
     setSalonType(event.target.value);
   };
-  const handleExportExcel=()=>{
+  const statusValue = {
+    1: "Placed",
+    2: "Received/Delivered",
+    3: "Canceled",
+    4: "Accepted",
+    5: "Pacakging",
+    6: "Dispatch",
+    7: "Waiting for Payment",
+  };
+  const handleExportExcel = () => {
+    const data = salonsDetails.map((elm) => ({
+      ...elm,
+      status: statusValue[elm.status],
+      invoiceImg: elm?.invoiceImg?.length > 0 ? elm?.invoiceImg.join(", ") : "",
+    }));
+    exportToExcel(data, "Orders", "orders.xlsx");
+  };
 
-  
-   const  data = salonsDetails.map((elm)=>({...elm, invoiceImg: elm?.invoiceImg?.length>0? elm?.invoiceImg.join(", "):""}))
-    exportToExcel(data,"Orders","orders.xlsx");
-    
-    
-  }
-
-  
   return (
     <Layout>
       <div className="w-full flex flex-col">
         <TopBar title="PO Orders" />
-        </div>
-        <Wrapper>
-          <div className="w-[100%] mx-auto">
+      </div>
+      <Wrapper>
+        <div className="w-[100%] mx-auto">
           <div className="w-[97%] mx-auto">
-          <div className="flex items-center justify-end">
-          <Button variant='contained' onClick={handleExportExcel}>Export to Excel</Button>
-
-          </div>
+            <div className="flex items-center justify-end">
+              <Button variant="contained" onClick={handleExportExcel}>
+                Export to Excel
+              </Button>
+            </div>
             <div className=" mx-auto flex flex-wrap items-center justify-center  gap-4 mt-4 ">
               <div className="flex flex-col">
                 <label className="text-black  text-lg font-medium font-serif">
@@ -502,25 +509,24 @@ const Settelment = () => {
                 handleChange={handleStatusChange}
               />
             </div>
-            </div>
-            <div className=" mx-auto">
-              <CustomTable
-                settelment={true}
-                headings={columns}
-                rows={rows}
-                page={page}
-                setPage={setPage}
-                rowsPerPage={rowsPerPage}
-                setRowsPerPage={setRowsPerPage}
-                totalOrders={totalPO}
-                handleRowClick={handleRowClick}
-                handleOpen={handleOpen}
-              />
-            </div>
           </div>
-          {/* <EditStatusModal open={editOpen} setOpen={setEditOpen} handleClose={handleEditClose} salonId={selectedSalonId}/> */}
-        </Wrapper>
-   
+          <div className=" mx-auto">
+            <CustomTable
+              settelment={true}
+              headings={columns}
+              rows={rows}
+              page={page}
+              setPage={setPage}
+              rowsPerPage={rowsPerPage}
+              setRowsPerPage={setRowsPerPage}
+              totalOrders={totalPO}
+              handleRowClick={handleRowClick}
+              handleOpen={handleOpen}
+            />
+          </div>
+        </div>
+      </Wrapper>
+
       <SettelmentModal
         open={open}
         setOpen={setOpen}
