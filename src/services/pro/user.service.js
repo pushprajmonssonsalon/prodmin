@@ -37,6 +37,12 @@ const SINGLE_PRODUCT_DETAILS=async(payload)=>{
     const response = await API_REQUEST(url,"get",null,authString);
     return response;
 }
+const SALONCART_PRODUCTS=async(payload)=>{
+    const url = `${baseUrl}/user/getAllProducts`;
+    const authString = localStorage.getItem("protoken");
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response;
+}
 const SEARCH_PRODUCT=async(payload)=>{
     const url = `${baseUrl}/user/getSearchedProduct?name=${payload.name}`;
     const authString = localStorage.getItem("protoken");
@@ -44,6 +50,7 @@ const SEARCH_PRODUCT=async(payload)=>{
     const response = await API_REQUEST(url,"post",null,authString);
     return response;
 }
+
 const UPLOAD_PRODUCT=async(payload)=>{
     const url = `${baseUrl}/upload`;
     const authString = localStorage.getItem("protoken");
@@ -88,6 +95,7 @@ export {
     SEARCH_PRODUCT,
     SINGLE_PRODUCT_DETAILS,
     UPLOAD_PRODUCT,
+    SALONCART_PRODUCTS,
     CREATE_PRODUCT,
     EDIT_PRODUCT_DETAILS,
     EDIT_ORDER_STATUS,

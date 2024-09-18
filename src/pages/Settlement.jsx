@@ -6,15 +6,17 @@ import CustomTable from "../components/commoncomponents/Table";
 import { POORDERS_FILTER } from "../services/crm/user.service";
 import SettelmentModal from "../components/commoncomponents/SettelmentModal";
 import PickDate from "../components/commoncomponents/PickDate";
-import { Button, TextField } from "@mui/material";
+import { Button } from "@mui/material";
 import EndDate from "../components/commoncomponents/EndDate";
-import SalonSelect from "../components/commoncomponents/SalonSelect";
-import StatusSelect from "../components/commoncomponents/StatusSelect";
 import axios from "axios";
 import { BsFileEarmarkImage } from "react-icons/bs";
 import { useAppContext } from "../services/context/AppContext";
 import Wrapper from "../components/commoncomponents/Wrapper";
 import exportToExcel from "../services/utils/exportToExcel";
+import SearchInput from "../components/commoncomponents/inputs/SearchInput";
+import SelectInput from "../components/commoncomponents/inputs/SelectInput";
+import { salonTypes } from "../services/utils/roles";
+
 const Settelment = () => {
   const months = [
     "January",
@@ -163,7 +165,7 @@ const Settelment = () => {
   useEffect(() => {
     const fetchApi = async () => {
       const parlors = await POORDERS_FILTER({
-        search,
+        search:search.trim(),
         salonType,
         status,
         startDate,
@@ -276,7 +278,7 @@ const Settelment = () => {
         setImages(response.data.data);
         const fetchApi = async () => {
           const parlors = await POORDERS_FILTER({
-            search,
+            search:search.trim(),
             salonType,
             status,
             startDate,
@@ -449,13 +451,25 @@ const Settelment = () => {
     7: "Waiting for Payment",
   };
   const handleExportExcel = () => {
-    const data = salonsDetails.map((elm) => ({
-      ...elm,
-      status: statusValue[elm.status],
-      invoiceImg: elm?.invoiceImg?.length > 0 ? elm?.invoiceImg.join(", ") : "",
-    }));
-    exportToExcel(data, "Orders", "orders.xlsx");
+    const allProducts = [];
+    salonsDetails.forEach((elm) => {
+      const { products, ...rest } = elm;
+
+      allProducts.push(
+        ...products.map((item) => ({ ...item, poId: elm.poId }))
+      );
+    });
+
+    exportToExcel(allProducts, "Orders", "Orders.xlsx");
   };
+  const statuses = [
+    { value: 1, name: "Placed" },
+    { value: 2, name: "Received/Delivered" },
+    { value: 3, name: "Canceled" },
+    { value: 4, name: "Accepted" },
+    { value: 5, name: "Packaging" },
+    { value: 6, name: "Dispatch" },
+  ];
 
   return (
     <Layout>
@@ -489,24 +503,25 @@ const Settelment = () => {
               </div>
               {/* <Button variant="contained" className='mt-8'>Search</Button> */}
             </div>
-            <div className="mt-6 mx-auto flex flex-wrap justify-center gap-5 items-center ">
-              <TextField
-                id="outlined-basic"
-                label="search..."
-                variant="outlined"
-                className="w-[350px] grow"
+            <div className="mt-6 flex item-center flex-wrap lg:flex-nowrap justify-between gap-3 items-center ">
+              <SearchInput
+                name="Search"
                 value={search}
+                placeholder="Search"
                 onChange={(e) => setSearch(e.target.value)}
               />
-              <SalonSelect
+              <SelectInput
+                name="salon Type"
                 value={salonType}
-                setValue={setSalonType}
-                handleChange={handleSalonTypeChange}
+                options={salonTypes}
+                handleChange={(e) => setSalonType(e.target.value)}
               />
-              <StatusSelect
+              <SelectInput
+                name="Status"
                 value={status}
-                setValue={setStatus}
-                handleChange={handleStatusChange}
+                options={statuses}
+                newOption={true}
+                handleChange={(e) => setStatus(e.target.value)}
               />
             </div>
           </div>

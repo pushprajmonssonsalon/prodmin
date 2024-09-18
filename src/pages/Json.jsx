@@ -14,6 +14,8 @@ import {
 import toast from "react-hot-toast";
 import { useAppContext } from "../services/context/AppContext";
 import Wrapper from "../components/commoncomponents/Wrapper";
+import SelectInput from "../components/commoncomponents/inputs/SelectInput";
+import { salonTypes } from "../services/utils/roles";
 
 const Json = () => {
   const months = [
@@ -87,6 +89,8 @@ const Json = () => {
 
   const currentMonth = new Date().getMonth();
   const { expanded } = useAppContext();
+  const [salonType, setSalonType] = useState("");
+
   const [month, setMonth] = useState(months[currentMonth]);
   const [generatedTable, setGeneratedTable] = useState([]);
   const [year, setYear] = useState(currentYear.toString());
@@ -352,11 +356,11 @@ const Json = () => {
   };
   useEffect(() => {
     async function fetchGetApi() {
-      const table = await GET_TABLE({ month: month.slice(0, 3), year: +year });
+      const table = await GET_TABLE({ month: month.slice(0, 3), year: +year ,salonType});
       setGeneratedTable(table);
     }
     fetchGetApi();
-  }, [month, year, updatedBool, createdBool]);
+  }, [month, year, updatedBool, createdBool,salonType]);
   function createData(
     salonId,
     name,
@@ -500,9 +504,17 @@ const Json = () => {
       <Wrapper>
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-wrap items-center gap-6">
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex items-end  gap-6 flex-wrap">
               <MonthPicker months={months} month={month} setMonth={setMonth} />
               <YearPicker years={years} year={year} setYear={setYear} />
+              <div className="max-w-sm w-full">
+                <SelectInput
+                  name="salon Type"
+                  value={salonType}
+                  options={salonTypes}
+                  handleChange={(e) => setSalonType(e.target.value)}
+                />
+              </div>
             </div>
             <div className="flex flex-wrap gap-3">
               <input

@@ -17,7 +17,7 @@ const GET_BRANDS= async()=>{
     return response;
 }
 const PARLOUR_DETAILS=async(payload)=>{
-    const url = `${baseUrl}/finance/getAllParlorsDetail?page=${payload.page}&limit=${payload.limit}`;
+    const url = `${baseUrl}/finance/getAllParlorsDetail?page=${payload.page}&limit=${payload.limit}&salonType=${payload.salonType}`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"get",null,authString);
     return response;
@@ -50,7 +50,7 @@ const SINGLE_SALON_DETAILS=async(payload)=>{
     return response;
 }
 const GET_TABLE=async(payload)=>{
-    const url = `${baseUrl}/finance/getSettlementData?month=${payload.month}&year=${payload.year}`;
+    const url = `${baseUrl}/finance/getSettlementData?month=${payload.month}&year=${payload.year}&salonType=${payload.salonType}`;
     const authString = localStorage.getItem("crmtoken");
     const response = await API_REQUEST(url,"get",null,authString);
     return response;

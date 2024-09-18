@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
+const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) => {
   const [isEdit, setIsEdit] = useState(Array(rows?.length).fill(false));
   
   const [selectedProduct, setSelectedProduct] = useState({});
@@ -52,8 +52,8 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
                 </th>
               ))}
 
-              <th scope="col" className="p-4"></th>
-            </tr>
+{isEditable&&              <th scope="col" className="p-4"></th>
+}            </tr>
           </thead>
           <tbody className="">
             {rows?.map((row, index) => {
@@ -70,7 +70,7 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
                       return (
                         <th
                           scope="row"
-                          className="px-6 py-4 font-medium min-w-[180px] text-gray-900 whitespace-nowrap "
+                          className="px-6 py-4 max-w-[380px] overflow-hidden text-ellipsis  font-medium min-w-[180px] text-gray-900 whitespace-nowrap "
                         >
                           {isEdit[index] &&
                           row?._id === selectedProduct?._id && isProduct? (
@@ -114,7 +114,7 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
                     }
                   })}
 
-                  <td className="px-6 py-4">
+               {isEditable &&   <td className="px-6 py-4">
                     {isEdit[index] && row?._id === selectedProduct?._id && isProduct? (
                       <button
                         className="font-medium text-blue-600  hover:underline"
@@ -130,7 +130,7 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true }) => {
                         Edit
                       </button>
                     )}
-                  </td>
+                  </td>}
                 </tr>
               );
             })}

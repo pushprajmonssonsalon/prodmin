@@ -20,6 +20,7 @@ import AddVedio from "./pages/AddVedio";
 import UpdateProducts from "./pages/UpdateBulkProducts";
 import UpdateProduct from "./pages/UpdateProduct";
 import EditVedio from "./pages/EditVedio";
+import ProductsQrcodes from "./pages/ProductsQrcodes";
 const App = () => {
   return (
     <Routes>
@@ -100,6 +101,10 @@ const App = () => {
       <Route
         path="/product/:shortUrl"
         element={<PrivateRoute isCrm={false} component={SingleProduct} />}
+      />
+      <Route
+        path="/productqr"
+        element={<PrivateRoute isCrm={false} component={ProductsQrcodes} />}
       />
     </Routes>
   );
