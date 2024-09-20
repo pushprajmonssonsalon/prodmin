@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API_REQUEST = async (url, method, data= null, authString= null) => {
-    
+    console.log(authString,"pro")
     const response = await axios({
         method,
         url,
