@@ -21,6 +21,7 @@ import UpdateProducts from "./pages/UpdateBulkProducts";
 import UpdateProduct from "./pages/UpdateProduct";
 import EditVedio from "./pages/EditVedio";
 import ProductsQrcodes from "./pages/ProductsQrcodes";
+import Notification from "./pages/Notification";
 const App = () => {
   return (
     <Routes>
@@ -70,6 +71,10 @@ const App = () => {
       <Route
         path="/salon/:shortUrl"
         element={<PrivateRoute isCrm={true} component={SingleSalon} />}
+      />
+      <Route
+        path="/notification"
+        element={<PrivateRoute isCrm={true} component={Notification} />}
       />
 
       {/* prokart routes */}

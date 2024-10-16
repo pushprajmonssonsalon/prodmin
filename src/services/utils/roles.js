@@ -2,7 +2,7 @@ import { BsBoxes, BsQrCode } from "react-icons/bs";
 import { FaEdit, FaFileInvoiceDollar, FaRegEdit } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
 import { GrDeliver } from "react-icons/gr";
-import { IoBagAdd } from "react-icons/io5";
+import { IoBagAdd, IoNotifications } from "react-icons/io5";
 import { MdAddBusiness, MdCreate } from "react-icons/md";
 import { RiVideoAddFill } from "react-icons/ri";
 import { TbCreditCardRefund } from "react-icons/tb";
@@ -60,6 +60,11 @@ const operations = [
     activeItem: "prodedit",
     icon: <FaEdit size={20} />,
   },
+  {
+    text: "Push Notification",
+    activeItem: "notification",
+    icon: <IoNotifications size={20} />,
+  },
 ];
 export const prokeys =[
   {
@@ -87,6 +92,7 @@ export const prokeys =[
     activeItem: "productqr",
     icon: <BsQrCode size={20} />,
   },
+ 
 ];
 
 export const crmLinks = [
