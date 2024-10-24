@@ -19,7 +19,7 @@ const Notification = () => {
     image: "Image",
     url: "Url",
   };
-  const urls = ["image", "url"];
+  const urls = ["image"];
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormValues((prev) => ({

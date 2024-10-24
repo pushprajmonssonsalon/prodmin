@@ -2,6 +2,7 @@ import { BsBoxes, BsQrCode } from "react-icons/bs";
 import { FaEdit, FaFileInvoiceDollar, FaRegEdit } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
 import { GrDeliver } from "react-icons/gr";
+import { IoIosDocument } from "react-icons/io";
 import { IoBagAdd, IoNotifications } from "react-icons/io5";
 import { MdAddBusiness, MdCreate } from "react-icons/md";
 import { RiVideoAddFill } from "react-icons/ri";
@@ -64,6 +65,16 @@ const operations = [
     text: "Push Notification",
     activeItem: "notification",
     icon: <IoNotifications size={20} />,
+  },
+  {
+    text: "Salon Reports",
+    activeItem: "salonreports",
+    icon: <IoIosDocument size={20} />,
+  },
+  {
+    text: "All Salon Data",
+    activeItem: "allsalons",
+    icon: <IoIosDocument size={20} />,
   },
 ];
 export const prokeys =[

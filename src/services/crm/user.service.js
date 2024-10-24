@@ -2,7 +2,7 @@ import API_REQUEST from "../utils/axios.utils";
 
 const baseUrl = `https://crm.smartsalon.in`;
 // const baseUrl = `http://192.168.2.215:4002`;
-// const baseUrl = `http://192.168.2.38:4002`;
+// const baseUrl = `http://192.168.2.19:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;
 const LOGIN_USERS = async (payload) => {
@@ -117,6 +117,28 @@ const EDIT_INVENTORY = async (payload) => {
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
 };
+const GET_SALES_REPORT = async (payload) => {
+  const url = `${baseUrl}/operation/salonDailyReport`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+const GET_SALONS = async (payload) => {
+  const url = `${baseUrl}/parlor/getParlors`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+
+const GET_ALL_SALONS_REPORT = async (payload) => {
+  const url = `${baseUrl}/operation/getAllSalonsRevenue`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
 
 const SINGLE_POORDER = async (payload) => {
   const url = `${baseUrl}/finance/getSinglePurchaseOrderDetail`;
@@ -182,6 +204,9 @@ export {
   SEND_NOTIFICATION,
   UPDATE_VEDIO,
   GET_BRANDS,
+  GET_SALES_REPORT,
+  GET_SALONS,
+  GET_ALL_SALONS_REPORT,
   UPLOAD_VIDEO,
   CREATE_VEDIO,
   GET_ALL_VEDIOS,

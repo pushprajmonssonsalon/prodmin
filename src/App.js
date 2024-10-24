@@ -6,6 +6,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Selection from "./pages/Selection";
 import ProDashboard from "./pages/ProDashboard";
 import Reports from "./pages/Reports";
+import SalonReport from "./pages/SalonReport";
 import Products from "./pages/Products";
 import SingleProduct from "./pages/SingleProduct";
 import EditOrder from "./pages/EditOrder";
@@ -22,6 +23,7 @@ import UpdateProduct from "./pages/UpdateProduct";
 import EditVedio from "./pages/EditVedio";
 import ProductsQrcodes from "./pages/ProductsQrcodes";
 import Notification from "./pages/Notification";
+import AllSalonData from "./pages/AllSalonData";
 const App = () => {
   return (
     <Routes>
@@ -76,7 +78,14 @@ const App = () => {
         path="/notification"
         element={<PrivateRoute isCrm={true} component={Notification} />}
       />
-
+ <Route
+        path="/salonreports"
+        element={<PrivateRoute isCrm={true} component={SalonReport} />}
+      />
+      <Route
+        path="/allsalons"
+        element={<PrivateRoute isCrm={true} component={AllSalonData} />}
+      />
       {/* prokart routes */}
       <Route
         path="/Dashboard"
@@ -87,6 +96,7 @@ const App = () => {
         path="/reports"
         element={<PrivateRoute isCrm={false} component={Reports} />}
       />
+     
       <Route
         path="/orders"
         element={<PrivateRoute isCrm={false} component={Orders} />}
