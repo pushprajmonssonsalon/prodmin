@@ -139,6 +139,13 @@ const GET_ALL_SALONS_REPORT = async (payload) => {
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
 };
+const GET_SALONS_CREDENTIALS = async (payload) => {
+  const url = `${baseUrl}/operation/getOwnerCred`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "get",null, authString);
+  return response;
+};
 
 const SINGLE_POORDER = async (payload) => {
   const url = `${baseUrl}/finance/getSinglePurchaseOrderDetail`;
@@ -207,6 +214,7 @@ export {
   GET_SALES_REPORT,
   GET_SALONS,
   GET_ALL_SALONS_REPORT,
+  GET_SALONS_CREDENTIALS,
   UPLOAD_VIDEO,
   CREATE_VEDIO,
   GET_ALL_VEDIOS,

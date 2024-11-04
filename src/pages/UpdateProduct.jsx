@@ -51,6 +51,7 @@ const UpdateProduct = () => {
     { id: "mrp", label: "Mrp" },
     { id: "type", label: "Type" },
     { id: "size", label: "Size" },
+    { id: "stock", label: "Stock" },
     { id: "unit", label: "Unit" },
   ];
 

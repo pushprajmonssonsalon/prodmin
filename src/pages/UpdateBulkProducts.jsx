@@ -5,21 +5,18 @@ import FileInput from "../components/commoncomponents/FileInput";
 import { EDIT_INVENTORY } from "../services/crm/user.service";
 import toast from "react-hot-toast";
 import Wrapper from "../components/commoncomponents/Wrapper";
+import csvToJson from "../services/utils/csvToJson";
 
 const UpdateProducts = () => {
-  const productkeys = {
-    brand: "",
-    type: "",
-
-    name: "",
-    size: 0,
-    unit: "",
-
-    mrp: 0,
-  };
+  
 
   const [data, setData] = useState([
-    { _id: "", mrp: "", name: "" },
+    {
+      _id: "",
+      mrp: "",
+
+      name: "",
+    },
     { _id: "", mrp: "", name: "" },
   ]);
 
@@ -39,37 +36,7 @@ const UpdateProducts = () => {
     a.click();
     URL.revokeObjectURL(url);
   };
-  const csvToJson = (csv) => {
-    // Split CSV into rows
-    const rows = csv.split("\n").filter((row) => row.trim() !== ""); // Remove empty rows
-
-    if (rows.length <= 1) return []; // No data rows
-
-    // Extract headers
-    const headers = rows[0].split(",").map((header) => header.trim());
-
-    // Map CSV rows to JSON objects
-    return rows
-      .slice(1)
-      .map((row) => {
-        const values = row.split(",").map((value) => value.trim());
-
-        // Create JSON object from headers and values
-        const jsonObject = headers.reduce((obj, header, index) => {
-          const value = values[index];
-          // Only include keys with non-empty values
-          if (value && value !== "") {
-            obj[header] =
-              typeof productkeys[header] === "number" ? +value : value;
-          }
-          return obj;
-        }, {});
-
-        // Include the object only if it has at least one key
-        return Object.keys(jsonObject).length > 0 ? jsonObject : null;
-      })
-      .filter((item) => item !== null); // Remove null entries
-  };
+  
 
   const handleUpload = async (e) => {
     try {
@@ -87,10 +54,9 @@ const UpdateProducts = () => {
 
           // Convert CSV to JSON
           const jsonData = csvToJson(text);
-          const res = await EDIT_INVENTORY({products:jsonData});
-          if(res){
-            toast.success("File uploaded")
-
+          const res = await EDIT_INVENTORY({ products: jsonData });
+          if (res) {
+            toast.success("File uploaded");
           }
           console.log("Converted JSON Data:", jsonData);
 

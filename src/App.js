@@ -24,6 +24,7 @@ import EditVedio from "./pages/EditVedio";
 import ProductsQrcodes from "./pages/ProductsQrcodes";
 import Notification from "./pages/Notification";
 import AllSalonData from "./pages/AllSalonData";
+import SalonCredentials from "./pages/SalonCredentials";
 const App = () => {
   return (
     <Routes>
@@ -45,6 +46,10 @@ const App = () => {
       <Route
         path="/salondet"
         element={<PrivateRoute isCrm={true} component={Salons} />}
+      />
+      <Route
+        path="/saloncred"
+        element={<PrivateRoute isCrm={true} component={SalonCredentials} />}
       />
       <Route
         path="/salonadd"

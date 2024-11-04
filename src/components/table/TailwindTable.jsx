@@ -1,31 +1,34 @@
 import { useEffect, useState } from "react";
 
-const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) => {
+const TailwindTable = ({
+  cols,
+  rows,
+  onUpdate,
+  isProduct = true,
+  isEditable = true,
+}) => {
   const [isEdit, setIsEdit] = useState(Array(rows?.length).fill(false));
-  
+
   const [selectedProduct, setSelectedProduct] = useState({});
 
   const handleEdit = (idx, id) => {
     const product = rows?.find((elm) => elm?._id === id);
 
-    if(isProduct){
+    if (isProduct) {
       setSelectedProduct(product);
       setIsEdit((prev) =>
         prev.map((item, i) => (i === idx && product ? !item : false))
       );
+    } else {
+      onUpdate(product);
     }
-    else{
-      onUpdate(product)
-    }
-    
   };
 
   const handleSave = (idx, id) => {
     if (selectedProduct?._id === id) {
       const resp = onUpdate(selectedProduct);
-      if(resp){
+      if (resp) {
         setIsEdit((prev) => prev.map((item, i) => (i === idx ? !item : false)));
-         
       }
     }
   };
@@ -34,12 +37,12 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) 
     const { value, name } = e.target;
     setSelectedProduct((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: e.target.type === "number" ? +value : value,
     }));
   };
-  useEffect(()=>{
-   setIsEdit(Array(rows?.length).fill(false))
-  },[rows])
+  useEffect(() => {
+    setIsEdit(Array(rows?.length).fill(false));
+  }, [rows]);
   return (
     <>
       <div className="relative max-w-full shadow-md sm:rounded-lg mx-auto max-h-[80vh] overflow-y-auto overflow-x-auto my-2 ">
@@ -51,9 +54,8 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) 
                   {col?.label}
                 </th>
               ))}
-
-{isEditable&&              <th scope="col" className="p-4"></th>
-}            </tr>
+              {isEditable && <th scope="col" className="p-4"></th>}{" "}
+            </tr>
           </thead>
           <tbody className="">
             {rows?.map((row, index) => {
@@ -73,7 +75,8 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) 
                           className="px-6 py-4 max-w-[380px] overflow-hidden text-ellipsis  font-medium min-w-[180px] text-gray-900 whitespace-nowrap "
                         >
                           {isEdit[index] &&
-                          row?._id === selectedProduct?._id && isProduct? (
+                          row?._id === selectedProduct?._id &&
+                          isProduct ? (
                             <input
                               name={col?.id}
                               type={
@@ -94,7 +97,8 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) 
                       return (
                         <td className="px-6 py-4 min-w-[180px]">
                           {isEdit[index] &&
-                          row?._id === selectedProduct?._id && isProduct ? (
+                          row?._id === selectedProduct?._id &&
+                          isProduct ? (
                             <input
                               name={col?.id}
                               type={
@@ -114,23 +118,27 @@ const TailwindTable = ({ cols, rows, onUpdate,isProduct=true ,isEditable=true}) 
                     }
                   })}
 
-               {isEditable &&   <td className="px-6 py-4">
-                    {isEdit[index] && row?._id === selectedProduct?._id && isProduct? (
-                      <button
-                        className="font-medium text-blue-600  hover:underline"
-                        onClick={() => handleSave(index, row?._id)}
-                      >
-                        Save
-                      </button>
-                    ) : (
-                      <button
-                        className="font-medium text-blue-600  hover:underline"
-                        onClick={() => handleEdit(index, row?._id)}
-                      >
-                        Edit
-                      </button>
-                    )}
-                  </td>}
+                  {isEditable && (
+                    <td className="px-6 py-4">
+                      {isEdit[index] &&
+                      row?._id === selectedProduct?._id &&
+                      isProduct ? (
+                        <button
+                          className="font-medium text-blue-600  hover:underline"
+                          onClick={() => handleSave(index, row?._id)}
+                        >
+                          Save
+                        </button>
+                      ) : (
+                        <button
+                          className="font-medium text-blue-600  hover:underline"
+                          onClick={() => handleEdit(index, row?._id)}
+                        >
+                          Edit
+                        </button>
+                      )}
+                    </td>
+                  )}
                 </tr>
               );
             })}

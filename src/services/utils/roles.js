@@ -6,7 +6,7 @@ import { IoIosDocument } from "react-icons/io";
 import { IoBagAdd, IoNotifications } from "react-icons/io5";
 import { MdAddBusiness, MdCreate } from "react-icons/md";
 import { RiVideoAddFill } from "react-icons/ri";
-import { TbCreditCardRefund } from "react-icons/tb";
+import { TbCreditCardRefund, TbPasswordUser } from "react-icons/tb";
 
 const finance = [
   {
@@ -75,6 +75,11 @@ const operations = [
     text: "All Salon Data",
     activeItem: "allsalons",
     icon: <IoIosDocument size={20} />,
+  },
+  {
+    text: "Salon Credentials",
+    activeItem: "saloncred",
+    icon: <TbPasswordUser size={20} />,
   },
 ];
 export const prokeys =[
