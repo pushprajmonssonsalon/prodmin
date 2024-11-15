@@ -25,6 +25,7 @@ import ProductsQrcodes from "./pages/ProductsQrcodes";
 import Notification from "./pages/Notification";
 import AllSalonData from "./pages/AllSalonData";
 import SalonCredentials from "./pages/SalonCredentials";
+import EditMembersip from "./pages/EditMembersip";
 const App = () => {
   return (
     <Routes>
@@ -90,6 +91,10 @@ const App = () => {
       <Route
         path="/allsalons"
         element={<PrivateRoute isCrm={true} component={AllSalonData} />}
+      />
+      <Route
+        path="/editmemb"
+        element={<PrivateRoute isCrm={true} component={EditMembersip} />}
       />
       {/* prokart routes */}
       <Route

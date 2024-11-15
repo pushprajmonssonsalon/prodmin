@@ -4,7 +4,7 @@ import { GiShop } from "react-icons/gi";
 import { GrDeliver } from "react-icons/gr";
 import { IoIosDocument } from "react-icons/io";
 import { IoBagAdd, IoNotifications } from "react-icons/io5";
-import { MdAddBusiness, MdCreate } from "react-icons/md";
+import { MdAddBusiness, MdCardMembership, MdCreate } from "react-icons/md";
 import { RiVideoAddFill } from "react-icons/ri";
 import { TbCreditCardRefund, TbPasswordUser } from "react-icons/tb";
 
@@ -80,6 +80,11 @@ const operations = [
     text: "Salon Credentials",
     activeItem: "saloncred",
     icon: <TbPasswordUser size={20} />,
+  },
+  {
+    text: "Edit Membership",
+    activeItem: "editmemb",
+    icon: <MdCardMembership size={20} />,
   },
 ];
 export const prokeys =[
