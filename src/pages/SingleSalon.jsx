@@ -1,78 +1,123 @@
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
-import {
-  EDIT_PRODUCT_DETAILS,
-  UPLOAD_PRODUCT,
-} from "../services/pro/user.service";
-import { useParams } from "react-router-dom";
-import { ImCross } from "react-icons/im";
-import { Button } from "@mui/material";
+import { useLocation, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import axios from "axios";
 import useImageUploader from "../services/utils/useImageUploader";
 import Wrapper from "../components/commoncomponents/Wrapper";
+import { GET_SALON, UPDATE_SALON, UPLOAD_SALON_IMAGES } from "../services/crm/user.service";
+import { ImCross } from "react-icons/im";
+const obj1 = {
+  // General Fields
+  name: "",
+  address: "",
+  address2: "",
+  city: "",
+  pincode: "",
+  landmark:"",
 
+  // geoLocation: [{ long: 0, lat: 0 }],
+  active: false,
+  rating: 0, // Default rating to 0
+  phoneNumber: 0,
+  contactNumber: 0,
+  stateName: "",
+  latitude: 0,
+  longitude: 0,
+
+  // Specific Fields
+};
+const obj2 = {
+  name: "Name",
+  address: "Address 1",
+  address2: "Address 2",
+  city: "City",
+  pincode: "Pincode",
+  landmark:"Landmark",
+
+  // geoLocation: "Geo Location",
+  active: "Active",
+  rating: "Rating",
+  phoneNumber: "Phone Number",
+  contactNumber: "Contact Number",
+  stateName: "State",
+  latitude: "Latitude",
+  longitude: "Longitude",
+  images: "Images",
+};
+const otherData = {
+  trade: "",
+  email: "",
+  gender: "",
+
+  // Additional Fields
+  gstNumber: "",
+};
+const otherFields = {
+  live: "Live",
+  trade: "Trade",
+  gstNumber: "Gst Number",
+};
 const SingleSalon = () => {
   const params = useParams();
-  const {compressFile}=useImageUploader();
-  const [productDetails, setProductDetails] = useState({});
-  const [name1, setName] = useState("");
-  const [newImages, setNewImages] = useState([]);
-  const [newDesImages, setNewDesImages] = useState([]);
-  const [compressedImage, setCompressedImage] = useState(null);
-  const [salonData, setSalonData] = useState({
-    name: productDetails.name,
-    address: productDetails.address,
-    address2: productDetails.address2,
-    rating: productDetails.rating,
-    phoneNumber: productDetails.phoneNumber,
-    contactNumber: "",
-    stateName: productDetails.stateName,
-    landmark: productDetails.landmark,
-    images: [],
-    geoLocation: [],
-  });
-  console.log("productDetailsformdata", productDetails);
+  const { compressFile } = useImageUploader();
+  const [initialData, setInititalData] = useState(obj1);
+  const [labelFields, setLabelFields] = useState(obj2);
+  const { pathname } = useLocation();
+  const path = pathname?.split("/")[1];
+
   useEffect(() => {
-    if (productDetails) {
-      setSalonData({
-        name: productDetails?.name || "",
-        address: productDetails?.address || "",
-        address2: productDetails?.address2 || "",
-        rating: productDetails?.rating || "",
-        phoneNumber: productDetails?.phoneNumber || "",
-        contactNumber: productDetails?.contactNumber || "",
-        stateName: productDetails?.stateName || "",
-        landmark: productDetails?.landmark || "",
-        images: productDetails?.images || [],
-        geoLocation: productDetails?.geoLocation || [],
-      });
+    if (path === "saloncrm") {
+      setLabelFields({ ...labelFields, ...otherFields });
+      setInititalData({ ...initialData, ...otherData });
+    } else {
+      setLabelFields({ ...obj2 });
+      setInititalData({ ...obj1 });
     }
-  }, [productDetails]);
+  }, [path]);
+  const [salon, setSalon] = useState(initialData);
 
   useEffect(() => {
     async function fetchApi() {
       let salonId = params.shortUrl;
-      const product = await axios.get(
-        `https://smartsalon.in/api/getSingleSalonDetail?id=${salonId}`
-      );
-      setProductDetails(product?.data?.data);
-      setName(product?.data?.data?.name);
-      setNewImages(product?.data?.data?.images || []);
-      setNewDesImages(product?.data?.data?.desImages || []);
-      setSalonData({
-        name: product?.data?.data?.name || "",
-        address: product?.data?.data?.address || "",
-        address2: product?.data?.data?.address2 || "",
-        rating: product?.data?.data?.rating || "",
-        phoneNumber: product?.data?.data?.phoneNumber || "",
-        contactNumber: product?.data?.data?.contactNumber || "",
-        stateName: product?.data?.data?.stateName || "",
-        landmark: product?.data?.data?.landmark || "",
-        images: product?.data?.data?.images || [],
-        geoLocation: product?.data?.data?.geoLocation || [],
-      });
+      GET_SALON(path, salonId)
+        .then((res) => {
+          if (res) {
+            const pn = res?.address2.split("-")[1];
+
+            const obj = {
+              _id: res?._id,
+              name: res?.name || "",
+              address: res?.address || "",
+              address2: res?.address2 || "",
+              ...(pn && { pincode: pn }),
+              city: res?.city || "",
+              active: res?.active || "",
+              rating: res?.rating || "",
+              phoneNumber: res?.phoneNumber || "",
+              contactNumber: res?.contactNumber || "",
+              stateName: res?.stateName || "",
+              latitude: res?.latitude || "",
+              longitude: res?.longitude || "",
+              landmark: res?.landmark || "",
+              images: res?.images || [],
+              // geoLocation: res?.data?.data?.geoLocation || [],
+              // uniqueCode:res?.data?.data?.uniqueCode
+            };
+            if (path === "saloncrm") {
+              // Add any default values if necessary
+              const newObj = {
+                trade: res?.trade,
+                email: res?.email,
+                live: res?.live,
+                gstNumber: res?.gstNumber,
+              };
+              Object.assign(obj, newObj);
+            }
+            setSalon(obj);
+          }
+        })
+        .catch(() => {});
     }
     fetchApi();
   }, [params.shortUrl]);
@@ -84,12 +129,15 @@ const SingleSalon = () => {
         .then(async (res) => {
           const formData = new FormData();
           formData.append("image", res);
-          formData.append("productId", productDetails?._id);
+          formData.append("productId", salon?._id);
 
           try {
-            const uploadImage = await UPLOAD_PRODUCT(formData);
+            const uploadImage = await UPLOAD_SALON_IMAGES(formData,salon?._id);
             if (uploadImage) {
-              setNewImages((prevImages) => [...prevImages, uploadImage]);
+              setSalon((prev) => ({
+                ...prev,
+                images: [...prev.images, uploadImage],
+              }));
               toast.success("Successfully updated!");
             }
           } catch (error) {
@@ -98,7 +146,6 @@ const SingleSalon = () => {
         })
         .catch(() => {
           console.error("Failed to upload images:");
-
         });
     }
   };
@@ -108,168 +155,215 @@ const SingleSalon = () => {
   // };
   const handleRemoveImage = (index, type) => {
     if (type === "images") {
-      setNewImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    } else if (type === "desImages") {
-      setNewDesImages((prevImages) => prevImages.filter((_, i) => i !== index));
+      setSalon((prev) => ({
+        ...prev,
+        images: prev.images.filter((_, i) => i !== index),
+      }));
     }
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setSalonData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+    const {
+      name,
+      value,
+      type,
+      checked,
+      attributes: { labelhead },
+    } = e.target;
+
+    setSalon({
+      ...salon,
+      [name]: (() => {
+        if (type === "number") {
+          if (name === "rating") {
+            return Math.min(parseFloat(value), 5);
+          } else if (name === "phoneNumber" || name === "contactNumber") {
+            const phoneValue = value.toString().slice(0, 10); // Limit to 10 digits
+            return Number(phoneValue); // Convert back to a number
+          }
+          return value;
+        } else if (type === "radio") {
+          if (name === "gender") {
+            return value;
+          }
+          return value === "true";
+        }
+        return value;
+      })(),
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(salonData);
-    const allDetails = await EDIT_PRODUCT_DETAILS({
-      obj: {
-        ...salonData,
-        images: newImages,
-        desImages: newDesImages,
-      },
-      id: productDetails?._id,
-    });
-    if (allDetails) {
-      toast.success("Successfully Updated!");
-    }
-  };
-  console.log("newImages", newImages);
 
-  
+    UPDATE_SALON(salon, path)
+      .then((res) => {
+        if (res) toast.success("salon updated");
+      })
+      .catch(() => {});
+  };
+
   return (
     <Layout>
       <div className="w-full flex flex-col">
-        <TopBar title={productDetails?.name} />
-        <Wrapper>
-          <form onSubmit={handleSubmit} className="w-full space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Name:
-              </label>
-              <input
-                type="text"
-                name="name"
-                value={salonData.name}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                disabled
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Address:
-              </label>
-              <input
-                type="text"
-                name="address"
-                value={salonData.address}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Address 2:
-              </label>
-              <input
-                type="text"
-                name="address2"
-                value={salonData.address2}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Rating:
-              </label>
-              <input
-                type="text"
-                name="rating"
-                value={salonData.rating}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Phone Number:
-              </label>
-              <input
-                type="text"
-                name="phoneNumber"
-                value={salonData.phoneNumber}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Contact Number:
-              </label>
-              <input
-                type="text"
-                name="contactNumber"
-                value={salonData.contactNumber}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                State Name:
-              </label>
-              <input
-                type="text"
-                name="stateName"
-                value={salonData.stateName}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Landmark:
-              </label>
-              <input
-                type="text"
-                name="landmark"
-                value={salonData.landmark}
-                onChange={handleChange}
-                className="mt-1 w-full px-4 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700">
-                Images:
-              </label>
-              <input type="file" onChange={handleFileChange} className="mt-1" />
-              {/* <Button onClick={handleImageUpload}>Upload Image</Button> */}
-            </div>
-            <div className="mt-4 flex flex-wrap gap-9">
-              {newImages?.length > 0 &&
-                newImages.map((img, index) => (
-                  <div key={index} className="flex  items-center">
-                    <img
-                      src={img}
-                      alt="salon"
-                      className="w-16 h-16 rounded mr-2"
-                    />
-                    <ImCross
-                      onClick={() => handleRemoveImage(index, "images")}
-                      className="cursor-pointer text-red-500"
-                    />
-                  </div>
-                ))}
-            </div>
-            <Button type="submit">Save</Button>
-          </form>
-        </Wrapper>
+        <TopBar title={salon?.name} />
       </div>
+
+      <Wrapper>
+        <form onSubmit={handleSubmit} className="w-full">
+          <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+            {Object.keys(labelFields).map((key) => {
+              return key === "images" ? (
+                <div key={key} className="flex flex-col mb-4">
+                  <div>
+                    <label className="block  font-medium text-gray-700">
+                      Images:
+                    </label>
+                    {path !== "salonsmart" && (
+                      <input
+                        type="file"
+                        onChange={handleFileChange}
+                        className="mt-1"
+                      />
+                    )}{" "}
+                    {/* <Button onClick={handleImageUpload}>Upload Image</Button> */}
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-9">
+                    {salon[key]?.length > 0 &&
+                      salon[key]?.map((img, index) => (
+                        <div key={index} className="flex  items-center">
+                          <img
+                            src={img}
+                            alt="salon"
+                            className="w-16 h-16 rounded mr-2"
+                          />
+                          {path !== "salonsmart" && (
+                            <ImCross
+                              onClick={() => handleRemoveImage(index, "images")}
+                              className="cursor-pointer text-red-500"
+                            />
+                          )}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              ) : key === "gender" ? (
+                <div key={key} className="flex flex-col mb-4">
+                  <div className="mb-2 font-medium text-gray-700">
+                    {labelFields[key]}
+                  </div>
+                  <div className="flex  gap-4 items-center">
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        value="Male"
+                        name="gender"
+                        checked={salon[key] === "Male"}
+                        className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300"
+                        onChange={handleChange}
+                      />
+                      <label
+                        htmlFor={key}
+                        className="ml-2 text-sm font-medium text-gray-900 "
+                      >
+                        Male
+                      </label>
+                    </div>
+                    <div className="flex items-center">
+                      <input
+                        type="radio"
+                        value="Female"
+                        name="gender"
+                        checked={salon[key] === "Female"}
+                        className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300"
+                        onChange={handleChange}
+                      />
+                      <label
+                        htmlFor={key}
+                        className="ml-2 text-sm font-medium text-gray-900 "
+                      >
+                        Female
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              ) : typeof salon[key] === "boolean" ? (
+                <>
+                  <div key={key} className="flex flex-col mb-4">
+                    <div className="mb-2 font-medium text-gray-700">
+                      {labelFields[key]}
+                    </div>
+                    <div className="flex  gap-4 items-center">
+                      <div className="flex items-center">
+                        <input
+                          type="radio"
+                          value="true"
+                          name={key}
+                          checked={salon[key] === true}
+                          className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300"
+                          onChange={handleChange}
+                        />
+                        <label
+                          htmlFor={key}
+                          className="ml-2 text-sm font-medium text-gray-900 "
+                        >
+                          Yes
+                        </label>
+                      </div>
+                      <div className="flex items-center">
+                        <input
+                          type="radio"
+                          value="false"
+                          name={key}
+                          className="w-6 h-6 text-blue-600 bg-gray-100 border-gray-300"
+                          onChange={handleChange}
+                        />
+                        <label
+                          htmlFor={key}
+                          className="ml-2 text-sm font-medium text-gray-900 "
+                        >
+                          No
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div key={key} className="flex flex-col my-0">
+                  <label
+                    htmlFor={key}
+                    className="mb-2 font-medium text-gray-700"
+                  >
+                    {labelFields[key]}
+                  </label>
+                  <input
+                    type={
+                      typeof salon[key] === "number"
+                        ? "number"
+                        : key === "email"
+                        ? "mail"
+                        : "text"
+                    }
+                    id={key}
+                    min={0}
+                    name={key}
+                    readOnly={key === "name"}
+                    className="border-2 outline-none order-gray-300 focus:ring-2 boutline-none p-2 rounded-md"
+                    value={salon[key]}
+                    onChange={handleChange}
+                  />
+                </div>
+              );
+            })}
+          </div>
+          <button
+            type="submit"
+            className="bg-blue-500 text-white py-3 my-6  px-6 rounded-md text-lg hover:bg-blue-600"
+          >
+            Submit
+          </button>
+        </form>
+      </Wrapper>
     </Layout>
   );
 };

@@ -104,7 +104,7 @@ const Settelment = () => {
   const [uploadSalonId, setUploadSalonId] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [images, setImages] = React.useState("");
-  console.log("salonsDetails", salonsDetails);
+  
   const [parlorDetails, setParlorDetails] = React.useState([]);
   const [search, setSearch] = useState("");
   const [imagefile, setImageFile] = useState([]);
@@ -127,7 +127,7 @@ const Settelment = () => {
     // { id: "downInvoice", lable: "downInvoice" },
     { id: "downInvoice", label: "downInvoice" },
   ];
-  console.log("salondetails");
+  
 
   const authString = localStorage.getItem("crmtoken");
   function createData(
@@ -145,7 +145,7 @@ const Settelment = () => {
     pod,
     invoiceImg
   ) {
-    // console.log(invoiceImg,"invoiceImg",pod)
+    // 
     return {
       poId,
       trade,
@@ -255,12 +255,12 @@ const Settelment = () => {
 
   const handleFileChange = async (e) => {
     setImageFile(e.target.files[0]);
-    console.log(e.target.files[0]);
+    
     let imageData = e.target.files[0];
     const formData = new FormData();
     formData.append("image", imageData);
     formData.append("fileId", fileId);
-    console.log("imageData------", imageData);
+    
 
     try {
       const response = await axios.post(
@@ -274,7 +274,7 @@ const Settelment = () => {
       );
 
       if (response) {
-        console.log("resp------->", response.data.data);
+        
         setImages(response.data.data);
         const fetchApi = async () => {
           const parlors = await POORDERS_FILTER({
@@ -300,7 +300,7 @@ const Settelment = () => {
     // Split the date part from the time part
     if (dateString) {
       const [year, month, day] = dateString?.split("T")[0].split("-");
-      console.log(year, month, day, "datestr");
+      
       // Convert month from "08" to "Aug" or any other short form
       const monthNames = [
         "Jan",
@@ -326,7 +326,7 @@ const Settelment = () => {
   }
 
   // salon?.trade
-  console.log("selected id", selectedSalonId);
+  
   //  const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.trade,salon?._id,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id)
   // );
   const rows = salonsDetails?.map((salon) =>
@@ -362,7 +362,7 @@ const Settelment = () => {
           />
 
           {salonsDetails?.map((image, index) => {
-            console.log("imagescoming", image);
+            
             return (
               salon?._id === image._id &&
               salon?.trackImg && (
@@ -400,9 +400,7 @@ const Settelment = () => {
           }}
         >
           {salonsDetails?.map((item, index) => {
-            {
-              /* console.log("imagescoming", item.invoiceImg); */
-            }
+          
             return (
               salon?._id === item?._id &&
               item?.invoiceImg?.length > 0 && (
@@ -513,7 +511,7 @@ const Settelment = () => {
               <SelectInput
                 name="salon Type"
                 value={salonType}
-                options={salonTypes}
+                options={Object.values(salonTypes)}
                 handleChange={(e) => setSalonType(e.target.value)}
               />
               <SelectInput

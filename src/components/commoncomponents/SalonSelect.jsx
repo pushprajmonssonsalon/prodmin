@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 
 export default function SalonSelect({value,setValue,handleChange}) {
   
-//   console.log(status)
+//   
 
   return (
     <Box sx={{ minWidth: '200px' ,flexGrow:1}}>

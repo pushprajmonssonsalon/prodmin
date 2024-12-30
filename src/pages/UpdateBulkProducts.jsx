@@ -58,7 +58,7 @@ const UpdateProducts = () => {
           if (res) {
             toast.success("File uploaded");
           }
-          console.log("Converted JSON Data:", jsonData);
+          
 
           // You can set this data to your state or perform other actions
         };

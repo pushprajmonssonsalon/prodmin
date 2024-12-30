@@ -4,36 +4,53 @@ import { MdMail } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { LOGIN_USERS } from "../services/crm/user.service";
 import { PRO_LOGIN_USERS } from "../services/pro/user.service";
+import toast from "react-hot-toast";
+import apiRequest from "../services/franchise/user.services";
 
 const Login = () => {
   const [open, setOpen] = useState(false);
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const navigate = useNavigate();
-  const isAdminCrm = localStorage.getItem('isAdmin') === 'crm';
+  const tab = localStorage.getItem('isAdmin');
 
 
   const handleLogin=async(e)=>{
     e.preventDefault();
-    if(isAdminCrm){
+    if(tab==='crm'){
       const user = await LOGIN_USERS({userName,password});
       if(user){
         localStorage.setItem('crmtoken',user.token)
-        console.log(typeof user.role)
+        
         localStorage.setItem('role',user.role==="1"?"admin":user.role==="2"?"finance":"operations")
         navigate("/dash-board")
       }else{
-        console.log("crm logins erorrs")
+        toast.error("")
       }
-    }else{
+    }else if(tab==="franchise"){
+      try {
+        const user =await apiRequest('post','login',{email:userName,password})
+        if(user){
+          localStorage.setItem('frntoken',user?.token)
+          navigate('/franchise')
+        }
+      } catch (error) {
+        toast.error('')
+      }
+
+
+    }
+    
+    else{
       const user = await PRO_LOGIN_USERS({phoneNumber:userName,password});
       if(user){
         localStorage.setItem('protoken',user.token)
         localStorage.setItem('prorole',user.role)
-        console.log(user)
+        
         navigate("/Dashboard")
       }else{
-        console.log("pro logins erorrs")
+        toast.error('')
+
       }
     }
   }

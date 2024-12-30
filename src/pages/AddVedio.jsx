@@ -61,12 +61,12 @@ const AddVedio = () => {
         UPLOAD_VIDEO(formData)
           .then((res) => {
             if (res) {
-              console.log(res);
+              
               setVideoData((prev) => ({ ...prev, url: res }));
             }
           })
           .catch(() => {
-            console.log("error uploading file");
+            
           });
       } else {
         formData.append("thumbnail", file);
@@ -81,7 +81,7 @@ const AddVedio = () => {
             }
           })
           .catch(() => {
-            console.log("error uploading file");
+            
           });
       }
 
@@ -91,7 +91,7 @@ const AddVedio = () => {
     }
   };
 
-  console.log(videoData, "videoData");
+  
 
   return (
     <>

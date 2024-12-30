@@ -39,13 +39,13 @@ const SingleVideo = ({ video, brands, onUpdate }) => {
       ...prev,
       duration:videoDuration.toFixed(2)
     }))
-    console.log("duration", videoDuration);
+    
   };
 
   // Function to handle time update (current video time)
   const handleTimeUpdate = () => {
     const currentVideoTime = videoRef.current.currentTime;
-    console.log("duration", currentVideoTime);
+    
   };
   const handleSubmit = (e) => {
     e.preventDefault();

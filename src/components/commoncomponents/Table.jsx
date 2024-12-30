@@ -22,8 +22,8 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
   };
   const handleDoubleFunction=(row,col)=>{
     const id = row?.salonId||row?.id;
-    console.log(col,col.id,"column",id)
-    // console.log("id---------",id)
+    
+    // 
     handleRowClick(id);
     if(allowedcols.includes(col.id))handleOpen();
 
@@ -50,7 +50,7 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
           <TableBody>
             {rows
               ?.map((row) => {
-                console.log(rows,"rows")
+                
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?.code}>
                     {headings.map((column) => {

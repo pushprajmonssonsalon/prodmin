@@ -11,7 +11,7 @@ import {
 import toast from "react-hot-toast";
 import TailwindTable from "../components/table/TailwindTable";
 import exportToExcel from "../services/utils/exportToExcel";
-const salonTypes = ["Monsoon Salon", "Smart Salon", "Monsoon Salon Pro"];
+import { salonTypes } from "../services/utils/roles";
 
 const AllSalonData = () => {
   const defaultStartDate = new Date();
@@ -168,7 +168,7 @@ const AllSalonData = () => {
                   onChange={handleChange("type")}
                 >
                   <option>Choose Type</option>
-                  {salonTypes.map((type, idx) => {
+                  {Object.values(salonTypes).map((type, idx) => {
                     return (
                       <option value={type} key={idx}>
                         {type}

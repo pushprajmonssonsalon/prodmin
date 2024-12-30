@@ -7,9 +7,9 @@ import YearPicker from "../components/commoncomponents/YearPicker";
 import { Button } from "@mui/material";
 import SettelmentTable from "../components/commoncomponents/SettelmentTable";
 import {
-  CREATE_TABLE,
-  GET_TABLE,
-  UPDATE_EXCEL_FILE,
+    CREATE_TABLE,
+    GET_TABLE,
+    UPDATE_EXCEL_FILE,
 } from "../services/crm/user.service";
 import toast from "react-hot-toast";
 import { useAppContext } from "../services/context/AppContext";
@@ -316,7 +316,7 @@ const Json = () => {
         return mappedRow;
       });
 
-      console.log("mappedData", mappedData);
+      
       // setUpdatedRows(mappedData)
       setLoading(true);
       async function UseUpdateApi() {
@@ -352,7 +352,7 @@ const Json = () => {
       toast.error("Table is already created for this month!");
       setCreating(false);
     }
-    console.log("createTable", createTable);
+    
   };
   useEffect(() => {
     async function fetchGetApi() {
@@ -428,7 +428,7 @@ const Json = () => {
       total,
     };
   }
-  console.log("table", generatedTable);
+  
   const rows = generatedTable?.map((salon) =>
     createData(
       salon.salonId,
@@ -464,7 +464,7 @@ const Json = () => {
       salon.total
     )
   );
-  console.log("rowss", rows);
+  
 
   const handleExport = () => {
     const formattedData = [columns.map((column) => column.label)];
@@ -511,7 +511,7 @@ const Json = () => {
                 <SelectInput
                   name="salon Type"
                   value={salonType}
-                  options={salonTypes}
+                  options={Object.values(salonTypes)}
                   handleChange={(e) => setSalonType(e.target.value)}
                 />
               </div>

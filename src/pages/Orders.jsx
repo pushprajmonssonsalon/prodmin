@@ -85,16 +85,16 @@ const Orders = () => {
       const { startDate, endDate } = getStartAndEndDate(date);
       const orders = await ORDERS_DETAILS({startDate,endDate,page:page, limit:rowsPerPage});
       if(orders){
-        console.log("parlors",orders.orders)
+        
         setOrdersDetails(orders.orders)
         setTotalOrders(orders.totalOrders)
       }else{
-        console.log("parlor errors")
+        
       }
     }
     fetchApi()
   },[date,page,rowsPerPage])
-  console.log({ordersDetails})
+  
   const mapStatus = (status) => {
     switch (status) {
         case 1:
@@ -122,16 +122,16 @@ const Orders = () => {
   useEffect(()=>{
     async function fetchApi(){
       const singleOrderDetail =await SINGLE_ORDERS_DETAILS({id:orderId});
-      console.log("singleOrderDetail",singleOrderDetail);
+      
       setSingleOrdersDetails(singleOrderDetail)
     }
     fetchApi()
   },[orderId])
-  console.log({rows})
-  console.log("order id", orderId)
+  
+  
   const handleExportExcel=async()=>{
     const excel = await ORDERS_DETAILS_FOR_EXCEL({startDate,endDate});
-    console.log("excel",excel.orders)
+    
     const transformedOrders = excel.orders.map(order => {
       return {
         ...order,

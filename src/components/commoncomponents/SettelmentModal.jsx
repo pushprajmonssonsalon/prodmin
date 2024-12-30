@@ -7,8 +7,8 @@ import * as XLSX from "xlsx";
 
 import Button from "@mui/material/Button";
 import {
-  CHANGE_PO_STATUS,
-  SINGLE_POORDER,
+    CHANGE_PO_STATUS,
+    SINGLE_POORDER,
 } from "../../services/crm/user.service";
 import BasicPOTable from "./BasicPOTable";
 import EditStatusModal from "./EditStatusModal";
@@ -128,7 +128,7 @@ export default function SettelmentModal({
   ];
   const currentYear = new Date().getFullYear();
   const currentMonth = new Date().getMonth();
-  console.log("current month", currentMonth);
+  
   const [month, setMonth] = useState();
   const [year, setYear] = useState();
   const [selectedParlorDetail, setSelectedParlorDetail] = useState({});
@@ -136,7 +136,7 @@ export default function SettelmentModal({
   const handleChange = (event) => {
     setStatus(event.target.value);
   };
-  console.log("salon_id", salonId);
+  
 
   useEffect(() => {
     setMonth(months[currentMonth]);
@@ -148,7 +148,7 @@ export default function SettelmentModal({
       const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
       const selectedDate = updatingDate;
       const singleParlourDetails = await SINGLE_POORDER({ id: salonId });
-      console.log("single", singleParlourDetails);
+      
       setSelectedParlorDetail(singleParlourDetails);
 
       if (singleParlourDetails) {

@@ -1,13 +1,17 @@
 import API_REQUEST from "../utils/axios.utils";
+import { salonTypes } from "../utils/roles";
 
 const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.215:4002`;
+// const baseUrl = `http://192.168.2.102:4000`;
 // const baseUrl = `http://192.168.2.21:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;
+const baseUrl3 = `https://monsoonsalon.com/api`;
+const baseUrl4 = `https://smartsalon.in/api`;
+
 const LOGIN_USERS = async (payload) => {
   const url = `${baseUrl}/admin/login`;
-  console.log({ payload });
+
   const response = await API_REQUEST(url, "post", payload);
   return response;
 };
@@ -23,14 +27,12 @@ const PARLOUR_DETAILS = async (payload) => {
   return response;
 };
 const PARLOUR_UPLOADSPDF = async (payload) => {
-  console.log("payload", payload);
   const url = `${baseUrl}/uploadPdf`;
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
 };
 const PO_UPLOADSPDF = async (payload) => {
-  console.log("payloadcoming", payload);
   const url = `${baseUrl}/uploadPO`;
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
@@ -145,6 +147,72 @@ const GET_SALONS = async (payload) => {
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
 };
+const GET_SALONS_PAGINATED = async (path, payload) => {
+  let url =
+    path === "/salondetsmart"
+      ? `${baseUrl4}/suggestionForParlors`
+      : `${baseUrl}/operation/getAllParlors`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+const GET_SALON = async (path, id) => {
+  
+  let url =
+    path === "salonsmart"
+      ? `${baseUrl4}/getSingleSalonDetail?id=${id}`
+      : `${baseUrl}/operation/getParlor/${id}`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "get", null, authString);
+  return response;
+};
+const CREATE_SALON = async (payload) => {
+  const {
+    salon: { name },
+  } = payload;
+  const newPayload = {
+    salon: { ...payload.salon, name: salonTypes[name] },
+  };
+  const url = `${baseUrl}/operation/createParlor`;
+  const url2 = `${baseUrl3}/salon/createSalon`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response1 = await API_REQUEST(url, "post", newPayload, authString);
+  
+  const uniqueCode = response1;
+  const newPayload2 = {
+    salon: { ...payload.salon, uniqueCode },
+  };
+  if (response1) {
+    const response2 = await API_REQUEST(url2, "post", newPayload2, authString);
+    return response2;
+  }
+  return response1;
+};
+const UPDATE_SALON = async (payload, path) => {
+  let url =
+    path === "salonsmart"
+      ? `${baseUrl3}/salon/updateSalon`
+      : `${baseUrl}/operation/updateParlor`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+
+  return response;
+};
+const UPLOAD_SALON_IMAGES = async (payload,id) => {
+  let url =`${baseUrl}/uploadSalonImages/${id}`
+    // path === "salonsmart"
+    //   ? `${baseUrl3}/salon/updateSalon`
+    //   : `${baseUrl}/operation/updateParlor`;
+
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+
+  return response;
+};
 
 const GET_ALL_SALONS_REPORT = async (payload) => {
   const url = `${baseUrl}/operation/getAllSalonsRevenue`;
@@ -157,7 +225,7 @@ const GET_SALONS_CREDENTIALS = async (payload) => {
   const url = `${baseUrl}/operation/getOwnerCred`;
 
   const authString = localStorage.getItem("crmtoken");
-  const response = await API_REQUEST(url, "get",null, authString);
+  const response = await API_REQUEST(url, "get", null, authString);
   return response;
 };
 
@@ -186,7 +254,7 @@ const CHANGE_PO_STATUS = async (payload) => {
   return response;
 };
 const POORDERS_FILTER = async (payload) => {
-  // console.log("payload.salonType", payload.salonType !== "" ? payload.salonType : null);
+  //
 
   // Construct query parameters based on payload values
   let queryParams = [];
@@ -228,7 +296,12 @@ export {
   GET_SALES_REPORT,
   GET_USER_DETAILS,
   UPDATE_MEMBERSHIP,
+  GET_SALON,
   GET_SALONS,
+  GET_SALONS_PAGINATED,
+  CREATE_SALON,
+  UPDATE_SALON,
+  UPLOAD_SALON_IMAGES,
   GET_ALL_SALONS_REPORT,
   GET_SALONS_CREDENTIALS,
   UPLOAD_VIDEO,

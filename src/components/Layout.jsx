@@ -9,7 +9,7 @@ const Layout = ({ children }) => {
   const location = useLocation();
   const currentPath = location.pathname.substring(1); // get the current path without the leading "/"
   const [activeItem, setActiveItem] = useState(currentPath || "Dashboard");
-  console.log(currentPath, activeItem, "activeItem path");
+  
 
   useEffect(() => {
     setActiveItem(currentPath || "Dashboard");

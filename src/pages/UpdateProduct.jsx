@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import TopBar from "../components/commoncomponents/TopBar";
 import Layout from "../components/Layout";
 import {
-  EDIT_INVENTORY,
-  GET_ALL_PRODUCTS,
-  GET_BRANDS,
+    EDIT_INVENTORY,
+    GET_ALL_PRODUCTS,
+    GET_BRANDS,
 } from "../services/crm/user.service";
 import TailwindTable from "../components/table/TailwindTable";
 import Pagination from "../components/pagination/Pagination";
@@ -95,12 +95,12 @@ const UpdateProduct = () => {
     (async () => {
       try {
         const res = await GET_BRANDS();
-        console.log(res);
+        
         if (res) {
           setBrands(res);
         }
       } catch (error) {
-        console.log("Error fetching brands");
+        
       }
     })();
   }, []);
@@ -135,7 +135,7 @@ const UpdateProduct = () => {
     }
   };
 
-  console.log(formData, "products");
+  
   return (
     <Layout>
       <div className="w-full flex flex-col">

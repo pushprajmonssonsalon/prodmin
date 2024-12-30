@@ -20,7 +20,7 @@ export default function CustomPopover() {
     setAnchorEl(null);
   };
   const handleLogout = () => {
-    console.log(pathname.split("/")[1]);
+    
     const path = pathname.split("/")[1];
     if (crmLinks.includes(path)) {
       localStorage.removeItem("crmtoken");

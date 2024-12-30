@@ -43,7 +43,7 @@ const EditVedio = () => {
   ];
 
   const handleSelect = (item) => {
-    console.log(item);
+    
     const selectedVideo =videos.find((elm)=>elm._id ===item._id)
     setSelectedVideo(selectedVideo);
   };
@@ -79,7 +79,7 @@ const EditVedio = () => {
           setVideos(res);
         })
         .catch(() => {
-          console.log("error fetching videos");
+          
         });
     })();
   }, [videoData]);

@@ -10,7 +10,7 @@ export default function Sidebar({ children }) {
   const {expanded, setExpanded} = useAppContext();
   
   return (
-    <aside className="h-screen sidebar">
+    <aside className="h-screen overflow-y-auto sidebar">
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
@@ -58,7 +58,7 @@ export default function Sidebar({ children }) {
 
 export function SidebarItem({ icon, text, active, alert,onClick }) {
   const { expanded } = useContext(SidebarContext)
-  // console.log("expanded", expanded,text,active,alert,onClick)
+  // 
   
   return (
     <li

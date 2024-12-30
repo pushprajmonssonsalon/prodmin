@@ -37,7 +37,7 @@ const Pagination = ({ totalItems, itemsPerPage, currentPage, onPageChange }) => 
   };
   
   // Example usage
-  console.log(generatePageNumbers());
+  
   // Output: [1, "...", 4, 5, 6, "...", 
   
   

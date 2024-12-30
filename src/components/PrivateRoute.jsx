@@ -4,7 +4,7 @@ const PrivateRoute = ({ component: Component,isCrm }) => {
     // const token = localStorage.getItem('token')
     const crmtoken = localStorage.getItem("crmtoken")
     const protoken = localStorage.getItem("protoken")
-    console.log(isCrm)
+    
 
     if(isCrm){
         

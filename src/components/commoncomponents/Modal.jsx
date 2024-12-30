@@ -49,7 +49,7 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
       const [month, setMonth] = useState();
       const [year, setYear] = useState();
       const [selectedParlorDetail,setSelectedParlorDetail] =useState([]);
-    // console.log("selected id",salonId);
+    // 
     useEffect(()=>{
         setMonth(months[currentMonth])
         setYear(currentYear.toString())
@@ -72,8 +72,8 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
         return { name, url,date };
       }
       const rows = selectedParlorDetail?.map((item)=>createData(item.fileName,<FaFileUpload className='text-xl font-bold text-right cursor-pointer' onClick={() => handlePdfUrl(item.invoiceUrl)}/>,item?.createdAt))
-    // console.log("single parlour", selectedParlorDetail)
-    // console.log(salonId,rows,'rows')
+    // 
+    // 
   return (
     <div>
       {/* <Button onClick={handleOpen}>Open modal</Button> */}

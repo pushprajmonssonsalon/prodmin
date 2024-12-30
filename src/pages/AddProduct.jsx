@@ -84,7 +84,7 @@ const AddProduct = () => {
   ];
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(value, "checked");
+    
     setFormData({
       ...formData,
       [name]:
@@ -97,7 +97,7 @@ const AddProduct = () => {
   const handleSubmit = (e) => {
    
     e.preventDefault();
-    const isEveryEmpty =Object.keys(formData).some((key)=>formData[key]===""||formData[key]===0)
+    const isEveryEmpty =Object.keys(formData).every((key)=>formData[key]===""||formData[key]===0)
     if(isEveryEmpty) return toast.error("Please fill all the fields");
     (async () => {
       try {
@@ -116,7 +116,7 @@ const AddProduct = () => {
         toast.success("Successfully created!")
 
       } catch (error) {
-        console.log("Error adding Product", error);
+        
       }
     })();
   };

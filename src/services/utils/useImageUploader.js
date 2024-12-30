@@ -1,7 +1,7 @@
 function useImageUploader() {
 
   const compressFile = async(file) => {
-    console.log("file", file);
+    
     try {
       if (file) {
         const newFile = await compressImage(file, file.name);

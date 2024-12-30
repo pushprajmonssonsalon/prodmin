@@ -10,7 +10,7 @@ export default function BasicTable({ headings, rows }) {
   function formatDateToFull(dateString) {
     if (dateString) {
       const [year, month, day] = dateString?.split("T")[0].split("-");
-      console.log(year, month, day, "datestr");
+      
       // Convert month from "08" to "Aug" or any other short form
       const monthNames = [
         "Jan",
@@ -34,7 +34,7 @@ export default function BasicTable({ headings, rows }) {
     }
     return dateString;
   }
-  console.log(rows,"rows")
+  
   return (
     <TableContainer sx={{maxHeight:'calc(100vh - 200px)',overflowX:"auto"}} component={Paper}>
       <Table sx={{ minWidth: 350 }} aria-label="simple table">

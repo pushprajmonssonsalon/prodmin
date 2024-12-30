@@ -23,7 +23,7 @@ const csvToJson = (csv) => {
   };
   // Split CSV into rows
   const rows = csv.split("\n").filter((row) => row.trim() !== ""); // Remove empty rows
-  console.log(rows,"json")
+  
 
   if (rows.length <= 1) return []; // No data rows
 

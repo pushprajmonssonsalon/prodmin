@@ -6,7 +6,7 @@ import Select from '@mui/material/Select';
 
 export default function EditStatusModal({status,setStatus,handleChange}) {
   
-//   console.log(status)
+//   
 
   return (
     <Box sx={{ minWidth: '70%' }}>

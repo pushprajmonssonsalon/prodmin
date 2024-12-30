@@ -179,7 +179,7 @@ const SalonReport = () => {
   );
 
   useEffect(() => {
-    console.log(searchWord, "searchWord");
+    
     if (searchWord && searchWord?.trim() && salons?.length > 0) {
       setFilteredSalon(
         salons?.filter((salon) => {
@@ -217,14 +217,14 @@ const SalonReport = () => {
   //         }, {});
   //         setWholeCustomerRevenue(result?.old?.totalRevenue)
   //         setNewCustomerRevenue(result?.new?.totalRevenue)
-  //         console.log("new customer result",result)
+  //         
   //       },(error)=>{
-  //         console.log(error)
+  //         
   //       }
   //     )
   //   },[startDate,endDate])
   const totalSum =categoryWiseDistrubution?.map((elm)=>({categories:elm.categories,name:elm.name}))
-console.log(totalSum,"categories")
+
   const sections = [
     {
       title: "COLLECTION",
@@ -325,7 +325,8 @@ console.log(totalSum,"categories")
                   onChange={handleChange("type")}
                 >
                   <option>Choose Type</option>
-                  {salonTypes.map((type, idx) => {
+                  {
+                    Object.values(salonTypes).map((type, idx) => {
                     return (
                       <option value={type} key={idx}>
                         {type}

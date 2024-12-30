@@ -47,13 +47,13 @@ const AddBulkProduct = () => {
         setProductData(initialData);
         toast.success("product created")
       } catch (error) {
-        console.log("Error adding Product", error);
+        
       }
     })();
   };
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    console.log(value, "checked");
+    
     setProductData({
       ...productData,
       [name]: type === "number" ? parseFloat(value) : value,
@@ -163,12 +163,12 @@ const AddBulkProduct = () => {
     (async () => {
       try {
         const res = await GET_BRANDS();
-        console.log(res);
+        
         if (res) {
           setBrands(res);
         }
       } catch (error) {
-        console.log("Error fetching brands");
+        
       }
     })();
   }, []);

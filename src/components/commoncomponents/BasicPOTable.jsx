@@ -7,7 +7,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 
 export default function BasicPOTable({ headings, rows }) {
-  console.log('rowscoming',rows)
+  
   function capitalizeFirstLetter(str) {
     return str
       .toLowerCase()

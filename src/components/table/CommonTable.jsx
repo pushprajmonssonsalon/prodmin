@@ -51,7 +51,7 @@ const CommonTable = ({ rows, cols, onUpdate }) => {
       }));
     }
   };
-  console.log(selectedProduct, "prod");
+  
   useEffect(() => {
     setIsEdit(Array(rows?.length).fill(false));
   }, [rows]);
@@ -70,7 +70,7 @@ const CommonTable = ({ rows, cols, onUpdate }) => {
             </tr>
           </thead>
           <tbody className="">
-            {rows?.map((row, index) => {
+            { rows?.length>0&&rows?.map((row, index) => {
               return (
                 <tr
                   key={index}

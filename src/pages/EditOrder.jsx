@@ -12,8 +12,8 @@ const EditOrder = () => {
   const [status, setStatus] = useState("");
   const [stockIds, setStockIds] = useState("");
   const [quantity, setQuantity] = useState("");
-  console.log("ids", ids);
-  console.log("status", status);
+  
+  
 
   const handleStatus = async () => {
     const orderIds = ids
@@ -27,7 +27,7 @@ const EditOrder = () => {
       setIds("");
       setStatus("");
     }
-    console.log("edit status", editstatus);
+    
   };
 
   const handleQuantityStatus =async()=>{

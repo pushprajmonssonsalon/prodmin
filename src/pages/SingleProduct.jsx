@@ -4,7 +4,7 @@ import TopBar from "../components/commoncomponents/TopBar";
 import {
   EDIT_PRODUCT_DETAILS,
   SINGLE_PRODUCT_DETAILS,
-  UPLOAD_PRODUCT,
+  UPLOAD_IMAGE,
 } from "../services/pro/user.service";
 import { useParams } from "react-router-dom";
 import { ImCross } from "react-icons/im";
@@ -129,15 +129,15 @@ const SingleProduct = () => {
     const file = event.target.files[0];
 
     const newFile = await compressFile(file);
-    console.log("newFile", newFile, "oldfile", file);
+    
     if (newFile) {
       const formData = new FormData();
       formData.append("image", newFile);
       formData.append("productId", productDetails?._id);
       try {
-        const uploadImage = await UPLOAD_PRODUCT(formData);
+        const uploadImage = await UPLOAD_IMAGE(formData);
         if (uploadImage) {
-          console.log("uploadImage", uploadImage);
+          
           setNewImages((prevImages) => [...prevImages, uploadImage]);
           toast.success("Successfully updated!");
         }
@@ -155,9 +155,9 @@ const SingleProduct = () => {
       formData.append("image", newFile);
       formData.append("productId", productDetails?._id);
       try {
-        const uploadImage = await UPLOAD_PRODUCT(formData);
+        const uploadImage = await UPLOAD_IMAGE(formData);
         if (uploadImage) {
-          console.log("uploadImage", uploadImage);
+          
           setNewDesImages((prevImages) => [...prevImages, uploadImage]);
           toast.success("Successfully updated!");
         }
@@ -174,12 +174,12 @@ const SingleProduct = () => {
       setNewDesImages((prevImages) => prevImages.filter((_, i) => i !== index));
     }
   };
-  console.log("new images", newImages);
+  
 
   const handleSubmitDetails = async (e) => {
     e.preventDefault();
 
-    console.log("updatedDetails", editDetails);
+    
     const allDetails = await EDIT_PRODUCT_DETAILS({
       obj: {
         images: newImages,
@@ -188,7 +188,7 @@ const SingleProduct = () => {
       },
       id: productDetails?._id,
     });
-    console.log("allDetails", allDetails);
+    
     if (allDetails) {
       setEditDetails({});
       toast.success("Successfully Updated!");
@@ -222,8 +222,8 @@ const SingleProduct = () => {
   };
 
   useEffect(() => {
-    console.log(productDetails, "product");
-    console.log(editDetails);
+    
+    
   }, []);
 
   return (

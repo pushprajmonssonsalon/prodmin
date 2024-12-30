@@ -11,7 +11,7 @@ const Products = () => {
   const [name, setName] = useState("");
   const [product, setProduct] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState({});
-  console.log("name", name);
+  
   useEffect(() => {
     async function fetchApi() {
       const product = await SEARCH_PRODUCT({ name });
@@ -24,7 +24,7 @@ const Products = () => {
     // setSelectedProduct(item);
     navigate(`/product/${item}`);
   };
-  console.log("products", selectedProduct);
+  
   
 
   return (

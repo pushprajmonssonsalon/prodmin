@@ -3,9 +3,9 @@ import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
 import Wrapper from "../components/commoncomponents/Wrapper";
 import {
-  ADD_QR_TO_PRODUCT,
-  ADD_VIDEO_TO_PRODUCT,
-  SALONCART_PRODUCTS,
+    ADD_QR_TO_PRODUCT,
+    ADD_VIDEO_TO_PRODUCT,
+    SALONCART_PRODUCTS,
 } from "../services/pro/user.service";
 import TailwindTable from "../components/table/TailwindTable";
 import SearchInput from "../components/commoncomponents/inputs/SearchInput";
@@ -67,10 +67,10 @@ const ProductsQrcodes = () => {
 
   useEffect(() => {
     if (search) {
-      console.log("inside if");
+      
       debouncedFunction(func, 300);
     } else {
-      console.log("inside else");
+      
 
       setFilteredProducts(products);
     }
@@ -96,7 +96,7 @@ const ProductsQrcodes = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        
       });
   };
   const handleSubmit = (index) => {
@@ -110,7 +110,7 @@ const ProductsQrcodes = () => {
     }
     ADD_VIDEO_TO_PRODUCT(payload)
       .then((res) => {
-        console.log(res, "res");
+        
         if (res) {
           setProducts((prev) =>
             prev.map((elm) =>
@@ -124,7 +124,7 @@ const ProductsQrcodes = () => {
         }
       })
       .catch((err) => {
-        console.log(err);
+        
       });
   };
   const rows = useMemo(() => {
@@ -200,7 +200,7 @@ const ProductsQrcodes = () => {
           setVideos(res);
         })
         .catch(() => {
-          console.log("error fetching videos");
+          
         });
     })();
   }, []);

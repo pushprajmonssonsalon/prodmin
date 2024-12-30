@@ -6,8 +6,8 @@ import YearPicker from "../components/commoncomponents/YearPicker";
 import CustomTable from "../components/commoncomponents/Table";
 import { FaFileUpload } from "react-icons/fa";
 import {
-  PARLOUR_DETAILS,
-  PARLOUR_UPLOADSPDF,
+    PARLOUR_DETAILS,
+    PARLOUR_UPLOADSPDF,
 } from "../services/crm/user.service";
 import toast from "react-hot-toast";
 import TransitionsModal from "../components/commoncomponents/Modal";
@@ -122,17 +122,17 @@ const ProDashboard = () => {
       const payload = { page: page, limit: rowsPerPage, salonType };
       const parlors = await PARLOUR_DETAILS(payload);
       if (parlors) {
-        console.log("parlors", parlors);
+        
         setSalonsDetails(parlors?.data);
         setTotalSalons(parlors?.total);
       } else {
-        console.log("parlor errors");
+        
       }
     };
     fetchApi();
   }, [page, rowsPerPage,salonType]);
   const handleRowClick = (salonId) => {
-    console.log(salonId, "salonid");
+    
     setSelectedSalonId(salonId);
   };
   const handleFileUploadClick = (salonId) => {
@@ -171,7 +171,7 @@ const ProDashboard = () => {
   };
 
   function createData(salonId, name, location, address, tradeName, invoice) {
-    // console.log("getting table value",_id,name,location,address,id, invoice)
+    // 
     return { salonId, name, location, address, tradeName, invoice };
   }
 
@@ -197,7 +197,7 @@ const ProDashboard = () => {
       salon._id
     )
   );
-  console.log("rows", rows);
+  
   const uploadFileApiCall = async (formData, salonId) => {
     const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
     if (uploadPDF) {
@@ -208,8 +208,8 @@ const ProDashboard = () => {
     }
   };
 
-  console.log("rows-per-page", rowsPerPage);
-  console.log("page", page);
+  
+  
   return (
     <Layout>
       <div className="w-full flex flex-col">
@@ -225,7 +225,7 @@ const ProDashboard = () => {
             <SelectInput
               name="salon Type"
               value={salonType}
-              options={salonTypes}
+              options={Object.values(salonTypes)}
               handleChange={(e) => setSalonType(e.target.value)}
             />
           </div>

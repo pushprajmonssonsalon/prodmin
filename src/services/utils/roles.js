@@ -27,8 +27,13 @@ const finance = [
 ];
 const operations = [
   {
-    text: "Salon Details",
-    activeItem: "salondet",
+    text: "Salon Details (smart salon)",
+    activeItem: "salondetsmart",
+    icon: <GiShop size={20} />,
+  },
+  {
+    text: "Salon Details (crm)",
+    activeItem: "salondetcrm",
     icon: <GiShop size={20} />,
   },
   {
@@ -49,7 +54,7 @@ const operations = [
   {
     text: "Edit Vedio",
     activeItem: "vedioedit",
-    icon: <FaEdit size={20}/>,
+    icon: <FaEdit size={20} />,
   },
   {
     text: "Edit Bulk Product",
@@ -87,7 +92,7 @@ const operations = [
     icon: <MdCardMembership size={20} />,
   },
 ];
-export const prokeys =[
+export const prokeys = [
   {
     text: "Orders",
     activeItem: "Orders",
@@ -113,7 +118,7 @@ export const prokeys =[
     activeItem: "productqr",
     icon: <BsQrCode size={20} />,
   },
- 
+
 ];
 
 export const crmLinks = [
@@ -131,13 +136,22 @@ export const crmLinks = [
 
   "salon",
 ];
-export const salonTypes =[
- "Smart Salon",
-"Monsoon Salon",
-"Monsoon Salon Pro",
-]
+export const salonTypes = {
+  "Smart Salon": "Smart Salon",
+  "Monsoon Pro": "Monsoon Salon Pro",
+  Monsoon: "Monsoon Salon",
+}
 export const crmroles = {
   finance,
   admin: [...finance, ...operations],
   operations,
 };
+
+export const dateFilters ={
+  TODAY:"Today", 
+  YESTERDAY:"YesterDay", 
+  LAST_7_DAYS:"Last 7 days",
+  CURRENT_MONTH: "Current month", 
+  PAST_MONTH:"Past month"
+}
+
