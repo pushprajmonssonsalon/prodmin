@@ -119,6 +119,9 @@ const FranchiseDashboard = () => {
         {
             name: "Budget", id: "salonBudget"
         },
+        {
+            name: "Date", id: "createdAt"
+        },
 
     ]
     const handleExport=()=>{

@@ -2,6 +2,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { dateFilters } from "../../services/utils/roles";
 import { FaFileExcel } from "react-icons/fa";
+import { format } from "date-fns";
 const TableComponent = ({ rows, loading, cols, exportoExcel, currentPage, handleSubmit, totalItems, setCurrentPage, itemsPerPage, setItemsPerPage, selectedFilter, handleFilterChange, setDropdownOpen, isDropdownOpen, startDate, endDate, handleDateChange }) => {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
 
@@ -212,7 +213,7 @@ const TableComponent = ({ rows, loading, cols, exportoExcel, currentPage, handle
 
                                                     return (
                                                         <td className="px-2 py-4 max-w-[200px] break-words whitespace-normal">
-                                                            {value}
+                                                            {col?.id==="createdAt"?format(value, 'dd-MM-yyyy hh:mm:ss a'):value}
                                                         </td>
 
                                                     );
