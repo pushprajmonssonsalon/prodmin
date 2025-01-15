@@ -11,101 +11,81 @@ import { ImCross } from "react-icons/im";
 import toast from "react-hot-toast";
 import useImageUploader from "../services/utils/useImageUploader";
 import Wrapper from "../components/commoncomponents/Wrapper";
+import { productOptions } from "../services/utils/roles";
 
 const SingleProduct = () => {
   const params = useParams();
-  const [stockQuantity, setStockQuantity] = useState(null);
   const { compressFile } = useImageUploader();
   const [productDetails, setProductDetails] = useState({
     name: "",
-    price: 0,
     eancode: "",
-    quantity: 0,
+    description: "",
+    price: 0,
     mrp: 0,
     bestSeller: false,
     newArrival: false,
-
     brand: "",
     category: "",
     subCategory: "",
     hsncode: "",
     skucode: "",
-    mpn: "",
-
-    uniqueId: 0,
-
-    itemForm: "",
-    description: "",
     ingredients: "",
-    liquidVolume: "",
-    length: 10,
-    breadth: 10,
-    height: 10,
-    weight: 10,
-
+    itemform: "",
+    liquidvolume: "",
+    length: 0,
+    breadth: 0,
+    height: 0,
+    weight: 0,
     isActive: false,
     active: false,
-    srno: 0,
-    rating: 0,
-    ratingCount: 0,
-    ratingTotal: 0,
-
-    type: "product",
-    stockQuantity: 10,
+    type: "products",
+    productbenefit: "",
+    stockQuantity: 0,
     productUrl: "",
     shortUrl: "",
-
+    benefitdesc: "",
+    rating: 0,
     keywords: "",
-    benefitDesc: "",
-    productBenefit: "",
   });
   const [editDetails, setEditDetails] = useState({});
   const inputLabels = {
-    name: "product name",
-    price: "price",
-    eancode: "ean code",
-    quantity: "quantity",
-    mrp: "mrp",
-    bestSeller: "best seller",
-    newArrival: "new arrival",
-
-    brand: "brand",
-    category: "category",
-    subCategory: "sub category",
-    hsncode: "hsn code",
-    skucode: "sku code",
-    mpn: "mpn",
-    uniqueId: "unique id",
-    description: "description",
-    ingredients: "ingredients",
-    itemForm: "item form",
-    liquidVolume: "liquid volume",
-    length: "length",
-    breadth: "breadth",
-    height: "height",
-    weight: "weight",
-
-    type: "type",
-    isActive: "isActive",
-    active: "active",
-    srno: "sr no",
-    rating: "rating",
-    ratingCount: "rating count",
-    ratingTotal: "rating total",
-    productBenefit: "product benefit",
-    stockQuantity: "stock quantity",
-
-    productUrl: "product url",
-    shortUrl: "short url",
-    benefitDesc: "benefit description",
-    rating: "rating",
-    keywords: "keywords",
+    name: "Product Name",
+    eancode: "EAN Code",
+    description: "Description",
+    price: "Price",
+    mrp: "MRP",
+    bestSeller: "Best Seller",
+    newArrival: "New Arrival",
+    brand: "Brand",
+    category: "Category",
+    subCategory: "Sub Category",
+    hsncode: "HSN Code",
+    skucode: "SKU Code",
+    ingredients: "Ingredients",
+    itemform: "Item Form",
+    liquidvolume: "Liquid Volume",
+    length: "Length",
+    breadth: "Breadth",
+    height: "Height",
+    weight: "Weight",
+    isActive: "Is Active",
+    active: "Active",
+    type: "Type",
+   
+    productbenefit: "Product Benefit",
+    stockQuantity: "Stock Quantity",
+    productUrl: "Product URL",
+    shortUrl: "Short URL",
+    benefitdesc: "Benefit Description",
+    rating: "Rating",
+    keywords: "Keywords",
   };
+  
   const otherfields = [
     "description",
     "ingredients",
-    "productBenefit",
-    "benefitDesc",
+    "productbenefit",
+    "benefitdesc",
     "keywords",
   ];
   const [newImages, setNewImages] = useState(productDetails?.images || []);
@@ -234,9 +214,9 @@ const SingleProduct = () => {
       <Wrapper>
         <form onSubmit={handleSubmitDetails} className="w-full">
           <div className="grid grid-cols-1 md:grid-cols-2  gap-4 capitalize">
-            {Object.keys(inputLabels).map((key) =>
+            {Object.keys(inputLabels).map((key,index) =>
               otherfields.includes(key) ? (
-                <div key={key} className="flex flex-col mb-4">
+                <div key={index} className="flex flex-col mb-4">
                   <label
                     htmlFor={key}
                     className="mb-2 font-medium text-gray-700"
@@ -254,7 +234,7 @@ const SingleProduct = () => {
                   />
                 </div>
               ) : typeof productDetails[key] === "boolean" || key === "type" ? (
-                <div key={key} className="flex flex-col mb-4">
+                <div key={index} className="flex flex-col mb-4">
                   <div className="mb-2 font-medium text-gray-700">
                     {inputLabels[key]}
                   </div>
@@ -272,7 +252,7 @@ const SingleProduct = () => {
                           />
                           <label
                             htmlFor={key}
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            className="ml-2 text-sm font-medium text-gray-900 "
                           >
                             Product
                           </label>
@@ -288,7 +268,7 @@ const SingleProduct = () => {
                           />
                           <label
                             htmlFor={key}
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            className="ml-2 text-sm font-medium text-gray-900 "
                           >
                             Combo
                           </label>
@@ -307,7 +287,7 @@ const SingleProduct = () => {
                           />
                           <label
                             htmlFor={key}
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            className="ml-2 text-sm font-medium text-gray-900 "
                           >
                             Yes
                           </label>
@@ -323,7 +303,7 @@ const SingleProduct = () => {
                           />
                           <label
                             htmlFor={key}
-                            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                            className="ml-2 text-sm font-medium text-gray-900 "
                           >
                             No
                           </label>
@@ -332,8 +312,34 @@ const SingleProduct = () => {
                     )}
                   </div>
                 </div>
-              ) : (
-                <div key={key} className="flex flex-col mb-4">
+              )
+              : key === "brand" || key === "category" || key === "subCategory" ?
+                                <div key={index} className="flex flex-col">
+                                  <div
+                                    htmlFor={key}
+                                    className="mb-2 font-medium text-gray-700"
+                                  >
+                                    {inputLabels[key]}
+                                  </div>
+                                  <select
+                                    id={key}
+                                    name={key}
+                                    value={productDetails[key]}
+              
+                                    className="border border-gray-300 focus:ring-2 outline-none p-2 rounded-md"
+                                    onChange={handleChange}
+                                  >
+                                    <option value="">Select {key}</option>
+                                    {productOptions[key].map((option) => (
+                                      <option key={option} value={option}>{option}</option>
+                                    ))
+              
+                                    }
+                                  </select>
+              
+                                </div>
+               : (
+                <div key={index} className="flex flex-col mb-4">
                   <label
                     htmlFor={key}
                     className="mb-2 font-medium text-gray-700"

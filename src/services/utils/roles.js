@@ -155,3 +155,31 @@ export const dateFilters ={
   PAST_MONTH:"Past month"
 }
 
+export const productOptions = {
+  brand: ["Loreal", "Argatin", "Skinconyc", "Spring H2O"],
+  category: ["Beauty", "Personal Care", "Hair care", "Skin Care"],
+  subCategory: [
+    "Bleach Cream",
+    "Essential Oil",
+    "Beauty Fragrance",
+    "Hair Color",
+    "Menicure and Pedicure",
+    "Hair Conditioner",
+    "Keratin Treatment",
+    "Sunscreen",
+    "Skin Care",
+    "Oil",
+    "Hair Shampoo",
+    "Hair Mask",
+    "Hair Repair Shampoo",
+    "Hair Oil",
+    "Conditioner",
+    "Sunscreen",
+    "Essential Oil",
+    "Skin Care",
+    "Beauty Fragrance",
+    "Hair Color"
+  ].sort()
+  
+};
+
