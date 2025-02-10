@@ -1,4 +1,3 @@
-import * as React from "react";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -7,8 +6,8 @@ import * as XLSX from "xlsx";
 
 import Button from "@mui/material/Button";
 import {
-    CHANGE_PO_STATUS,
-    SINGLE_POORDER,
+  CHANGE_PO_STATUS,
+  SINGLE_POORDER,
 } from "../../services/crm/user.service";
 import BasicPOTable from "./BasicPOTable";
 import EditStatusModal from "./EditStatusModal";
@@ -54,59 +53,7 @@ const months = [
   "November",
   "December",
 ];
-const years = [
-  "2000",
-  "2001",
-  "2002",
-  "2003",
-  "2004",
-  "2005",
-  "2006",
-  "2007",
-  "2008",
-  "2009",
-  "2010",
-  "2011",
-  "2012",
-  "2013",
-  "2014",
-  "2015",
-  "2016",
-  "2017",
-  "2018",
-  "2019",
-  "2020",
-  "2021",
-  "2022",
-  "2023",
-  "2024",
-  "2025",
-  "2026",
-  "2027",
-  "2028",
-  "2029",
-  "2030",
-  "2031",
-  "2032",
-  "2033",
-  "2034",
-  "2035",
-  "2036",
-  "2037",
-  "2038",
-  "2039",
-  "2040",
-  "2041",
-  "2042",
-  "2043",
-  "2044",
-  "2045",
-  "2046",
-  "2047",
-  "2048",
-  "2049",
-  "2050",
-];
+
 export default function SettelmentModal({
   open,
   setOpen,
@@ -115,6 +62,7 @@ export default function SettelmentModal({
   newUpload,
   salonId,
 }) {
+  const isDistributer=typeof salonId ==="object";
   const headings = [
     "name",
     "brand",
@@ -144,17 +92,24 @@ export default function SettelmentModal({
   }, [open]);
   
   useEffect(() => {
-    const fetchApi = async () => {
-      const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
-      const selectedDate = updatingDate;
-      const singleParlourDetails = await SINGLE_POORDER({ id: salonId });
+    if(isDistributer){
       
-      setSelectedParlorDetail(singleParlourDetails);
-
-      if (singleParlourDetails) {
-      }
-    };
-    fetchApi();
+      setSelectedParlorDetail(salonId);
+    }
+    else{
+      const fetchApi = async () => {
+        const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
+        const selectedDate = updatingDate;
+        const singleParlourDetails = await SINGLE_POORDER({ id: salonId });
+        
+        setSelectedParlorDetail(singleParlourDetails);
+  
+        if (singleParlourDetails) {
+        }
+      };
+      fetchApi();
+    }
+    
   }, [open]);
 
   function createData(
@@ -197,14 +152,19 @@ export default function SettelmentModal({
   }, [selectedParlorDetail]);
 
   const handleApplyStatus = async () => {
-    const changestatus = await CHANGE_PO_STATUS({
-      status: +status,
-      id: salonId,
-    });
-    if (changestatus) {
-      toast.success("Status Changed Successfully!");
-      setStatus("");
+    if(isDistributer){
+
+    }else{
+      const changestatus = await CHANGE_PO_STATUS({
+        status: +status,
+        id: salonId,
+      });
+      if (changestatus) {
+        toast.success("Status Changed Successfully!");
+        setStatus("");
+      }
     }
+    
   };
   const orderTotal = rows
     ?.reduce((acc, item) => acc + item?.total, 0)

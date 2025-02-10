@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import { isValidElement } from 'react';
 import { useAppContext } from '../../services/context/AppContext';
 
-export default function CustomTable({headings,rows,handleRowClick,handleOpen,page,setPage,rowsPerPage, setRowsPerPage,totalOrders,settelment=false}) {
+export default function CustomTable({distributer=false,headings,rows,handleRowClick,handleOpen,page,setPage,rowsPerPage, setRowsPerPage,totalOrders,settelment=false}) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -21,11 +21,21 @@ export default function CustomTable({headings,rows,handleRowClick,handleOpen,pag
     setPage(0);
   };
   const handleDoubleFunction=(row,col)=>{
-    const id = row?.salonId||row?.id;
+
+    if(distributer){
     
-    // 
-    handleRowClick(id);
-    if(allowedcols.includes(col.id))handleOpen();
+      console.log(row)
+      handleRowClick(row);
+      if(allowedcols.includes(col.id))handleOpen();
+    }
+    else{
+      const id = row?.salonId||row?.id;
+    
+      // 
+      handleRowClick(id);
+      if(allowedcols.includes(col.id))handleOpen();
+    }
+    
 
   }
 

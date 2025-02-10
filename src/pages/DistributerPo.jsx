@@ -1,0 +1,470 @@
+import React, { useEffect, useRef, useState } from "react";
+import Layout from "../components/Layout";
+import { MdCancel } from "react-icons/md";
+import TopBar from "../components/commoncomponents/TopBar";
+import CustomTable from "../components/commoncomponents/Table";
+import { DP_POORDERS_FILTER } from "../services/crm/user.service";
+import SettelmentModal from "../components/commoncomponents/SettelmentModal";
+import PickDate from "../components/commoncomponents/PickDate";
+import { Button } from "@mui/material";
+import EndDate from "../components/commoncomponents/EndDate";
+import axios from "axios";
+import { BsFileEarmarkImage } from "react-icons/bs";
+import Wrapper from "../components/commoncomponents/Wrapper";
+import exportToExcel from "../services/utils/exportToExcel";
+import SearchInput from "../components/commoncomponents/inputs/SearchInput";
+import SelectInput from "../components/commoncomponents/inputs/SelectInput";
+
+const DistributerPo = () => {
+
+    const fileInputRef = useRef(null);
+
+    const [salonsDetails, setSalonsDetails] = useState([]);
+    const defaultStartDate = new Date();
+    const [startDate, setStartDate] = useState(defaultStartDate);
+    const [endDate, setEndDate] = useState(defaultStartDate);
+    const [open, setOpen] = React.useState(false);
+    const [selectedDistributer, setSelectedDistributer] = useState(null);
+    const [newUpload, setNewUpload] = useState(false);
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [totalPO, setTotalPO] = useState(0);
+    const [status, setStatus] = useState("");
+    const [salonType, setSalonType] = useState("");
+
+
+    const [search, setSearch] = useState("");
+    const [imagefile, setImageFile] = useState([]);
+    const [fileId, setfileId] = useState("");
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const columns = [
+        { id: "poId", label: "PO Number" },
+
+        { id: "name", label: "Distributer" },
+        { id: "status", label: "Status" },
+        { id: "createdAt", label: "Ordered Date" },
+        { id: "receivedAt", label: "Received Date" },
+        // { id: "pod", label: "pod" },
+        // { id: "downInvoice", lable: "downInvoice" },
+        // { id: "downInvoice", label: "downInvoice" },
+    ];
+
+
+    const authString = localStorage.getItem("crmtoken");
+    function createData(
+        poId,
+        trade,
+        salonid,
+        name,
+        location,
+        contactNum,
+        address,
+        status,
+        createdAt,
+        receivedAt,
+        id,
+        pod,
+        invoiceImg
+    ) {
+        // 
+        return {
+            poId,
+            trade,
+            salonid,
+            name,
+            location,
+            contactNum,
+            address,
+            status: getStatus(status),
+            createdAt,
+            receivedAt,
+            id,
+            pod,
+            downInvoice: invoiceImg,
+        };
+    }
+    useEffect(() => {
+        const fetchApi = async () => {
+            const parlors = await DP_POORDERS_FILTER({
+                search: search.trim(),
+                salonType,
+                status,
+                startDate,
+                endDate,
+                page,
+                rowsPerPage,
+            });
+            setSalonsDetails(parlors?.data);
+            setTotalPO(parlors?.total);
+        };
+        fetchApi();
+    }, [
+        page,
+        rowsPerPage,
+        startDate,
+        endDate,
+        search,
+        salonType,
+        status,
+        imagefile,
+    ]);
+    const handleRowClick = (payload) => {
+        setSelectedDistributer(payload);
+    };
+
+    const download = async (imageUrl) => {
+        // Create a new anchor element
+        const link = document.createElement("a");
+        link.href = imageUrl;
+        link.target = "_blank";
+
+        // Set the download attribute with a filename
+        link.download = "Invoice.jpg";
+
+        // Append the anchor to the document body
+        document.body.appendChild(link);
+
+        // Programmatically click the anchor to trigger the download
+        link.click();
+
+        // Remove the anchor from the document body
+        document.body.removeChild(link);
+    };
+
+    function getStatus(statusCode) {
+        switch (statusCode) {
+            case 1:
+                return "Placed";
+            case 2:
+                return "Received/Delivered";
+            case 3:
+                return "Canceled";
+            case 4:
+                return "Accepted";
+            case 5:
+                return "Packaging";
+            case 6:
+                return "Dispatch";
+            case 7:
+                return "Waiting For Payment";
+            default:
+                return "Unknown Status";
+        }
+    }
+
+    const handleCancelImages = async (id) => {
+        const data = {
+            id: id,
+        };
+        try {
+            const response = await axios.post(
+                "https://crm.smartsalon.in/finance/deletePOtrackimg",
+                data,
+                {
+                    headers: {
+                        Authorization: `Bearer ${authString}`,
+                    },
+                }
+            );
+            setImageFile(null);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = "";
+            }
+        } catch { }
+    };
+
+    const handleFileChange = async (e) => {
+        setImageFile(e.target.files[0]);
+
+        let imageData = e.target.files[0];
+        const formData = new FormData();
+        formData.append("image", imageData);
+        formData.append("fileId", fileId);
+
+
+        // try {
+        //     const response = await axios.post(
+        //         "https://crm.smartsalon.in/uploadPO",
+        //         formData,
+        //         {
+        //             headers: {
+        //                 Authorization: `Bearer ${authString}`,
+        //             },
+        //         }
+        //     );
+
+        //     if (response) {
+
+        //         const fetchApi = async () => {
+        //             const parlors = await DP_POORDERS_FILTER({
+        //                 search: search.trim(),
+        //                 salonType,
+        //                 status,
+        //                 startDate,
+        //                 endDate,
+        //                 page,
+        //                 rowsPerPage,
+        //             });
+        //             // setSalonsDetails(parlors?.data);
+        //             setTotalPO(parlors?.total);
+        //         };
+        //         fetchApi();
+        //     }
+        // } catch (error) {
+        //     console.error("Error uploading image:", error);
+        // }
+    };
+
+    function formatDateToFull(dateString) {
+        // Split the date part from the time part
+        if (dateString) {
+            const [year, month, day] = dateString?.split("T")[0].split("-");
+
+            // Convert month from "08" to "Aug" or any other short form
+            const monthNames = [
+                "Jan",
+                "Feb",
+                "Mar",
+                "Apr",
+                "May",
+                "Jun",
+                "Jul",
+                "Aug",
+                "Sep",
+                "Oct",
+                "Nov",
+                "Dec",
+            ];
+            const monthShort = monthNames[parseInt(month, 10) - 1];
+
+            // Format the date as "7 Aug 2024"
+            const formattedDate = `${parseInt(day, 10)} ${monthShort} ${year}`;
+            return formattedDate;
+        }
+        return dateString;
+    }
+
+    // salon?.trade
+
+    //  const rows = salonsDetails?.map((salon)=> createData(salon?.poId,salon?.trade,salon?._id,salon?.name,salon?.address2,salon?.contactNum,salon?.address,salon?.status,formatDateToFull(salon?.createdAt),salon?.receivedAt,salon?._id)
+    // );
+    const rows = salonsDetails?.map((salon) => {
+        return {
+            ...createData(
+                salon?.poId,
+
+                salon?.trade,
+                salon?.salonId,
+                salon?.name,
+                salon?.address2,
+                salon?.contactNum,
+                salon?.address,
+                salon?.status,
+                formatDateToFull(salon?.createdAt),
+                formatDateToFull(salon?.receivedDate),
+                salon?._id,
+
+                // salon?.trackImg
+                <>
+                    <div
+                        onClick={() => {
+                            setfileId(salon?._id);
+                        }}
+                    >
+                        <input
+                            type="file"
+                            id="image"
+                            accept="image/*"
+                            className="mb-2"
+                            ref={fileInputRef} // Add the ref here
+                            onChange={handleFileChange}
+                        // className="w-full px-3 py-2 border rounded-md"
+                        />
+
+                        {salonsDetails?.map((image, index) => {
+
+                            return (
+                                salon?._id === image._id &&
+                                salon?.trackImg && (
+                                    <div
+                                        key={salon._id}
+                                        style={{
+                                            position: "relative",
+                                            background: "whitsmoke",
+                                            height: "120px",
+                                            width: "120px",
+                                        }}
+                                    >
+                                        {
+                                            <img
+                                                src={salon.trackImg}
+                                                alt="img"
+                                                style={{ height: "100px", width: "100px" }}
+                                            />
+                                        }
+                                        <MdCancel
+                                            className="absolute text-2xl text-black -top-1 -right-2 cursor-pointer"
+                                            onClick={() => handleCancelImages(salon._id)}
+                                        />
+                                    </div>
+                                )
+                            );
+                        })}
+                    </div>
+                </>,
+
+                <>
+                    <div
+                        onClick={() => {
+                            setfileId(salon?._id);
+                        }}
+                    >
+                        {salonsDetails?.map((item, index) => {
+
+                            return (
+                                salon?._id === item?._id &&
+                                item?.invoiceImg?.length > 0 && (
+                                    <div
+                                        className="flex gap-2 flex-wrap"
+                                        key={index}
+                                        style={{
+                                            position: "relative",
+                                            background: "whitsmoke",
+                                            height: "120px",
+                                            width: "180px",
+                                            overflowY: "auto",
+                                        }}
+                                    >
+                                        {item?.invoiceImg?.map((image, index) => {
+                                            return (
+                                                <BsFileEarmarkImage
+                                                    style={{ height: "40%", width: "fit-content" }}
+                                                    className=""
+                                                    onClick={() => download(image)}
+                                                />
+                                            );
+                                        })}
+                                    </div>
+                                )
+                            );
+                        })}
+                    </div>
+                </>,
+
+
+            ),
+            products: salon?.products
+        }
+
+    }
+    );
+
+
+    const handleExportExcel = () => {
+        const allProducts = [];
+        salonsDetails.forEach((elm) => {
+            const { products, ...rest } = elm;
+
+            allProducts.push(
+                ...products.map((item) => ({ ...item, poId: elm.poId }))
+            );
+        });
+
+        exportToExcel(allProducts, "Orders", "Orders.xlsx");
+    };
+    const statuses = [
+        { value: 1, name: "Placed" },
+        { value: 2, name: "Received/Delivered" },
+        { value: 3, name: "Canceled" },
+        { value: 4, name: "Accepted" },
+        { value: 5, name: "Packaging" },
+        { value: 6, name: "Dispatch" },
+    ];
+
+    return (
+        <Layout>
+            <div className="w-full flex flex-col">
+                <TopBar title="Distributer PO Orders" />
+            </div>
+            <Wrapper>
+                <div className="w-[100%] mx-auto">
+                    <div className="w-[97%] mx-auto">
+                        <div className="flex items-center justify-end">
+                            <Button variant="contained" onClick={handleExportExcel}>
+                                Export to Excel
+                            </Button>
+                        </div>
+                        <div className=" mx-auto flex flex-wrap items-center justify-center  gap-4 mt-4 ">
+                            <div className="flex flex-col">
+                                <label className="text-black  text-lg font-medium font-serif">
+                                    Start Date :
+                                </label>
+                                <PickDate datte={startDate} setDatte={setStartDate} />
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="text-black  text-lg font-medium font-serif">
+                                    End Date :
+                                </label>
+                                <EndDate
+                                    datte={endDate}
+                                    setDatte={setEndDate}
+                                    startDate={startDate}
+                                />
+                            </div>
+                            {/* <Button variant="contained" className='mt-8'>Search</Button> */}
+                        </div>
+                        <div className="mt-6 flex item-center flex-wrap lg:flex-nowrap justify-between gap-3 items-center ">
+                            <SearchInput
+                                name="Search"
+                                value={search}
+                                placeholder="Search"
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+                            {/* <SelectInput
+                name="salon Type"
+                value={salonType}
+                options={Object.values(salonTypes)}
+                handleChange={(e) => setSalonType(e.target.value)}
+              /> */}
+                            <SelectInput
+                                name="Status"
+                                value={status}
+                                options={statuses}
+                                newOption={true}
+                                handleChange={(e) => setStatus(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className=" mx-auto">
+                        <CustomTable
+                            settelment={true}
+                            headings={columns}
+                            rows={rows}
+                            page={page}
+                            distributer={true}
+                            setPage={setPage}
+                            rowsPerPage={rowsPerPage}
+                            setRowsPerPage={setRowsPerPage}
+                            totalOrders={totalPO}
+                            handleRowClick={handleRowClick}
+                            handleOpen={handleOpen}
+                        />
+                    </div>
+                </div>
+            </Wrapper>
+
+            <SettelmentModal
+                open={open}
+                setOpen={setOpen}
+                handleOpen={handleOpen}
+                handleClose={handleClose}
+                newUpload={newUpload}
+                salonId={selectedDistributer}
+            />
+        </Layout>
+    );
+};
+
+export default DistributerPo;

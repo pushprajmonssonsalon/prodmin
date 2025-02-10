@@ -28,6 +28,8 @@ import SalonCredentials from "./pages/SalonCredentials";
 import EditMembersip from "./pages/EditMembersip";
 import FranchiseDashboard from "./pages/franchise/FranchiseDashboard";
 import FranchiseLayout from "./components/commoncomponents/FranchiseLayout";
+import CreateDistributer from "./pages/CreateDistributer";
+import DistributerPo from "./pages/DistributerPo";
 const App = () => {
   const location = useLocation();
 
@@ -56,6 +58,14 @@ const App = () => {
         <Route
           path="/poorders"
           element={<PrivateRoute isCrm={true} component={Settelment} />}
+        />
+        <Route
+          path="/dbpoorders"
+          element={<PrivateRoute isCrm={true} component={DistributerPo} />}
+        />
+        <Route
+          path="/create-distributer"
+          element={<PrivateRoute isCrm={true} component={CreateDistributer} />}
         />
         <Route
           path="/salondetsmart"

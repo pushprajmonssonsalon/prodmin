@@ -1,5 +1,5 @@
 import { BsBoxes, BsQrCode } from "react-icons/bs";
-import { FaEdit, FaFileInvoiceDollar, FaRegEdit } from "react-icons/fa";
+import { FaEdit, FaFileInvoiceDollar, FaRegEdit, FaUser } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
 import { GrDeliver } from "react-icons/gr";
 import { IoIosDocument } from "react-icons/io";
@@ -20,8 +20,19 @@ const finance = [
     icon: <TbCreditCardRefund size={20} />,
   },
   {
+    text: "Add Distributer",
+    activeItem: "create-distributer",
+    icon: <FaUser  size={20} />
+    
+  },
+  {
     text: "PO Orders",
     activeItem: "poorders",
+    icon: <GrDeliver size={20} />,
+  },
+  {
+    text: "Distributer PO Orders",
+    activeItem: "dbpoorders",
     icon: <GrDeliver size={20} />,
   },
 ];
