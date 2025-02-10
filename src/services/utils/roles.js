@@ -22,8 +22,8 @@ const finance = [
   {
     text: "Add Distributer",
     activeItem: "create-distributer",
-    icon: <FaUser  size={20} />
-    
+    icon: <FaUser size={20} />
+
   },
   {
     text: "PO Orders",
@@ -158,39 +158,29 @@ export const crmroles = {
   operations,
 };
 
-export const dateFilters ={
-  TODAY:"Today", 
-  YESTERDAY:"YesterDay", 
-  LAST_7_DAYS:"Last 7 days",
-  CURRENT_MONTH: "Current month", 
-  PAST_MONTH:"Past month"
+export const dateFilters = {
+  TODAY: "Today",
+  YESTERDAY: "YesterDay",
+  LAST_7_DAYS: "Last 7 days",
+  CURRENT_MONTH: "Current month",
+  PAST_MONTH: "Past month"
 }
 
 export const productOptions = {
   brand: ["Loreal", "Argatin", "Skinconyc", "Spring H2O"],
   category: ["Beauty", "Personal Care", "Hair care", "Skin Care"],
   subCategory: [
-    "Bleach Cream",
-    "Essential Oil",
-    "Beauty Fragrance",
-    "Hair Color",
-    "Menicure and Pedicure",
-    "Hair Conditioner",
-    "Keratin Treatment",
-    "Sunscreen",
-    "Skin Care",
-    "Oil",
-    "Hair Shampoo",
-    "Hair Mask",
-    "Hair Repair Shampoo",
-    "Hair Oil",
-    "Conditioner",
-    "Sunscreen",
-    "Essential Oil",
-    "Skin Care",
-    "Beauty Fragrance",
-    "Hair Color"
-  ].sort()
-  
+    'Beauty fragrance', 'Bleach cream',
+    'Conditioner', 'Essential oil',
+    'Facial kit', 'Hair care',
+    'Hair color', 'Hair conditioner',
+    'Hair mask', 'Hair oil',
+    'Hair repair shampoo', 'Hair shampoo',
+    'Keratin treatment', 'Menicure and pedicure',
+    'Oil', 'Shampoo',
+    'Skin care', 'Skin mask',
+    'Sunscreen', 'Treatment'
+  ]
+
 };
 
