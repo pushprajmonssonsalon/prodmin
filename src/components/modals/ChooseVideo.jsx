@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Modal from "../modal/Modal";
-import { GET_ALL_VEDIOS } from "../../services/crm/user.service";
 
 const ChooseVideo = ({ show, setShow, onSubmit, videos }) => {
   return (

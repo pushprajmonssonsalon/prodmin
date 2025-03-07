@@ -30,6 +30,7 @@ import FranchiseDashboard from "./pages/franchise/FranchiseDashboard";
 import FranchiseLayout from "./components/commoncomponents/FranchiseLayout";
 import CreateDistributer from "./pages/CreateDistributer";
 import DistributerPo from "./pages/DistributerPo";
+import AddReview from "./pages/AddReview";
 const App = () => {
   const location = useLocation();
 
@@ -145,6 +146,10 @@ const App = () => {
         <Route
           path="/products"
           element={<PrivateRoute isCrm={false} component={Products} />}
+        />
+        <Route
+          path="/add-review"
+          element={<PrivateRoute isCrm={false} component={AddReview} />}
         />
         <Route
           path="/edit"
