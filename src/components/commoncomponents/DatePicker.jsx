@@ -1,13 +1,13 @@
-import * as React from 'react';
 // import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
-export default function DatePicker({ date, setDate}) {
+export default function DatePicker({ date, setDate,onSubmit}) {
 
   const handleChange = (event) => {
     setDate(event.target.value)
+    onSubmit(event.target.value)
   };
 
   return (

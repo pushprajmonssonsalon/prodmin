@@ -124,11 +124,7 @@ export const prokeys = [
     activeItem: "Add",
     icon: <MdCreate size={20} />,
   },
-  {
-    text: "Add Review",
-    activeItem: "add-review",
-    icon: <MdCreate size={20} />,
-  },
+ 
   {
     text: "Product QrCodes",
     activeItem: "productqr",
