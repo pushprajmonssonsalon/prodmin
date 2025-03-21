@@ -13,6 +13,7 @@ const AddProduct = () => {
     description: "",
     price: 0,
     mrp: 0,
+    discount: 0,
     bestSeller: false,
     newArrival: false,
     brand: "",
@@ -44,6 +45,7 @@ const AddProduct = () => {
     description: "Description",
     price: "Price",
     mrp: "MRP",
+    discount:"Discount",
     bestSeller: "Best Seller",
     newArrival: "New Arrival",
     brand: "Brand",
@@ -80,17 +82,31 @@ const AddProduct = () => {
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    setFormData({
-      ...formData,
-      [name]:
-        type === "checkbox"
-          ? checked
-          : type === "radio"
-          ? name === "type"
-            ? value
-            : value === "true"
-          : value,
-    });
+    if(name==="discount"){
+      let dis=Math.min(100,parseInt(value))
+      setFormData({
+        ...formData,
+      discount:dis,
+      price:formData?.mrp-(formData?.mrp*dis/100)
+      });
+    }
+    else{
+      setFormData({
+        ...formData,
+        [name]:
+          type === "checkbox"
+            ? checked
+            : type === "radio"
+            ?name === "type"
+              ? value
+              : value === "true"
+            : value,
+      });
+    }
+  
+    
+    
+    
   };
 
 
