@@ -1,0 +1,164 @@
+import { useEffect, useState } from "react";
+import Modal from "../modal/Modal";
+import MonthPicker from "../commoncomponents/MonthPicker";
+import YearPicker from "../commoncomponents/YearPicker";
+import { PARLOUR_UPLOADSPDF, SINGLE_PARLOUR_DETAILS } from "../../services/crm/user.service";
+import { FaRegFileAlt } from "react-icons/fa";
+import formatDateToFull from "../../services/utils/formatDate";
+import { Link } from "react-router-dom";
+import toast from "react-hot-toast";
+
+const InvoiceModal = ({ show, setShow, onSubmit, salonId }) => {
+    return (
+        <>
+            {" "}
+            <Modal show={show} setShow={setShow}>
+                <ChildComponent onSubmit={onSubmit} show={show} salonId={salonId} />
+            </Modal>
+        </>
+    );
+};
+
+const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+];
+const years = [
+    "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009",
+    "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019",
+    "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029",
+    "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039",
+    "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
+];
+const ChildComponent = ({ closeModal, salonId ,show}) => {
+    const currentYear = new Date().getFullYear();
+    const currentMonth = new Date().getMonth();
+    const [month, setMonth] = useState(months[currentMonth]);
+    const [year, setYear] = useState(currentYear.toString());
+    const [selectedParlorDetail, setSelectedParlorDetail] = useState([]);
+    const fetchApi = async () => {
+        if (salonId && month && year && show) {
+            const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
+            const selectedDate = updatingDate;
+            const singleParlourDetails = await SINGLE_PARLOUR_DETAILS({ salonId, selectedDate });
+            if (singleParlourDetails) {
+                setSelectedParlorDetail(singleParlourDetails)
+            }
+        }
+    }
+    const uploadFileApiCall = async (formData) => {
+        const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
+        if (uploadPDF) {
+            toast.success("File Uploaded");
+            fetchApi()
+        } else {
+            toast.error("File not uploaded, Please try again!");
+        }
+    };
+    const handleFileUpload = async (file) => {
+        if (file && salonId) {
+            try {
+                const formData = new FormData();
+                formData.append("royaltypdf", file);
+                formData.append("salonId", salonId);
+                const selectedDate = new Date(Date.UTC(year, months.indexOf(month)));
+                formData.append("uploadedDate", selectedDate.toISOString());
+
+                // Replace with your file upload API call
+                await uploadFileApiCall(formData);
+
+                // Reset file input
+
+                // Refresh the data or update UI accordingly
+            } catch (error) {
+                console.error("File upload failed", error);
+            }
+        }
+    };
+
+    const handleFileChange = (event) => {
+        const file = event.target.files[0];
+        handleFileUpload(file);
+    };
+    useEffect(() => {
+
+        fetchApi()
+    }, [month, year,show])
+
+    return (
+        <div className="relative top-[10%] bottom-[20%] m-auto p-4 w-full h-full my-auto max-w-[60vw] max-h-full">
+            {/* Modal content */}
+            <div className="relative h-fit  my-auto bg-white rounded-lg shadow ">
+                {/* Modal header */}
+                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t ">
+                    <h3 className="text-lg font-semibold text-gray-900 ">Invoices</h3>
+                    <button
+                        onClick={closeModal}
+                        type="button"
+                        className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm h-8 w-8 ms-auto inline-flex justify-center items-center  "
+                        data-modal-toggle="select-modal"
+                    >
+                        <svg
+                            className="w-3 h-3"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 14 14"
+                        >
+                            <path
+                                stroke="currentColor"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                            />
+                        </svg>
+                        <span className="sr-only">Close modal</span>
+                    </button>
+                </div>
+                {/* Modal body */}
+                <div className="p-4 h-full  md:p-5">
+                    <div className=' flex flex-col md:flex-row gap-3 mb-4 w-1/2'>
+                        <MonthPicker months={months} month={month} setMonth={setMonth} />
+                        <YearPicker years={years} year={year} setYear={setYear} />
+                    </div>
+                    <p className="text-gray-500  mb-4">Invoices:</p>
+
+                    {selectedParlorDetail?.length > 0 ? <ul className="max-h-[200px] overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mb-4">
+                        {selectedParlorDetail?.map((elm, idx) => (
+                            <li key={idx} className=" border   rounded shadow p-2 text-gray-400">
+                                <Link to={elm.invoiceUrl} target="_blank" className="flex gap-3">
+                                    <FaRegFileAlt className="text-[3rem]" />
+
+                                    <div className="text-xs">
+                                        <div>Uploaded At</div>
+                                        <div>{formatDateToFull(elm.createdAt)}</div>
+                                    </div>
+                                </Link>
+                            </li>
+                        ))}
+                    </ul> : <div className="text-center py-5 text-gray-500">
+                        <span>No Invoices Found</span>
+                    </div>}
+                    <div
+                        className=""
+                    >
+                        <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="file_input">
+                            Upload File
+                        </label>
+                        <input
+                            type="file"
+                            id="file_input"
+                            onChange={handleFileChange}
+                            className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50
+    file:bg-blue-600 file:text-white file:border-0 file:py-2 file:px-4 file:rounded file:cursor-pointer"
+                        />
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    );
+};
+export default InvoiceModal;

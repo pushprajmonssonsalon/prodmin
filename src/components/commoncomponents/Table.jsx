@@ -33,7 +33,7 @@ export default function CustomTable({distributer=false,headings,rows,handleRowCl
     
       // 
       handleRowClick(id);
-      if(allowedcols.includes(col.id))handleOpen();
+      //  handleOpen();
     }
     
 

@@ -1,8 +1,8 @@
 import API_REQUEST from "../utils/axios.utils";
 import { salonTypes } from "../utils/roles";
 
-const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.102:4000`;
+// const baseUrl = `https://crm.smartsalon.in`;
+const baseUrl = `http://192.168.2.205:4002`;
 // const baseUrl = `http://192.168.3.36:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;
@@ -32,6 +32,18 @@ const PARLOUR_UPLOADSPDF = async (payload) => {
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
 };
+const PARLOUR_UPLOADSKYC = async (payload) => {
+  const url = `${baseUrl}/uploadKyc`;
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+const DELETE_FILE = async (payload) => {
+  const url = `${baseUrl}/deleteFile`;
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
 const PO_UPLOADSPDF = async (payload) => {
   const url = `${baseUrl}/uploadPO`;
   const authString = localStorage.getItem("crmtoken");
@@ -40,6 +52,12 @@ const PO_UPLOADSPDF = async (payload) => {
 };
 const SINGLE_PARLOUR_DETAILS = async (payload) => {
   const url = `${baseUrl}/finance/getSalonRoyaltyInvoiceofSingleSalon`;
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+const SINGLE_PARLOUR_KYC = async (payload) => {
+  const url = `${baseUrl}/finance/getSalonKycofSingleSalon`;
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
@@ -321,6 +339,7 @@ export {
   PARLOUR_UPLOADSPDF,
   SINGLE_PARLOUR_DETAILS,
   SINGLE_SALON_DETAILS,
+  SINGLE_PARLOUR_KYC,
   CREATE_TABLE,
   GET_TABLE,
   CREATE_BULK_PRODUCT,
@@ -328,6 +347,8 @@ export {
   SEND_NOTIFICATION,
   UPDATE_VEDIO,
   GET_BRANDS,
+  DELETE_FILE,
+  PARLOUR_UPLOADSKYC,
   GET_SALES_REPORT,
   GET_USER_DETAILS,
   UPDATE_MEMBERSHIP,

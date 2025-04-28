@@ -25,7 +25,7 @@ const Modal = ({show,setShow,children}) => {
         <div
           ref={modalRef}
           id="select-modal"
-          className="slide-in-top overflow-y-hidden overflow-x-hidden fixed top-0 right-0 left-0 ma z-50 justify-center items-center w-full md:inset-0 h-full"
+          className="slide-in-top overflow-y-hidden overflow-x-hidden fixed top-0 right-0 left-0  bg-black/10 ma z-50 justify-center items-center w-full  h-full"
         >
           {React.cloneElement(children, { closeModal,openModal })}
 
