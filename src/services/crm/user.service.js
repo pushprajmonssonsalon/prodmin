@@ -1,8 +1,8 @@
 import API_REQUEST from "../utils/axios.utils";
 import { salonTypes } from "../utils/roles";
 
-// const baseUrl = `https://crm.smartsalon.in`;
-const baseUrl = `http://192.168.2.205:4002`;
+const baseUrl = `https://crm.smartsalon.in`;
+// const baseUrl = `http://192.168.2.205:4002`;
 // const baseUrl = `http://192.168.3.36:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;
@@ -39,7 +39,13 @@ const PARLOUR_UPLOADSKYC = async (payload) => {
   return response;
 };
 const DELETE_FILE = async (payload) => {
-  const url = `${baseUrl}/deleteFile`;
+  const url = `${baseUrl}/deleteKycFile`;
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+const DELETE_ROYALITY_FILE = async (payload) => {
+  const url = `${baseUrl}/deleteRoyalityFile`;
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
@@ -348,6 +354,7 @@ export {
   UPDATE_VEDIO,
   GET_BRANDS,
   DELETE_FILE,
+  DELETE_ROYALITY_FILE,
   PARLOUR_UPLOADSKYC,
   GET_SALES_REPORT,
   GET_USER_DETAILS,

@@ -2,11 +2,13 @@ import { useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import MonthPicker from "../commoncomponents/MonthPicker";
 import YearPicker from "../commoncomponents/YearPicker";
-import { PARLOUR_UPLOADSPDF, SINGLE_PARLOUR_DETAILS } from "../../services/crm/user.service";
-import { FaRegFileAlt } from "react-icons/fa";
+import { DELETE_FILE, DELETE_ROYALITY_FILE, PARLOUR_UPLOADSPDF, SINGLE_PARLOUR_DETAILS } from "../../services/crm/user.service";
+import { FaLink } from "react-icons/fa";
 import formatDateToFull from "../../services/utils/formatDate";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
+import { MdDeleteForever } from "react-icons/md";
+import ConfirmationModal from "./ConfirmationModal";
 
 const InvoiceModal = ({ show, setShow, onSubmit, salonId }) => {
     return (
@@ -30,11 +32,13 @@ const years = [
     "2030", "2031", "2032", "2033", "2034", "2035", "2036", "2037", "2038", "2039",
     "2040", "2041", "2042", "2043", "2044", "2045", "2046", "2047", "2048", "2049", "2050"
 ];
-const ChildComponent = ({ closeModal, salonId ,show}) => {
+const ChildComponent = ({ closeModal, salonId, show }) => {
     const currentYear = new Date().getFullYear();
     const currentMonth = new Date().getMonth();
     const [month, setMonth] = useState(months[currentMonth]);
     const [year, setYear] = useState(currentYear.toString());
+    const [showConfirmation, setShowConfirmation] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
     const [selectedParlorDetail, setSelectedParlorDetail] = useState([]);
     const fetchApi = async () => {
         if (salonId && month && year && show) {
@@ -45,6 +49,38 @@ const ChildComponent = ({ closeModal, salonId ,show}) => {
                 setSelectedParlorDetail(singleParlourDetails)
             }
         }
+    }
+    const deleteFileApiCall = async () => {
+        if (selectedFile) {
+            try {
+                const isDeleted = await DELETE_ROYALITY_FILE({ file: selectedFile });
+                if (isDeleted) {
+                    toast.success("File Deleted");
+                    fetchApi()
+                } else {
+                    toast.error("File not deleted, Please try again!");
+                }
+
+            } catch (error) {
+                toast.error("File not deleted, Please try again!");
+            }
+        }
+        else {
+            toast.error("File not deleted, Please try again!");
+        }
+        setShowConfirmation(false)
+        setSelectedFile(null)
+
+    }
+    const handleDeleteFile= async(file)=>{
+        if(file){
+            setSelectedFile(file)
+            setShowConfirmation(true)
+        }
+        else{
+            toast.error('File Already Deleted')
+        }
+
     }
     const uploadFileApiCall = async (formData) => {
         const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
@@ -75,6 +111,30 @@ const ChildComponent = ({ closeModal, salonId ,show}) => {
             }
         }
     };
+    const cols = [
+        {
+            name: "S.No",
+            id: 'index'
+
+        },
+        {
+            name: "FileName",
+            id: 'fileName'
+
+        },
+        {
+            name: 'File',
+            id: 'invoiceUrl'
+        },
+        {
+            name: "Uploaded At",
+            id: "createdAt",
+        },
+        {
+            name: "Actions",
+            id: "actions",
+        }
+    ]
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -83,9 +143,10 @@ const ChildComponent = ({ closeModal, salonId ,show}) => {
     useEffect(() => {
 
         fetchApi()
-    }, [month, year,show])
+    }, [month, year, show])
 
     return (
+        <>
         <div className="relative top-[10%] bottom-[20%] m-auto p-4 w-full h-full my-auto max-w-[60vw] max-h-full">
             {/* Modal content */}
             <div className="relative h-fit  my-auto bg-white rounded-lg shadow ">
@@ -124,24 +185,50 @@ const ChildComponent = ({ closeModal, salonId ,show}) => {
                     </div>
                     <p className="text-gray-500  mb-4">Invoices:</p>
 
-                    {selectedParlorDetail?.length > 0 ? <ul className="max-h-[200px] overflow-y-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 mb-4">
-                        {selectedParlorDetail?.map((elm, idx) => (
-                            <li key={idx} className=" border   rounded shadow p-2 text-gray-400">
-                                <Link to={elm.invoiceUrl} target="_blank" className="flex gap-3">
-                                    <FaRegFileAlt className="text-[3rem]" />
+                    {selectedParlorDetail?.length > 0 ?
+                        <div className="max-h-[200px] overflow-y-auto w-full  ">
 
-                                    <div className="text-xs">
-                                        <div>Uploaded At</div>
-                                        <div>{formatDateToFull(elm.createdAt)}</div>
-                                    </div>
-                                </Link>
-                            </li>
-                        ))}
-                    </ul> : <div className="text-center py-5 text-gray-500">
-                        <span>No Invoices Found</span>
-                    </div>}
+                            <table className="w-full border-collapse  mb-4">
+                                <thead>
+                                    <tr>
+                                        {cols?.map((elm, index) => {
+                                            return (
+                                                <th key={index} className="text-left text-sm font-medium p-2 text-black">{elm.name}</th>
+                                            )
+                                        })}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {selectedParlorDetail?.map((elm, index) => {
+                                        return (
+                                            <tr>
+                                                {cols?.map((col, idx) => {
+                                                    return (
+                                                        <td key={idx} className="text-gray-500 p-2">{
+                                                            col.id === 'index' ? index + 1
+                                                                : col.id === "invoiceUrl"
+                                                                    ? <Link to={elm[col?.id]} target="_blank">
+                                                                        <FaLink className="cursor-pointer text-blue-600 text-lg" />
+                                                                    </Link>
+                                                                    : col.id === "createdAt"
+                                                                        ? formatDateToFull(elm[col.id])
+                                                                        : col.id === "actions" ? <button onClick={()=>handleDeleteFile(elm)} className="text-rose-600 text-xl"><MdDeleteForever />
+                                                                        </button> :
+                                                                            elm[col.id]}</td>
+                                                    )
+                                                })}
+
+                                            </tr>
+                                        )
+                                    })}
+                                </tbody>
+                            </table>
+
+                        </div> : <div className="text-center py-5 text-gray-500">
+                            <span>No Invoices Found</span>
+                        </div>}
                     <div
-                        className=""
+                        className="mt-3"
                     >
                         <label className="block mb-2 text-sm font-medium text-gray-900" htmlFor="file_input">
                             Upload File
@@ -158,7 +245,15 @@ const ChildComponent = ({ closeModal, salonId ,show}) => {
                 </div>
 
             </div>
+            
         </div>
+        <ConfirmationModal
+                show={showConfirmation}
+                setShow={setShowConfirmation}
+                onSubmit={deleteFileApiCall}
+                text={"Are you sure you want to delete this file?"}
+            />
+        </>
     );
 };
 export default InvoiceModal;

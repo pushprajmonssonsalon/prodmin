@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import { DELETE_FILE, PARLOUR_UPLOADSKYC, SINGLE_PARLOUR_KYC } from "../../services/crm/user.service";
-import { FaRegFileAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
-import { MdDelete } from "react-icons/md";
 import ConfirmationModal from "./ConfirmationModal";
+import { FaLink } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
+import formatDateToFull from "../../services/utils/formatDate";
 
 const KycModal = ({ show, setShow, onSubmit, salonId }) => {
     return (
@@ -62,26 +63,26 @@ const ChildComponent = ({ closeModal, show, salonId }) => {
         }
     };
     const deleteFileApiCall = async () => {
-        if(selectedFile){
+        if (selectedFile) {
             try {
-                const isDeleted = await DELETE_FILE({ file:selectedFile, salonId });
+                const isDeleted = await DELETE_FILE({ file: selectedFile, salonId });
                 if (isDeleted) {
                     toast.success("File Deleted");
                     fetchApi()
                 } else {
                     toast.error("File not deleted, Please try again!");
                 }
-    
+
             } catch (error) {
                 toast.error("File not deleted, Please try again!");
             }
         }
-        else{
+        else {
             toast.error("File not deleted, Please try again!");
         }
         setShowConfirmation(false)
         setSelectedFile(null)
-     
+
     }
     const handleFileDelete = async (file) => {
         setShowConfirmation(true)
@@ -99,7 +100,30 @@ const ChildComponent = ({ closeModal, show, salonId }) => {
     useEffect(() => {
         fetchApi()
     }, [show])
+    const cols = [
+        {
+            name: "S.No",
+            id: 'index'
 
+        },
+        {
+            name: "FileName",
+            id: 'name'
+
+        },
+        {
+            name: 'File',
+            id: 'url'
+        },
+        {
+            name: "Uploaded At",
+            id: "createdAt",
+        },
+        {
+            name: "Actions",
+            id: "actions",
+        }
+    ]
     return (
         <>
             <div className="relative top-[10%] bottom-[20%] m-auto p-4 w-full h-full my-auto max-w-[60vw] max-h-full">
@@ -137,22 +161,51 @@ const ChildComponent = ({ closeModal, show, salonId }) => {
 
                         <p className="text-gray-500  mb-4">Kyc Docs:</p>
 
-                        {selectedParlorDetail?.length > 0 ? <ul className="max-h-[200px] overflow-y-auto grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-3 mb-4">
-                            {selectedParlorDetail?.map((elm, idx) => (
-                                <li key={idx} className=" border relative   rounded shadow p-2 text-gray-400">
-                                    <Link to={elm?.url} target="_blank" className="flex gap-3">
-                                        <FaRegFileAlt className="text-[3rem]" />
-                                        <div className="text-xs">
-                                            <div className="mt-3">{elm.name}</div>
-                                        </div>
+                        {selectedParlorDetail?.length > 0 ?
+                            <div className="max-h-[200px] overflow-y-auto w-full  ">
 
-                                    </Link>
-                                    <button onClick={() => handleFileDelete(elm)} className="text-rose-600 text-xl absolute top-0 right-0"><MdDelete /></button>
-                                </li>
-                            ))}
-                        </ul> : <div className="text-center py-5 text-gray-500">
-                            <span>No Docs Found</span>
-                        </div>}
+                                <table className="w-full border-collapse  mb-4">
+                                    <thead>
+                                        <tr>
+                                            {cols?.map((elm, index) => {
+                                                return (
+                                                    <th key={index} className="text-left text-sm font-medium p-2 text-black">{elm.name}</th>
+                                                )
+                                            })}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {selectedParlorDetail?.map((elm, index) => {
+                                            return (
+                                                <tr>
+                                                    {cols?.map((col, idx) => {
+                                                        let {id}=col
+                                                        let val =elm[id];
+
+                                                        return (
+                                                            <td key={idx} className="text-gray-500 p-2">{
+                                                                col.id === 'index' ? index + 1
+                                                                    : col.id === "url"
+                                                                        ? <Link to={val} target="_blank">
+                                                                            <FaLink className="cursor-pointer text-blue-600 text-lg" />
+                                                                        </Link>
+                                                                        : col.id === "createdAt"
+                                                                            ? formatDateToFull(val)
+                                                                            : col.id === "actions" ? <button onClick={()=>handleFileDelete(elm)} className="text-rose-600 text-xl"><MdDeleteForever />
+                                                                            </button> :
+                                                                                val}</td>
+                                                        )
+                                                    })}
+
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                </table>
+
+                            </div> : <div className="text-center py-5 text-gray-500">
+                                <span>No Docs Found</span>
+                            </div>}
                         <div
                             className=""
                         >
