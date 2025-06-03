@@ -43,6 +43,11 @@ const operations = [
     icon: <GiShop size={20} />,
   },
   {
+     text:"App Orders",
+     activeItem:'app-orders',
+     icon:<GrDeliver size={20} />
+  },
+  {
     text: "Salon Details (crm)",
     activeItem: "salondetcrm",
     icon: <GiShop size={20} />,

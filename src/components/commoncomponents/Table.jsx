@@ -24,7 +24,6 @@ export default function CustomTable({distributer=false,headings,rows,handleRowCl
 
     if(distributer){
     
-      console.log(row)
       handleRowClick(row);
       if(allowedcols.includes(col.id))handleOpen();
     }

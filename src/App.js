@@ -31,6 +31,7 @@ import FranchiseLayout from "./components/commoncomponents/FranchiseLayout";
 import CreateDistributer from "./pages/CreateDistributer";
 import DistributerPo from "./pages/DistributerPo";
 import AddReview from "./pages/AddReview";
+import AppOrder from "./pages/AppOrder";
 const App = () => {
   const location = useLocation();
 
@@ -127,6 +128,10 @@ const App = () => {
         <Route
           path="/editmemb"
           element={<PrivateRoute isCrm={true} component={EditMembersip} />}
+        />
+        <Route
+          path="/app-orders"
+          element={<PrivateRoute isCrm={true} component={AppOrder} />}
         />
         {/* prokart routes */}
         <Route

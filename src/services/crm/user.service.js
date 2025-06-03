@@ -3,7 +3,7 @@ import { salonTypes } from "../utils/roles";
 
 const baseUrl = `https://crm.smartsalon.in`;
 // const baseUrl = `http://192.168.2.205:4002`;
-// const baseUrl = `http://192.168.3.36:4002`;
+// const baseUrl = `http://192.168.2.237:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;
 const baseUrl3 = `https://monsoonsalon.com/api`;
@@ -26,6 +26,13 @@ const PARLOUR_DETAILS = async (payload) => {
   const response = await API_REQUEST(url, "get", null, authString);
   return response;
 };
+const APP_ORDERS_DETAILS=async(payload)=>{
+    const url = `${baseUrl}/operation/getAllProductOrders`;
+  const authString = localStorage.getItem("crmtoken");
+    
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response;
+}
 const PARLOUR_UPLOADSPDF = async (payload) => {
   const url = `${baseUrl}/uploadPdf`;
   const authString = localStorage.getItem("crmtoken");
@@ -362,6 +369,7 @@ export {
   GET_SALON,
   GET_SALONS,
   GET_SALONS_PAGINATED,
+  APP_ORDERS_DETAILS,
   CREATE_SALON,
   CREATE_DISTRIBUTER,
   UPDATE_SALON,
