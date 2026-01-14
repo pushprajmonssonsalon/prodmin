@@ -2,7 +2,7 @@ import API_REQUEST from "../utils/axios.utils";
 import { salonTypes } from "../utils/roles";
 
 const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.205:4002`;
+// const baseUrl = `http://192.168.2.210:4002`;
 // const baseUrl = `http://192.168.2.237:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;

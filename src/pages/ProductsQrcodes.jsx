@@ -90,7 +90,7 @@ const ProductsQrcodes = () => {
       .then((res) => {
         if (res) {
           setProducts((prev) =>
-            prev.map((elm) => (elm._id === id ? { ...elm, qrcode: res } : elm))
+            prev.map((elm) => (elm?._id === id ? { ...elm, qrcode: res } : elm))
           );
           toast.success("Qr Added");
         }
@@ -113,7 +113,7 @@ const ProductsQrcodes = () => {
         
         if (res) {
           setProducts((prev) =>
-            prev.map((elm) =>
+            prev?.map((elm) =>
               elm._id === selectedProductId
                 ? { ...elm, video: videos[index]?._id }
                 : elm
@@ -128,7 +128,7 @@ const ProductsQrcodes = () => {
       });
   };
   const rows = useMemo(() => {
-    return fileredProducts.map((elm) => {
+    return fileredProducts?.map((elm) => {
       const videoDetails = getVideo(elm?.video);
 
       return {

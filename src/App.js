@@ -32,6 +32,7 @@ import CreateDistributer from "./pages/CreateDistributer";
 import DistributerPo from "./pages/DistributerPo";
 import AddReview from "./pages/AddReview";
 import AppOrder from "./pages/AppOrder";
+import OrderDetails from "./pages/OrderDetails";
 const App = () => {
   const location = useLocation();
 
@@ -172,6 +173,12 @@ const App = () => {
           path="/productqr"
           element={<PrivateRoute isCrm={false} component={ProductsQrcodes} />}
         />
+        
+        <Route
+          path="/orderdetails"
+          element={<PrivateRoute isCrm={false} component={OrderDetails} />}
+        />
+        
 
         <Route path="/franchise/*" element={<FranchiseRoutes />} />
 

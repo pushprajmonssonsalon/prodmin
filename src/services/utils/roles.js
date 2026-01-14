@@ -115,6 +115,11 @@ export const prokeys = [
     icon: <GrDeliver size={20} />,
   },
   {
+    text: "Order Details",
+    activeItem: "orderdetails",
+    icon: <GrDeliver size={20} />,
+  },
+  {
     text: "Products",
     activeItem: "Products",
     icon: <BsBoxes size={20} />,

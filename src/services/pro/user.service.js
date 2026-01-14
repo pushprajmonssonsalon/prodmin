@@ -1,7 +1,7 @@
 import API_REQUEST from "../utils/axios.utils";
 
 const baseUrl = `https://prosaloncart.com`;
-// const baseUrl = `http://192.168.2.21:4001`;
+// const baseUrl = `http://192.168.2.210:4001`;
 // const baseUrl = `http://192.168.2.49:4007`;
 
 const PRO_LOGIN_USERS = async(payload)=>{
@@ -101,13 +101,29 @@ const EDIT_STOCK_QUANTITY=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response;
 }
+const FETCH_SINGLE_ORDER=async(payload)=>{
+    const url = `${baseUrl}/role2/getSingleOrderData?id=${payload}`;
+    const authString = localStorage.getItem("protoken");
+    
+    const response = await API_REQUEST(url,"get",{},authString);
+    return response;
+}
+const CREATE_IN_EASYCOM=async(payload)=>{
+    const url = `${baseUrl}/role2/fetchOrderInEasycom`;
+    const authString = localStorage.getItem("protoken");
+    
+    const response = await API_REQUEST(url,"post",payload,authString);
+    return response;
+}
 
 export {
     PRO_LOGIN_USERS,
     ORDERS_DETAILS,
+    CREATE_IN_EASYCOM,
     SINGLE_ORDERS_DETAILS,
     ORDERS_DETAILS_FOR_EXCEL,
     SEARCH_PRODUCT,
+    FETCH_SINGLE_ORDER,
     SINGLE_PRODUCT_DETAILS,
     UPLOAD_IMAGE,
     ADD_QR_TO_PRODUCT,

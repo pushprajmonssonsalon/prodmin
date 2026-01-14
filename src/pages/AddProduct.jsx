@@ -14,29 +14,29 @@ const AddProduct = () => {
     price: 0,
     mrp: 0,
     discount: 0,
-    bestSeller: false,
-    newArrival: false,
+    // bestSeller: false,
+    // newArrival: false,
     brand: "",
     category: "",
     subCategory: "",
-    hsncode: "",
+    // hsncode: "",
     skucode: "",
-    ingredients: "",
-    itemform: "",
-    liquidvolume: "",
-    length: 0,
-    breadth: 0,
-    height: 0,
-    weight: 0,
-    isActive: false,
-    active: false,
+    // ingredients: "",
+    // itemform: "",
+    // liquidvolume: "",
+    // length: 0,
+    // breadth: 0,
+    // height: 0,
+    // weight: 0,
+    // isActive: false,
+    // active: false,
     type: "product",
-    productbenefit: "",
-    stockQuantity: 0,
-    shortUrl: "",
-    benefitdesc: "",
-    rating: 0,
-    keywords: "",
+    // productbenefit: "",
+    // stockQuantity: 0,
+    // shortUrl: "",
+    // benefitdesc: "",
+    // rating: 0,
+    // keywords: "",
 
   });
   const inputLabels = {
@@ -46,38 +46,38 @@ const AddProduct = () => {
     price: "Price",
     mrp: "MRP",
     discount:"Discount",
-    bestSeller: "Best Seller",
-    newArrival: "New Arrival",
+    // bestSeller: "Best Seller",
+    // newArrival: "New Arrival",
     brand: "Brand",
     category: "Category",
     subCategory: "Sub Category",
-    hsncode: "HSN Code",
+    // hsncode: "HSN Code",
     skucode: "SKU Code",
-    ingredients: "Ingredients",
-    itemform: "Item Form",
-    liquidvolume: "Liquid Volume",
-    length: "Length",
-    breadth: "Breadth",
-    height: "Height",
-    weight: "Weight",
-    isActive: "Is Active",
-    active: "Active",
+    // ingredients: "Ingredients",
+    // itemform: "Item Form",
+    // liquidvolume: "Liquid Volume",
+    // length: "Length",
+    // breadth: "Breadth",
+    // height: "Height",
+    // weight: "Weight",
+    // isActive: "Is Active",
+    // active: "Active",
     type: "Type",
 
-    productbenefit: "Product Benefit",
-    stockQuantity: "Stock Quantity",
-    shortUrl: "Short URL",
-    benefitdesc: "Benefit Description",
-    rating: "Rating",
-    keywords: "Keywords",
+    // productbenefit: "Product Benefit",
+    // stockQuantity: "Stock Quantity",
+    // shortUrl: "Short URL",
+    // benefitdesc: "Benefit Description",
+    // rating: "Rating",
+    // keywords: "Keywords",
 
   };
   const otherfields = [
     "description",
-    "ingredients",
-    "productbenefit",
-    "benefitdesc",
-    "keywords",
+    // "ingredients",
+    // "productbenefit",
+    // "benefitdesc",
+    // "keywords",
   ];
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -87,7 +87,7 @@ const AddProduct = () => {
       setFormData({
         ...formData,
       discount:dis,
-      price:formData?.mrp-(formData?.mrp*dis/100)
+      price:Math.floor(formData?.mrp-(formData?.mrp*dis/100))
       });
     }
     else{
@@ -96,7 +96,9 @@ const AddProduct = () => {
         [name]:
           type === "checkbox"
             ? checked
-            : type === "radio"
+            : type==="number"?
+            +value
+            :type === "radio"
             ?name === "type"
               ? value
               : value === "true"
@@ -115,10 +117,16 @@ const AddProduct = () => {
 
     e.preventDefault();
     const isEveryEmpty = Object.keys(formData).every((key) => formData[key] === "" || formData[key] === 0)
+   
+    const payload ={
+      ...formData,
+      stockQuantity:1,
+      shortUrl:formData.name.trim().split(" ").join("-"),
+    }
     if (isEveryEmpty) return toast.error("Please fill all the fields");
     (async () => {
       try {
-      const res =  await CREATE_PRODUCT(formData);
+      const res =  await CREATE_PRODUCT(payload);
       if(res){
         setFormData((prev) => {
           const newFormData = { ...prev };
@@ -140,6 +148,12 @@ const AddProduct = () => {
       }
     })();
   };
+  const checkboxFields=[
+    "bestSeller",
+    "newArrival",
+    "type"
+    
+  ]
   return (
     <>
       <Layout>
@@ -171,7 +185,7 @@ const AddProduct = () => {
                       className="border border-gray-300 outline-none focus:ring-2 p-2 rounded-md"
                     />
                   </div>
-                ) : typeof formData[key] === "boolean" || key === "type" ? (
+                ) : checkboxFields.includes(key) ? (
                 <div key={key} className="flex flex-col mb-4">
                   <div className="mb-2 font-medium text-gray-700">
                     {inputLabels[key]}
