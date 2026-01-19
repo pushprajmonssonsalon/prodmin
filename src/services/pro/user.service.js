@@ -115,11 +115,8 @@ const CREATE_IN_EASYCOM=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response;
 }
-const GET_PRODUCT_LIST = async (payload) => {
-  const { page, limit, isActive } = payload;
-
-  const url = `${baseUrl}/role2/getProductList?page=${page}&limit=${limit}&isActive=${isActive}&brand=Spring H2O`;
-
+const GET_PRODUCT_LIST = async (queryParams) => {
+  const url = `${baseUrl}/role2/getProductList${queryParams}`;
   const authString = localStorage.getItem("protoken");
   const response = await API_REQUEST(url, "get", null, authString);
   return response;
