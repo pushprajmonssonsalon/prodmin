@@ -14,6 +14,7 @@ const ProductList = () => {
     const [isActive, setIsActive] = useState("All");
     const [brandDropdownOpen, setBrandDropdownOpen] = useState(false);
     const [activeDropdownOpen, setActiveDropdownOpen] = useState(false);
+    const [exporting, setExporting] = useState(false);
 
     const brandRef = useRef(null);
     const activeRef = useRef(null);
@@ -79,24 +80,91 @@ const ProductList = () => {
 
     const pageCount = Math.ceil(totalRows / rowsPerPage);
 
-    const handleExport = () => {
-        if (data.length === 0) return;
+    const handleExport = async () => {
+        if (totalRows === 0) {
+            alert("No data to export");
+            return;
+        }
 
-        // const csvHeaders = columns.join(",") + "\n";
-        // const csvRows = data
-        //     .map(row =>
-        //         columns.map(col => `"${row[col] ?? ""}"`).join(",")
-        //     )
-        //     .join("\n");
+        setExporting(true);
 
-        // const blob = new Blob([csvHeaders + csvRows], {
-        //     type: "text/csv;charset=utf-8;"
-        // });
+        try {
+            console.log("Starting export process...");
+            console.log("Total products to fetch:", totalRows);
 
-        // const link = document.createElement("a");
-        // link.href = URL.createObjectURL(blob);
-        // link.download = "products.csv";
-        // link.click();
+            const itemsPerPage = 100;
+            const totalPages = Math.ceil(totalRows / itemsPerPage);
+
+            console.log("Total pages to fetch:", totalPages);
+
+            let allData = [];
+
+            for (let page = 1; page <= totalPages; page++) {
+                let params = `?page=${page}&limit=${itemsPerPage}`;
+
+                if (isActive !== "All") {
+                    params += `&isActive=${isActive}`;
+                }
+
+                if (brand && brand !== "All") {
+                    params += `&brand=${encodeURIComponent(brand)}`;
+                }
+
+                console.log(`Fetching page ${page}/${totalPages}...`);
+
+                const response = await GET_PRODUCT_LIST(params);
+                const pageData = response?.data || [];
+
+                console.log(`Page ${page} received:`, pageData.length, "products");
+
+                allData = [...allData, ...pageData];
+            }
+
+            console.log("Total data fetched:", allData.length, "products");
+
+            if (allData.length === 0) {
+                alert("No data found to export");
+                return;
+            }
+
+            const exportColumns = [
+                "skucode",
+                ...Object.keys(allData[0]).filter(
+                    (key) => key !== "_id" && key !== "skucode"
+                ),
+            ];
+
+            console.log("Columns to export:", exportColumns);
+
+            const csvHeaders = exportColumns.join(",") + "\n";
+            const csvRows = allData
+                .map(row =>
+                    exportColumns.map(col => `"${row[col] ?? ""}"`).join(",")
+                )
+                .join("\n");
+
+            const blob = new Blob([csvHeaders + csvRows], {
+                type: "text/csv;charset=utf-8;"
+            });
+
+            console.log("CSV created successfully!");
+            console.log("Total products exported:", allData.length);
+            console.log("File size:", (blob.size / 1024).toFixed(2), "KB");
+
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `products_${new Date().toISOString().split('T')[0]}.csv`;
+            link.click();
+
+            URL.revokeObjectURL(link.href);
+
+            alert(`Successfully exported ${allData.length} products!`);
+        } catch (error) {
+            console.error("Export Error:", error);
+            alert("Failed to export data. Please try again.");
+        } finally {
+            setExporting(false);
+        }
     };
 
     const handlePageChange = ({ selected }) => {
@@ -115,12 +183,9 @@ const ProductList = () => {
                 )}
 
                 <div className="flex flex-wrap items-center justify-between gap-4 p-4 border-b">
-
                     <div className="flex flex-wrap items-center gap-4">
-
                         <div className="flex items-center gap-2 relative" ref={brandRef}>
                             <label className="text-sm font-medium text-gray-600">Brand</label>
-
                             <div className="relative w-[180px]">
                                 <button
                                     onClick={() => {
@@ -177,7 +242,6 @@ const ProductList = () => {
                                     <span className="capitalize truncate">
                                         {isActive === "All" ? "All" : isActive}
                                     </span>
-
                                     <svg
                                         className={`w-4 h-4 transition-transform duration-200 ${activeDropdownOpen ? "rotate-180" : ""
                                             }`}
@@ -219,7 +283,7 @@ const ProductList = () => {
                     </div>
 
                     {!loading && data.length > 0 && (
-                        <>
+                        <div className="w-full">
                             <div className="w-full bg-white rounded-lg shadow">
                                 <div className="max-h-[80vh] overflow-auto relative">
                                     <table className="min-w-full text-sm border-collapse">
@@ -229,8 +293,8 @@ const ProductList = () => {
                                                     <th
                                                         key={col}
                                                         className={`relative px-4 py-3 text-left font-semibold capitalize
-                                                        text-gray-600 bg-gray-100 sticky top-0 z-30
-                                                        ${index === 0
+                            text-gray-600 bg-gray-100 sticky top-0 z-30
+                            ${index === 0
                                                                 ? "sticky left-0 z-40 bg-gray-100 after:absolute after:top-0 after:right-0 after:h-full after:w-[1px] after:bg-gray-300 after:content-['']"
                                                                 : "border-r"
                                                             }`}
@@ -248,7 +312,7 @@ const ProductList = () => {
                                                         <td
                                                             key={col}
                                                             className={`relative px-4 py-3 whitespace-nowrap bg-white
-                                                        ${index === 0
+                              ${index === 0
                                                                     ? "sticky left-0 z-20 bg-white after:absolute after:top-0 after:right-0 after:h-full after:w-[1px] after:bg-gray-300 after:content-['']"
                                                                     : "border-r"
                                                                 }`}
@@ -268,27 +332,29 @@ const ProductList = () => {
                                     Page {currentPage + 1} of {pageCount}
                                 </p>
 
-                                <ReactPaginate
-                                    pageCount={pageCount}
-                                    onPageChange={handlePageChange}
-                                    forcePage={currentPage}
-                                    previousLabel="Prev"
-                                    nextLabel="Next"
-                                    pageRangeDisplayed={3}
-                                    marginPagesDisplayed={0}
-                                    breakLabel="..."
-                                    containerClassName="flex gap-2"
-                                    pageClassName="border rounded"
-                                    pageLinkClassName="px-3 py-1 text-sm"
-                                    activeClassName="bg-blue-600 text-white"
-                                    previousClassName="border rounded"
-                                    previousLinkClassName="px-3 py-1 text-sm"
-                                    nextClassName="border rounded"
-                                    nextLinkClassName="px-3 py-1 text-sm"
-                                    disabledClassName="opacity-40"
-                                />
+                                <div className="ml-auto">
+                                    <ReactPaginate
+                                        pageCount={pageCount}
+                                        onPageChange={handlePageChange}
+                                        forcePage={currentPage}
+                                        previousLabel="Prev"
+                                        nextLabel="Next"
+                                        pageRangeDisplayed={3}
+                                        marginPagesDisplayed={0}
+                                        breakLabel="..."
+                                        containerClassName="flex gap-2"
+                                        pageClassName="border rounded"
+                                        pageLinkClassName="px-3 py-1 text-sm"
+                                        activeClassName="bg-blue-600 text-white"
+                                        previousClassName="border rounded"
+                                        previousLinkClassName="px-3 py-1 text-sm"
+                                        nextClassName="border rounded"
+                                        nextLinkClassName="px-3 py-1 text-sm"
+                                        disabledClassName="opacity-40"
+                                    />
+                                </div>
                             </div>
-                        </>
+                        </div>
                     )}
                 </div>
             </Wrapper>
