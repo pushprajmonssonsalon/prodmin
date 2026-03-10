@@ -144,7 +144,10 @@ export const prokeys = [
     text: "Product List",
     activeItem: "productlist",
     icon: <BsList size={20} />,
-    text: "Product Update",
+   
+  },
+  {
+     text: "Product Update",
     activeItem: "productupdate",
     icon: <BsUpload size={20} />,
   },
