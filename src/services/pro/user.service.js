@@ -1,6 +1,6 @@
 import API_REQUEST from "../utils/axios.utils";
 
-const baseUrl = `https://prosaloncart.com`;
+const baseUrl = `https://theprofessionalworld.com`;
 // const baseUrl = `http://192.168.2.210:4001`;
 // const baseUrl = `http://192.168.2.49:4007`;
 
