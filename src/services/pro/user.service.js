@@ -115,6 +115,12 @@ const CREATE_IN_EASYCOM=async(payload)=>{
     const response = await API_REQUEST(url,"post",payload,authString);
     return response;
 }
+const GET_PRODUCT_LIST = async (queryParams) => {
+  const url = `${baseUrl}/role2/getProductList${queryParams}`;
+  const authString = localStorage.getItem("protoken");
+  const response = await API_REQUEST(url, "get", null, authString);
+  return response;
+};
 const BULK_PRODUCT_UPDATE = async (payload) => {
   const url = `${baseUrl}/role2/bulkProductUpdate`;
   const authString = localStorage.getItem("protoken");
@@ -141,5 +147,6 @@ export {
     EDIT_PRODUCT_DETAILS,
     EDIT_ORDER_STATUS,
     EDIT_STOCK_QUANTITY,
+    GET_PRODUCT_LIST
     BULK_PRODUCT_UPDATE
 }

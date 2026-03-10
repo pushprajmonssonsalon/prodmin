@@ -33,6 +33,7 @@ import DistributerPo from "./pages/DistributerPo";
 import AddReview from "./pages/AddReview";
 import AppOrder from "./pages/AppOrder";
 import OrderDetails from "./pages/OrderDetails";
+import ProductList from "./pages/ProductList";
 import ProductUpdate from "./pages/ProductUpdate";
 const App = () => {
   const location = useLocation();
@@ -183,6 +184,11 @@ const App = () => {
         <Route
           path="/orderdetails"
           element={<PrivateRoute isCrm={false} component={OrderDetails} />}
+        />
+
+        <Route
+          path="/productlist"
+          element={<PrivateRoute isCrm={false} component={ProductList} />}
         />
         
 
