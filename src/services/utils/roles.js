@@ -1,4 +1,4 @@
-import { BsBoxes, BsList, BsQrCode } from "react-icons/bs";
+import { BsBoxes, BsList, BsQrCode,BsUpload } from "react-icons/bs";
 import { FaEdit, FaFileInvoiceDollar, FaRegEdit, FaUser } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
 import { GrDeliver } from "react-icons/gr";
@@ -144,6 +144,9 @@ export const prokeys = [
     text: "Product List",
     activeItem: "productlist",
     icon: <BsList size={20} />,
+    text: "Product Update",
+    activeItem: "productupdate",
+    icon: <BsUpload size={20} />,
   },
 
 ];

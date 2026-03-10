@@ -34,6 +34,7 @@ import AddReview from "./pages/AddReview";
 import AppOrder from "./pages/AppOrder";
 import OrderDetails from "./pages/OrderDetails";
 import ProductList from "./pages/ProductList";
+import ProductUpdate from "./pages/ProductUpdate";
 const App = () => {
   const location = useLocation();
 
@@ -174,7 +175,12 @@ const App = () => {
           path="/productqr"
           element={<PrivateRoute isCrm={false} component={ProductsQrcodes} />}
         />
-        
+
+        <Route
+          path="/productupdate"
+          element={<PrivateRoute isCrm={false} component={ProductUpdate} />}
+        />
+       
         <Route
           path="/orderdetails"
           element={<PrivateRoute isCrm={false} component={OrderDetails} />}

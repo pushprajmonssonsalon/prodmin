@@ -121,6 +121,14 @@ const GET_PRODUCT_LIST = async (queryParams) => {
   const response = await API_REQUEST(url, "get", null, authString);
   return response;
 };
+const BULK_PRODUCT_UPDATE = async (payload) => {
+  const url = `${baseUrl}/role2/bulkProductUpdate`;
+  const authString = localStorage.getItem("protoken");
+
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
+
 
 export {
     PRO_LOGIN_USERS,
@@ -140,4 +148,5 @@ export {
     EDIT_ORDER_STATUS,
     EDIT_STOCK_QUANTITY,
     GET_PRODUCT_LIST
+    BULK_PRODUCT_UPDATE
 }
