@@ -8,18 +8,9 @@ const CustomDatePicker = ({
     startDate,
     endDate,
 }) => {
-    const[_,setSearchParams] =useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-    const formatDate = (dateStr) => {
-        if(!dateStr)return ""
-        const date = new Date(dateStr);  // Current date
-        const dd = String(date.getDate()).padStart(2, '0');       // Day with leading zero
-        const mm = String(date.getMonth() + 1).padStart(2, '0');  // Month with leading zero (getMonth() returns 0-11)
-        const yyyy = date.getFullYear();                          // Full year
-    
-        const formattedDate = `${yyyy}-${mm}-${dd}`;
-        return formattedDate
-      }
+   
     
     const handleDateChange = (e) => {
         const {id,value} = e.target
@@ -32,13 +23,12 @@ const CustomDatePicker = ({
     }
   const onSubmitClick = () => {
 
-    const st = formatDate(startDate)  // Current date
-    const ed = formatDate(endDate)  // Current date
-    
-    setSearchParams({
-        start:st,
-        end:ed
-    });
+   
+     const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.set('start', startDate);
+    updatedParams.set('end', endDate);
+    setSearchParams(updatedParams);
+
     onSubmit();
   };
     return (
@@ -49,8 +39,7 @@ const CustomDatePicker = ({
                     <label id="startDate" className="text-gray-500 font-medium">Start Date</label>
                     <input
                         id="startDate"
-                        startDate={startDate}
-                        value={formatDate(startDate)}
+                        value={startDate}
                         onChange={handleDateChange}
                         name="start"
                         type="date"
@@ -62,9 +51,7 @@ const CustomDatePicker = ({
                 <div className="flex flex-col gap-2">
                     <label  id="endDate" className="text-gray-500 font-medium">End Date</label>
                     <input
-                       value={formatDate(endDate)}
-
-                       
+                       value={endDate}
                         onChange={handleDateChange}
                         id="endDate"
                         name="end"

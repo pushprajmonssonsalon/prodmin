@@ -8,7 +8,7 @@ import { ORDERS_DETAILS, ORDERS_DETAILS_FOR_EXCEL, SINGLE_ORDERS_DETAILS } from 
 import { subDays, startOfMonth, endOfMonth } from 'date-fns';
 import Wrapper from '../components/commoncomponents/Wrapper';
 import exportToExcel from '../services/utils/exportToExcel';
-import formatDateToFull from '../services/utils/formatDate';
+import formatDateToFull, { formatDate } from '../services/utils/formatDate';
 import OrderModal from '../components/modals/OrderModal';
 import CustomDatePicker from '../components/commoncomponents/inputs/CustomDatePicker';
 import { useSearchParams } from 'react-router-dom';
@@ -26,7 +26,6 @@ const ORDER_STATUS_MAP = {
 
 const STATUS_FILTERS = [
   { label: 'All', value: 'all' },
-  { label: 'In Cart', value: '0' },
   { label: 'Placed', value: '1' },
   { label: 'Cancelled', value: '2' },
   { label: 'Delivered', value: '3' },
@@ -151,18 +150,26 @@ const Orders = () => {
   const [singleOrdersDetails, setSingleOrdersDetails] = useState([]);
   const [date, setDate] = useState('Today');
   const [searchParams] = useSearchParams();
+  const [statusReport,setStatusReport]=useState({
+    placed:0,
+    cancelled:0
+
+  })
   const sd = searchParams.get('start');
   const ed = searchParams.get('end');
-  const [startDate, setStartDate] = useState(sd ? new Date(sd) : new Date());
-  const [endDate, setEndDate] = useState(ed ? new Date(ed) : new Date());
+    const defaultStartDate = formatDate(new Date());
+
+  const [startDate, setStartDate] = useState(sd ? sd : defaultStartDate);
+  const [endDate, setEndDate] = useState(ed ? ed: defaultStartDate);
+
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState(100);
   const [totalOrders, setTotalOrders] = useState(0);
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderId, setOrderId] = React.useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchText, setSearchText] = useState('');
-  const [couponFilter, setCouponFilter] = useState('all');
+  const [couponFilter, setCouponFilter] = useState('0');
 
   const handleOpen = () => {
     setShowOrderModal(true);
@@ -171,6 +178,12 @@ const Orders = () => {
   const handleViewProducts = (item) => {
     setSingleOrdersDetails(item);
     setShowOrderModal(true);
+  };
+const formatDateToIST = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
   };
 
   const getStartAndEndDate = (dateRange) => {
@@ -208,7 +221,7 @@ const Orders = () => {
         endDate = today;
     }
 
-    return { startDate, endDate };
+    return { startDate:formatDateToIST(startDate), endDate:formatDateToIST(endDate) };
   };
 
   const onSubmit = async (sdValue, edValue) => {
@@ -230,6 +243,12 @@ const Orders = () => {
     setStartDate(nextStartDate);
     setEndDate(nextEndDate);
   }, [date]);
+  
+  useEffect(() => {
+   
+    setStartDate(sd);
+    setEndDate(ed);
+  }, [sd,ed]);
 
   const filteredOrders = ordersDetails.filter((order) => {
     const normalizedStatus = String(normalizeStatus(order?.status));
@@ -245,9 +264,9 @@ const Orders = () => {
       || sourceValue.includes(query)
       || mediumValue.includes(query)
       || couponValue.includes(query);
-    const couponMatches = couponFilter === 'all'
-      || (couponFilter === 'applied' && order?.couponApplied)
-      || (couponFilter === 'not-applied' && !order?.couponApplied);
+    const couponMatches = couponFilter === '0'
+      || (couponFilter === '1' && order?.couponApplied)
+      || (couponFilter === '2' && !order?.couponApplied);
 
     return statusMatches && searchMatches && couponMatches;
   });
@@ -315,24 +334,32 @@ const Orders = () => {
     const { startDate: nextStartDate, endDate: nextEndDate } = getStartAndEndDate(selectedDate);
     onSubmit(nextStartDate, nextEndDate);
   };
-
+ 
   useEffect(() => {
     async function fetchOrders() {
       const res = await ORDERS_DETAILS({
         startDate,
         endDate,
         page,
+        status:statusFilter==="all"?null:statusFilter,
+        couponApplied:couponFilter==="0"?null:couponFilter==="1"?true:false,
         limit: rowsPerPage,
       });
 
       if (res) {
         setOrdersDetails(res?.orders || []);
         setTotalOrders(res?.totalOrders || 0);
+        let statusReport=res?.statusReport;
+        setStatusReport((prev)=>({
+          ...prev,
+          cancelled:statusReport?.find((elm)=>elm._id=="2")?.count||0,
+          placed:statusReport?.find((elm)=>elm._id=="1")?.count||0
+        }))
       }
     }
 
     fetchOrders();
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage,statusFilter,couponFilter]);
 
   useEffect(() => {
     setPage(0);
@@ -365,16 +392,20 @@ const Orders = () => {
             </div>
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
               <p className='text-sm text-slate-500'>Placed</p>
-              <p className='mt-2 text-2xl font-semibold text-emerald-600'>{statusCounts['1'] || 0}</p>
+              <p className='mt-2 text-2xl font-semibold text-emerald-600'>{statusReport?.placed || 0}</p>
             </div>
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
               <p className='text-sm text-slate-500'>Pending</p>
               <p className='mt-2 text-2xl font-semibold text-amber-600'>{statusCounts['5'] || 0}</p>
             </div>
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
+              <p className='text-sm text-slate-500'>Cancelled</p>
+              <p className='mt-2 text-2xl font-semibold text-rose-600'>{statusReport?.cancelled || 0}</p>
+            </div>
+            {/* <div className='rounded-xl border border-slate-200 bg-white p-4'>
               <p className='text-sm text-slate-500'>Delivered</p>
               <p className='mt-2 text-2xl font-semibold text-blue-600'>{statusCounts['3'] || 0}</p>
-            </div>
+            </div> */}
           </div>
         </div>
 
@@ -403,7 +434,7 @@ const Orders = () => {
                   className='w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500'
                 />
               </div>
-              <div className='grid gap-3 sm:grid-cols-2 xl:w-[380px]'>
+              <div className=' xl:w-[150px]'>
                 <div>
                   <label className='mb-2 block text-sm font-medium text-slate-700'>Coupon Filter</label>
                   <select
@@ -411,43 +442,37 @@ const Orders = () => {
                     onChange={(e) => setCouponFilter(e.target.value)}
                     className='w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500'
                   >
-                    <option value='all'>All Orders</option>
-                    <option value='applied'>Coupon Applied</option>
-                    <option value='not-applied'>No Coupon</option>
+                    <option value='0'>All Orders</option>
+                    <option value='1'>Coupon Applied</option>
+                    <option value='2'>No Coupon</option>
                   </select>
                 </div>
-                <div className='rounded-xl border border-slate-200 bg-slate-50 px-4 py-3'>
-                  <p className='text-sm text-slate-500'>Total API Orders</p>
+              
+              </div>
+              <div className=' xl:w-[150px]'>
+                <div>
+                  <label className='mb-2 block text-sm font-medium text-slate-700'>Status Filter</label>
+                  <select
+                    value={statusFilter}
+                    onChange={(e) =>setStatusFilter(e.target.value)}
+                    className='w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500'
+                  >
+                   {STATUS_FILTERS.map((item,index)=>{
+                    return (
+                    <option key={index} value={item.value}>{item.label}</option>
+                    )
+                   })}
+                    
+                  </select>
+                </div>
+                
+              </div>
+            </div>
+
+            <div className='rounded-xl border border-slate-200 bg-slate-50 px-4 py-3'>
+                  <p className='text-sm text-slate-500'>Total Orders</p>
                   <p className='mt-1 text-xl font-semibold text-slate-900'>{totalOrders}</p>
                 </div>
-              </div>
-            </div>
-
-            <div>
-              <label className='mb-3 block text-sm font-medium text-slate-700'>Status Filter</label>
-              <div className='flex flex-wrap gap-2'>
-                {STATUS_FILTERS.map((item) => {
-                  const isActive = statusFilter === item.value;
-                  const statusCount = item.value === 'all'
-                    ? ordersDetails.length
-                    : (statusCounts[item.value] || 0);
-
-                  return (
-                    <button
-                      key={item.value}
-                      onClick={() => setStatusFilter(item.value)}
-                      className={`rounded-full border px-4 py-2 text-sm font-medium transition ${
-                        isActive
-                          ? 'border-blue-600 bg-blue-600 text-white'
-                          : 'border-slate-300 bg-white text-slate-700 hover:border-blue-400'
-                      }`}
-                    >
-                      {item.label} ({statusCount})
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
           </div>
         </div>
 
@@ -459,7 +484,7 @@ const Orders = () => {
             setPage={setPage}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
-            totalOrders={statusFilter === 'all' && !searchText && couponFilter === 'all' ? totalOrders : filteredOrders.length}
+            totalOrders={ totalOrders}
             handleRowClick={handleRowClick}
             handleOpen={handleOpen}
           />

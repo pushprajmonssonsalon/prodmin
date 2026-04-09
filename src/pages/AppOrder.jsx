@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 import { ORDERS_DETAILS_FOR_EXCEL } from '../services/pro/user.service';
 import Wrapper from '../components/commoncomponents/Wrapper';
 import exportToExcel from '../services/utils/exportToExcel';
-import formatDateToFull from '../services/utils/formatDate';
+import formatDateToFull, { formatDate } from '../services/utils/formatDate';
 import OrderModal from '../components/modals/OrderModal';
 import CustomDatePicker from '../components/commoncomponents/inputs/CustomDatePicker';
 import { useSearchParams } from 'react-router-dom';
@@ -69,8 +69,10 @@ const AppOrder = () => {
   const [searchParams] = useSearchParams();
   const sd = searchParams.get('start')
   const ed = searchParams.get('end')
-  const [startDate, setStartDate] = useState(sd ? new Date(sd) : new Date())
-  const [endDate, setEndDate] = useState(ed ? new Date(ed) : new Date())
+      const defaultStartDate = formatDate(new Date());
+  
+ const [startDate, setStartDate] = useState(sd ? sd : defaultStartDate);
+   const [endDate, setEndDate] = useState(ed ? ed: defaultStartDate);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
