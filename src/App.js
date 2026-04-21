@@ -35,6 +35,9 @@ import AppOrder from "./pages/AppOrder";
 import OrderDetails from "./pages/OrderDetails";
 import ProductList from "./pages/ProductList";
 import ProductUpdate from "./pages/ProductUpdate";
+import SopForm from "./pages/SopForm";
+import SopList from "./pages/SopList";
+import SopView from "./pages/SopView";
 const App = () => {
   const location = useLocation();
 
@@ -69,8 +72,28 @@ const App = () => {
           element={<PrivateRoute isCrm={true} component={DistributerPo} />}
         />
         <Route
+          path="/sopform"
+          element={<PrivateRoute isCrm={true} component={SopForm} />}
+        />
+        <Route
+          path="/soplist"
+          element={<PrivateRoute isCrm={true} component={SopList} />}
+        />
+        <Route
           path="/create-distributer"
           element={<PrivateRoute isCrm={true} component={CreateDistributer} />}
+        />
+        <Route
+          path="/sop/new"
+          element={<PrivateRoute isCrm={true} component={SopForm} />}
+        />
+        <Route
+          path="/sop/edit/:id"
+          element={<PrivateRoute isCrm={true} component={SopForm} />}
+        />
+        <Route
+          path="/sop/view/:id"
+          element={<PrivateRoute isCrm={true} component={SopView} />}
         />
         <Route
           path="/salondetsmart"
