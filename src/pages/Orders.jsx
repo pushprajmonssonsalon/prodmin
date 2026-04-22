@@ -22,6 +22,7 @@ const ORDER_STATUS_MAP = {
   5: 'Pending',
   6: 'Undelivered/Attempted',
   7: 'Shipped',
+  8: 'Confirmed',
 };
 
 const STATUS_FILTERS = [
@@ -33,6 +34,7 @@ const STATUS_FILTERS = [
   { label: 'Pending', value: '5' },
   { label: 'Undelivered', value: '6' },
   { label: 'Shipped', value: '7' },
+  { label: 'Confirmed', value: '8' },
 ];
 
 const columns = [
@@ -150,17 +152,18 @@ const Orders = () => {
   const [singleOrdersDetails, setSingleOrdersDetails] = useState([]);
   const [date, setDate] = useState('Today');
   const [searchParams] = useSearchParams();
-  const [statusReport,setStatusReport]=useState({
-    placed:0,
-    cancelled:0
+  const [statusReport, setStatusReport] = useState({
+    placed: 0,
+    cancelled: 0,
+    confirmed: 0
 
   })
   const sd = searchParams.get('start');
   const ed = searchParams.get('end');
-    const defaultStartDate = formatDate(new Date());
+  const defaultStartDate = formatDate(new Date());
 
   const [startDate, setStartDate] = useState(sd ? sd : defaultStartDate);
-  const [endDate, setEndDate] = useState(ed ? ed: defaultStartDate);
+  const [endDate, setEndDate] = useState(ed ? ed : defaultStartDate);
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(100);
@@ -179,7 +182,7 @@ const Orders = () => {
     setSingleOrdersDetails(item);
     setShowOrderModal(true);
   };
-const formatDateToIST = (date) => {
+  const formatDateToIST = (date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -221,7 +224,7 @@ const formatDateToIST = (date) => {
         endDate = today;
     }
 
-    return { startDate:formatDateToIST(startDate), endDate:formatDateToIST(endDate) };
+    return { startDate: formatDateToIST(startDate), endDate: formatDateToIST(endDate) };
   };
 
   const onSubmit = async (sdValue, edValue) => {
@@ -235,6 +238,13 @@ const formatDateToIST = (date) => {
     if (res) {
       setOrdersDetails(res?.orders || []);
       setTotalOrders(res?.totalOrders || 0);
+      let statusReport = res?.statusReport;
+      setStatusReport((prev) => ({
+        ...prev,
+        cancelled: statusReport?.find((elm) => elm._id == "2")?.count || 0,
+        placed: statusReport?.find((elm) => elm._id == "1")?.count || 0,
+        confirmed: statusReport?.find((elm) => elm._id == "8")?.count || 0
+      }))
     }
   };
 
@@ -243,12 +253,12 @@ const formatDateToIST = (date) => {
     setStartDate(nextStartDate);
     setEndDate(nextEndDate);
   }, [date]);
-  
+
   useEffect(() => {
-   
+
     setStartDate(sd);
     setEndDate(ed);
-  }, [sd,ed]);
+  }, [sd, ed]);
 
   const filteredOrders = ordersDetails.filter((order) => {
     const normalizedStatus = String(normalizeStatus(order?.status));
@@ -334,32 +344,33 @@ const formatDateToIST = (date) => {
     const { startDate: nextStartDate, endDate: nextEndDate } = getStartAndEndDate(selectedDate);
     onSubmit(nextStartDate, nextEndDate);
   };
- 
+
   useEffect(() => {
     async function fetchOrders() {
       const res = await ORDERS_DETAILS({
         startDate,
         endDate,
         page,
-        status:statusFilter==="all"?null:statusFilter,
-        couponApplied:couponFilter==="0"?null:couponFilter==="1"?true:false,
+        status: statusFilter === "all" ? null : statusFilter,
+        couponApplied: couponFilter === "0" ? null : couponFilter === "1" ? true : false,
         limit: rowsPerPage,
       });
 
       if (res) {
         setOrdersDetails(res?.orders || []);
         setTotalOrders(res?.totalOrders || 0);
-        let statusReport=res?.statusReport;
-        setStatusReport((prev)=>({
+        let statusReport = res?.statusReport;
+        setStatusReport((prev) => ({
           ...prev,
-          cancelled:statusReport?.find((elm)=>elm._id=="2")?.count||0,
-          placed:statusReport?.find((elm)=>elm._id=="1")?.count||0
+          cancelled: statusReport?.find((elm) => elm._id == "2")?.count || 0,
+          placed: statusReport?.find((elm) => elm._id == "1")?.count || 0,
+          confirmed: statusReport?.find((elm) => elm._id == "8")?.count || 0
         }))
       }
     }
 
     fetchOrders();
-  }, [page, rowsPerPage,statusFilter,couponFilter]);
+  }, [page, rowsPerPage, statusFilter, couponFilter]);
 
   useEffect(() => {
     setPage(0);
@@ -387,17 +398,21 @@ const formatDateToIST = (date) => {
 
           <div className='mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-4'>
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
-              <p className='text-sm text-slate-500'>Orders On This Page</p>
-              <p className='mt-2 text-2xl font-semibold text-slate-900'>{filteredOrders.length}</p>
+              <p className='text-sm text-slate-500'>Total Orders </p>
+              <p className='mt-2 text-2xl font-semibold text-slate-900'>{totalOrders||0}</p>
             </div>
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
               <p className='text-sm text-slate-500'>Placed</p>
               <p className='mt-2 text-2xl font-semibold text-emerald-600'>{statusReport?.placed || 0}</p>
             </div>
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
+              <p className='text-sm text-slate-500'>Confirmed</p>
+              <p className='mt-2 text-2xl font-semibold text-emerald-600'>{statusReport?.confirmed || 0}</p>
+            </div>
+            {/* <div className='rounded-xl border border-slate-200 bg-white p-4'>
               <p className='text-sm text-slate-500'>Pending</p>
               <p className='mt-2 text-2xl font-semibold text-amber-600'>{statusCounts['5'] || 0}</p>
-            </div>
+            </div> */}
             <div className='rounded-xl border border-slate-200 bg-white p-4'>
               <p className='text-sm text-slate-500'>Cancelled</p>
               <p className='mt-2 text-2xl font-semibold text-rose-600'>{statusReport?.cancelled || 0}</p>
@@ -447,44 +462,45 @@ const formatDateToIST = (date) => {
                     <option value='2'>No Coupon</option>
                   </select>
                 </div>
-              
+
               </div>
               <div className=' xl:w-[150px]'>
                 <div>
                   <label className='mb-2 block text-sm font-medium text-slate-700'>Status Filter</label>
                   <select
                     value={statusFilter}
-                    onChange={(e) =>setStatusFilter(e.target.value)}
+                    onChange={(e) => setStatusFilter(e.target.value)}
                     className='w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none transition focus:border-blue-500'
                   >
-                   {STATUS_FILTERS.map((item,index)=>{
-                    return (
-                    <option key={index} value={item.value}>{item.label}</option>
-                    )
-                   })}
-                    
+                    {STATUS_FILTERS.map((item, index) => {
+                      return (
+                        <option key={index} value={item.value}>{item.label}</option>
+                      )
+                    })}
+
                   </select>
                 </div>
-                
+
               </div>
             </div>
 
             <div className='rounded-xl border border-slate-200 bg-slate-50 px-4 py-3'>
-                  <p className='text-sm text-slate-500'>Total Orders</p>
-                  <p className='mt-1 text-xl font-semibold text-slate-900'>{totalOrders}</p>
-                </div>
+              <p className='text-sm text-slate-500'>Total Orders</p>
+              <p className='mt-1 text-xl font-semibold text-slate-900'>{totalOrders}</p>
+            </div>
           </div>
         </div>
 
         <div className='w-[90%] mx-auto'>
           <CustomTable
+            orders={true}
             headings={columns}
             rows={rows}
             page={page}
             setPage={setPage}
             rowsPerPage={rowsPerPage}
             setRowsPerPage={setRowsPerPage}
-            totalOrders={ totalOrders}
+            totalOrders={totalOrders}
             handleRowClick={handleRowClick}
             handleOpen={handleOpen}
           />

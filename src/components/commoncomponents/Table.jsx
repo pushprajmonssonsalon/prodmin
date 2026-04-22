@@ -9,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import { isValidElement } from 'react';
 import { useAppContext } from '../../services/context/AppContext';
 
-export default function CustomTable({distributer=false,headings,rows,handleRowClick,handleOpen,page,setPage,rowsPerPage, setRowsPerPage,totalOrders,settelment=false}) {
+export default function CustomTable({orders=false,distributer=false,headings,rows,handleRowClick,handleOpen,page,setPage,rowsPerPage, setRowsPerPage,totalOrders,settelment=false}) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -64,8 +64,9 @@ export default function CustomTable({distributer=false,headings,rows,handleRowCl
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?.code}>
                     {headings.map((column) => {
                       const value = row[column.id];
+                      console.log(orders,row["status"],"orders")
                       return (
-                        <TableCell key={column.id} align={column.align} sx={{cursor:"pointer"}}  onClick={()=>handleDoubleFunction(row,column)}>
+                        <TableCell key={column.id} align={column.align} sx={{cursor:"pointer",backgroundColor:(orders&&row["status"])==="Cancelled"?"#FF7070":""}}  onClick={()=>handleDoubleFunction(row,column)}>
                           {isValidElement(value) 
                             ? <div style={{ display: 'flex', justifyContent: column.align === 'right' ? 'flex-end' : 'flex-start' }}>
                                 {value}
