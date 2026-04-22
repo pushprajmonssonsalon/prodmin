@@ -3,7 +3,7 @@ import { salonTypes } from "../utils/roles";
 
 const baseUrl = `https://crm.smartsalon.in`;
 // const baseUrl = `http://192.168.2.210:4002`;
-// const baseUrl = `http://192.168.2.237:4002`;
+// const baseUrl = `http://192.168.2.16:4002`;
 
 const baseUrl2 = `https://app.smartsalon.in`;
 const baseUrl3 = `https://monsoonsalon.com/api`;
@@ -293,6 +293,47 @@ const CHANGE_PO_STATUS = async (payload) => {
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
 };
+// SOP APIs
+const GET_SOP_BY_ID = async (id) => {
+  const url = `${baseUrl}/servicesop/${id}`;
+  const response = await API_REQUEST(url, "get");
+  return response;
+};
+
+const CREATE_SOP = async (payload) => {
+  const url = `${baseUrl}/servicesop/sop`;
+  const response = await API_REQUEST(url, "post", payload);
+  return response;
+};
+
+const UPDATE_SOP = async (id, payload) => {
+  const url = `${baseUrl}/servicesop/${id}`;
+  const response = await API_REQUEST(url, "put", payload);
+  return response;
+};
+const GET_ALL_SOPS = async () => {
+  const url = `${baseUrl}/servicesop`;
+  const response = await API_REQUEST(url, "get");
+  return response;
+};
+
+const TOGGLE_SOP = async (id) => {
+  const url = `${baseUrl}/servicesop/${id}/toggle`;
+  const response = await API_REQUEST(url, "patch");
+  return response;
+};
+
+const DUPLICATE_SOP = async (id) => {
+  const url = `${baseUrl}/servicesop/${id}/duplicate`;
+  const response = await API_REQUEST(url, "post");
+  return response;
+};
+
+const DELETE_SOP = async (id) => {
+  const url = `${baseUrl}/servicesop/${id}`;
+  const response = await API_REQUEST(url, "delete");
+  return response;
+};
 const POORDERS_FILTER = async (payload) => {
   //
 
@@ -387,4 +428,11 @@ export {
   POORDERS_FILTER,
   DP_POORDERS_FILTER,
   PO_UPLOADSPDF,
+  GET_SOP_BY_ID,
+  CREATE_SOP,
+  UPDATE_SOP,
+  GET_ALL_SOPS,
+  TOGGLE_SOP,
+  DUPLICATE_SOP,
+  DELETE_SOP,
 };

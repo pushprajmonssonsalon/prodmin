@@ -1,7 +1,7 @@
 import { BsBoxes, BsList, BsQrCode,BsUpload } from "react-icons/bs";
 import { FaEdit, FaFileInvoiceDollar, FaRegEdit, FaUser } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
-import { GrDeliver } from "react-icons/gr";
+import { GrDeliver, GrDocumentStore } from "react-icons/gr";
 import { IoIosDocument } from "react-icons/io";
 import { IoBagAdd, IoNotifications } from "react-icons/io5";
 import { MdAddBusiness, MdCardMembership, MdCreate } from "react-icons/md";
@@ -35,6 +35,16 @@ const finance = [
     activeItem: "dbpoorders",
     icon: <GrDeliver size={20} />,
   },
+  // {
+  //   text: "SOP Form",
+  //   activeItem: "sopform",
+  //   icon: <GrDocumentStore size={20} />,
+  // }, 
+  {
+    text: "SOP List",
+    activeItem: "soplist",
+    icon: <GrDocumentStore size={20} />,
+  }, 
 ];
 const operations = [
   {
