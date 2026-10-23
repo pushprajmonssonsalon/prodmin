@@ -14,6 +14,8 @@ const csvToJson = (csv) => {
     volume: 0,
     unit: "",
     size: 0,
+    stock: 0,
+    gst: 0,
    
     brand: "",
     type: "",

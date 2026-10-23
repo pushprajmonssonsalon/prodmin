@@ -2,8 +2,8 @@ import axios from "axios";
 
   
   // const BASE_URL='http://192.168.2.102:4000/api'
-const BASE_URL = `https://smartsalon.in/api`;
-
+// franchise login + leads live in monsoonback (leads are saved there by the website franchise form)
+const BASE_URL = process.env.REACT_APP_WEBSITE_API_URL || `https://www.monsoonsalon.com/api`;
 
 
 // Base Axios instance

@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 const initialData = {
   brand: "",
   type: "",
+  gst: 18,
   products: [
     {
       name: "",
@@ -28,9 +29,16 @@ const AddBulkProduct = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    // reuse the existing brand's spelling so "kanpeki" doesn't create a duplicate of "Kanpeki"
+    const typedBrand = productData.brand.trim();
+    const brand =
+      brands?.find((b) => b?.toLowerCase() === typedBrand.toLowerCase()) ||
+      typedBrand;
     if (
-      productData.brand === "" ||
+      brand === "" ||
       productData.type === "" ||
+      productData.gst === "" ||
+      isNaN(productData.gst) ||
       productData?.products?.length === 0
     )
       return toast.error("select all fields");
@@ -43,7 +51,8 @@ const AddBulkProduct = () => {
     }
     (async () => {
       try {
-        await CREATE_BULK_PRODUCT(productData);
+        await CREATE_BULK_PRODUCT({ ...productData, brand });
+        if (!brands?.includes(brand)) setBrands((prev) => [...(prev || []), brand]);
         setProductData(initialData);
         toast.success("product created")
       } catch (error) {
@@ -101,6 +110,8 @@ const AddBulkProduct = () => {
       skucode: "",
       unit: "",
       size: "",
+      stock: "",
+      gst: "",
     },
   ];
   const generateCSV = () => {
@@ -200,23 +211,24 @@ const AddBulkProduct = () => {
                   htmlFor="brand"
                   className="mb-2 font-medium text-gray-700"
                 >
-                  Select brand
+                  Select or enter brand
                 </label>
-                <select
+                <input
                   id="brand"
+                  list="brand-options"
+                  autoComplete="off"
+                  placeholder="Choose a brand or type a new one"
                   className="border border-gray-300 p-2 rounded-md outline-none focus:ring-2"
                   name="brand"
                   value={productData?.brand}
                   onChange={handleChange}
-                >
-                  <option selected="">Choose a brand</option>
+                />
+                <datalist id="brand-options">
                   {brands?.length > 0 &&
                     brands?.map((brand, index) => (
-                      <option key={index} value={brand}>
-                        {brand}
-                      </option>
+                      <option key={index} value={brand} />
                     ))}
-                </select>
+                </datalist>
               </div>
               <div className="flex flex-col">
                 <label
@@ -235,6 +247,29 @@ const AddBulkProduct = () => {
                   <option selected="">Choose a type</option>
                   <option value="Retail">Retail</option>
                   <option value="Professional">Professional</option>
+                </select>
+              </div>
+              <div className="flex flex-col">
+                <label
+                  htmlFor="gst"
+                  className="mb-2 font-medium text-gray-700"
+                >
+                  GST (%)
+                </label>
+                <select
+                  id="gst"
+                  name="gst"
+                  className="border border-gray-300 p-2 rounded-md outline-none focus:ring-2"
+                  value={productData?.gst}
+                  onChange={(e) =>
+                    setProductData({ ...productData, gst: Number(e.target.value) })
+                  }
+                >
+                  {[0, 5, 12, 18, 28].map((rate) => (
+                    <option key={rate} value={rate}>
+                      {rate}%
+                    </option>
+                  ))}
                 </select>
               </div>
             </div>

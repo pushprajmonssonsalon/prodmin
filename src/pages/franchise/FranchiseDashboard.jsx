@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/franchise/user.services";
 import TableComponent from "../../components/table/TableComponent";
-import { subDays, startOfMonth, endOfMonth } from 'date-fns';
+import { subDays, startOfMonth, endOfMonth, format } from 'date-fns';
 import { dateFilters } from "../../services/utils/roles";
 import exportToExcel from "../../services/utils/exportToExcel";
 import toast from "react-hot-toast";
@@ -75,8 +75,13 @@ const FranchiseDashboard = () => {
         try {
             setLoading(true)
 
-            const query = `page=${currentPage}&limit=${itemsPerPage}&startDate=${stDate ? stDate : startDate}&endDate=${enDate ? enDate : endDate}`
-            const result = await apiRequest("post", `getAllLeads?${query}`, {})
+            const params = {
+                page: currentPage,
+                limit: itemsPerPage,
+                startDate: (stDate || startDate) && format(stDate || startDate, "yyyy-MM-dd"),
+                endDate: (enDate || endDate) && format(enDate || endDate, "yyyy-MM-dd"),
+            }
+            const result = await apiRequest("post", "getAllLeads", {}, params)
             setLeads(result?.data);
             setLoading(false)
             setTotalItems(result?.totalLeads)

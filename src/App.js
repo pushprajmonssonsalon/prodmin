@@ -16,6 +16,7 @@ import Salons from "./pages/Salons";
 import SingleSalon from "./pages/SingleSalon";
 import AddProduct from "./pages/AddProduct";
 import AddSalon from "./pages/AddSalon";
+import AddService from "./pages/AddService";
 import AddBulkProduct from "./pages/AddBulkProduct";
 import AddVedio from "./pages/AddVedio";
 import UpdateProducts from "./pages/UpdateBulkProducts";
@@ -110,6 +111,10 @@ const App = () => {
         <Route
           path="/salonadd"
           element={<PrivateRoute isCrm={true} component={AddSalon} />}
+        />
+        <Route
+          path="/serviceadd"
+          element={<PrivateRoute isCrm={true} component={AddService} />}
         />
         <Route
           path="/vedioadd"

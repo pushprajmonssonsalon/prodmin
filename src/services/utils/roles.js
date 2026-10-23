@@ -4,7 +4,7 @@ import { GiShop } from "react-icons/gi";
 import { GrDeliver, GrDocumentStore } from "react-icons/gr";
 import { IoIosDocument } from "react-icons/io";
 import { IoBagAdd, IoNotifications } from "react-icons/io5";
-import { MdAddBusiness, MdCardMembership, MdCreate } from "react-icons/md";
+import { MdAddBusiness, MdCardMembership, MdCreate, MdDesignServices } from "react-icons/md";
 import { RiVideoAddFill } from "react-icons/ri";
 import { TbCreditCardRefund, TbPasswordUser } from "react-icons/tb";
 
@@ -66,6 +66,11 @@ const operations = [
     text: "Add Salon",
     activeItem: "salonadd",
     icon: <MdAddBusiness size={20} />,
+  },
+  {
+    text: "Add Services",
+    activeItem: "serviceadd",
+    icon: <MdDesignServices size={20} />,
   },
   {
     text: "Add Product",

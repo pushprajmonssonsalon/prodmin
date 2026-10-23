@@ -1,13 +1,10 @@
 import API_REQUEST from "../utils/axios.utils";
 import { salonTypes } from "../utils/roles";
 
-const baseUrl = `https://crm.smartsalon.in`;
-// const baseUrl = `http://192.168.2.210:4002`;
-// const baseUrl = `http://192.168.2.16:4002`;
-
-const baseUrl2 = `https://app.smartsalon.in`;
-const baseUrl3 = `https://monsoonsalon.com/api`;
-const baseUrl4 = `https://smartsalon.in/api`;
+const baseUrl = process.env.REACT_APP_API_URL || `https://app.smartsalon.in`;
+const baseUrl2 = baseUrl;
+const baseUrl3 = process.env.REACT_APP_WEBSITE_API_URL || `https://www.monsoonsalon.com/api`;
+const baseUrl4 = baseUrl3;
 
 const LOGIN_USERS = async (payload) => {
   const url = `${baseUrl}/admin/login`;
@@ -26,12 +23,12 @@ const PARLOUR_DETAILS = async (payload) => {
   const response = await API_REQUEST(url, "get", null, authString);
   return response;
 };
-const APP_ORDERS_DETAILS=async(payload)=>{
-    const url = `${baseUrl}/operation/getAllProductOrders`;
+const APP_ORDERS_DETAILS = async (payload) => {
+  const url = `${baseUrl}/operation/getAllProductOrders`;
   const authString = localStorage.getItem("crmtoken");
-    
-    const response = await API_REQUEST(url,"post",payload,authString);
-    return response;
+
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
 }
 const PARLOUR_UPLOADSPDF = async (payload) => {
   const url = `${baseUrl}/uploadPdf`;
@@ -113,8 +110,7 @@ const CREATE_VEDIO = async (payload) => {
   return response;
 };
 const SEND_NOTIFICATION = async (payload) => {
-  const url = `${baseUrl2}/notification/sendNotificationToUsers
-`;
+  const url = `${baseUrl2}/notification/sendNotificationToUsers`;
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
   return response;
@@ -189,7 +185,7 @@ const GET_SALONS_PAGINATED = async (path, payload) => {
   return response;
 };
 const GET_SALON = async (path, id) => {
-  
+
   let url =
     path === "salonsmart"
       ? `${baseUrl4}/getSingleSalonDetail?id=${id}`
@@ -211,7 +207,7 @@ const CREATE_SALON = async (payload) => {
 
   const authString = localStorage.getItem("crmtoken");
   const response1 = await API_REQUEST(url, "post", newPayload, authString);
-  
+
   const uniqueCode = response1;
   const newPayload2 = {
     salon: { ...payload.salon, uniqueCode },
@@ -222,13 +218,29 @@ const CREATE_SALON = async (payload) => {
   }
   return response1;
 };
+const GET_SERVICE_CATEGORIES = async () => {
+  const url = `${baseUrl}/salonService/getServiceCategory`;
+  const response = await API_REQUEST(url, "get");
+  return response;
+};
+const GET_SERVICE_SUBCATEGORIES = async (payload) => {
+  const url = `${baseUrl}/salonService/getSubServiceCategory`;
+  const response = await API_REQUEST(url, "post", payload);
+  return response;
+};
+const CREATE_SERVICE = async (payload) => {
+  const url = `${baseUrl}/operation/createService`;
+  const authString = localStorage.getItem("crmtoken");
+  const response = await API_REQUEST(url, "post", payload, authString);
+  return response;
+};
 const CREATE_DISTRIBUTER = async (payload) => {
-  
+
   const url = `${baseUrl}/distributer/createDistributer`;
 
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
-  
+
   return response;
 };
 const UPDATE_SALON = async (payload, path) => {
@@ -242,11 +254,11 @@ const UPDATE_SALON = async (payload, path) => {
 
   return response;
 };
-const UPLOAD_SALON_IMAGES = async (payload,id) => {
-  let url =`${baseUrl}/uploadSalonImages/${id}`
-    // path === "salonsmart"
-    //   ? `${baseUrl3}/salon/updateSalon`
-    //   : `${baseUrl}/operation/updateParlor`;
+const UPLOAD_SALON_IMAGES = async (payload, id) => {
+  let url = `${baseUrl}/uploadSalonImages/${id}`
+  // path === "salonsmart"
+  //   ? `${baseUrl3}/salon/updateSalon`
+  //   : `${baseUrl}/operation/updateParlor`;
 
   const authString = localStorage.getItem("crmtoken");
   const response = await API_REQUEST(url, "post", payload, authString);
@@ -412,6 +424,9 @@ export {
   GET_SALONS_PAGINATED,
   APP_ORDERS_DETAILS,
   CREATE_SALON,
+  GET_SERVICE_CATEGORIES,
+  GET_SERVICE_SUBCATEGORIES,
+  CREATE_SERVICE,
   CREATE_DISTRIBUTER,
   UPDATE_SALON,
   UPLOAD_SALON_IMAGES,
