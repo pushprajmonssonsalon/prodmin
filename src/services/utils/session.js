@@ -39,13 +39,44 @@ export const handleSessionExpired = () => {
 
 const LOGIN_URL = /login/i;
 
+const getBearerToken = (config) => {
+  const headers = config?.headers;
+  const value = headers?.get?.("Authorization") ?? headers?.Authorization ?? headers?.authorization;
+  return typeof value === "string" ? value.replace(/^Bearer\s+/i, "") : null;
+};
+
+// A 401 only means "session expired" when the request actually carried a token
+// and that token is not a still-valid JWT. A 401 with a valid, unexpired token is
+// a permission error from the server, so it must not log the user out.
+const isSessionExpiry = (error) => {
+  if (error?.response?.status !== 401) return false;
+  const url = error?.config?.url || "";
+  if (LOGIN_URL.test(url)) return false;
+  const token = getBearerToken(error.config);
+  if (!token) return false;
+  if (isTokenExpired(token)) return true;
+  // Decodable JWT with a future/absent exp -> not an expiry
+  try {
+    const part = token.split(".")[1];
+    if (part) {
+      JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/")));
+      return false;
+    }
+  } catch (e) {
+    // not a JWT: fall through
+  }
+  return true;
+};
+
 export const attachSessionInterceptor = (instance) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      const status = error?.response?.status;
-      const url = error?.config?.url || "";
-      if (status === 401 && !LOGIN_URL.test(url)) handleSessionExpired();
+      if (error?.response?.status === 401) {
+        // eslint-disable-next-line no-console
+        console.warn("[session] 401 from", error?.config?.url, error?.response?.data);
+      }
+      if (isSessionExpiry(error)) handleSessionExpired();
       return Promise.reject(error);
     }
   );
