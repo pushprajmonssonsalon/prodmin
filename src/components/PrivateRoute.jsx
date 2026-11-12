@@ -1,20 +1,18 @@
 import { Navigate } from 'react-router';
+import { clearSession, isTokenExpired } from '../services/utils/session';
 
-const PrivateRoute = ({ component: Component,isCrm }) => {
-    // const token = localStorage.getItem('token')
-    const crmtoken = localStorage.getItem("crmtoken")
-    const protoken = localStorage.getItem("protoken")
-    
+// portal: "crm" | "pro" | "franchise". `isCrm` is kept for existing usages (true => crm, false => pro).
+const PrivateRoute = ({ component: Component, isCrm, portal }) => {
+    const tokenKey = portal === "franchise"
+        ? "frntoken"
+        : (portal === "crm" || (!portal && isCrm)) ? "crmtoken" : "protoken";
+    const token = localStorage.getItem(tokenKey);
 
-    if(isCrm){
-        
-        return !crmtoken ?  <Navigate to={"/login"} /> : <Component />;
+    if (!token || isTokenExpired(token)) {
+        if (token) clearSession();
+        return <Navigate to="/login" replace />;
     }
-    else{
-        return !protoken ?  <Navigate to={"/login"} /> : <Component />;
-
-    }
-    
+    return <Component />;
 }
 
 export default PrivateRoute

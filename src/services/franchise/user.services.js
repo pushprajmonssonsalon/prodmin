@@ -1,4 +1,5 @@
 import axios from "axios";
+import { attachSessionInterceptor } from "../utils/session";
 
   
   // const BASE_URL='http://192.168.2.102:4000/api'
@@ -14,6 +15,8 @@ const axiosInstance = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+attachSessionInterceptor(axiosInstance);
 
 const apiRequest = async (method="post", url, data = null, params = null,) => {
   const authString =localStorage.getItem("frntoken");

@@ -1,10 +1,15 @@
 import { useNavigate } from 'react-router-dom';
+import { isTokenExpired } from '../services/utils/session';
 
 const Selection = () => {
     const navigate = useNavigate();
-    const crmToken = localStorage.getItem('crmtoken');
-    const proToken = localStorage.getItem('protoken');
-    const frnToken = localStorage.getItem('frntoken');
+    const valid = (key) => {
+        const t = localStorage.getItem(key);
+        return t && !isTokenExpired(t) ? t : null;
+    };
+    const crmToken = valid('crmtoken');
+    const proToken = valid('protoken');
+    const frnToken = valid('frntoken');
     const handleSelection=(value)=>{
         localStorage.setItem("isAdmin",value);
         if(value === "crm" && crmToken) navigate('/dash-board');

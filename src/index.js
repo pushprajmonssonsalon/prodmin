@@ -6,6 +6,11 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import AppContextProvider from './services/context/AppContext';
+import axios from 'axios';
+import { attachSessionInterceptor } from './services/utils/session';
+
+// Redirect to /login whenever any request (CRM/PRO/raw axios) returns 401
+attachSessionInterceptor(axios);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

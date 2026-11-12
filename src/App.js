@@ -220,7 +220,7 @@ const App = () => {
         />
         
 
-        <Route path="/franchise/*" element={<FranchiseRoutes />} />
+        <Route path="/franchise/*" element={<PrivateRoute portal="franchise" component={FranchiseRoutes} />} />
 
       </Routes>
     </div>
