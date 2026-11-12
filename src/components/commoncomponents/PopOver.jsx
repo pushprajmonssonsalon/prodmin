@@ -51,8 +51,12 @@ export default function CustomPopover() {
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
           vertical: "bottom",
-          horizontal: "left",
+          horizontal: "right",
         }}
       >
         <Button onClick={handleLogout} sx={{ p: 2 }}>

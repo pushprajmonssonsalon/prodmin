@@ -10,7 +10,14 @@ export default function Sidebar({ children }) {
   const {expanded, setExpanded} = useAppContext();
   
   return (
-    <aside className="h-screen overflow-y-auto sidebar">
+    <>
+    {/* On small screens an expanded sidebar overlays the page; this spacer keeps the collapsed rail's space */}
+    {expanded && <div className="md:hidden w-[69px] shrink-0" />}
+    <aside
+      className={`h-screen overflow-y-auto sidebar shrink-0 ${
+        expanded ? "max-md:fixed max-md:top-0 max-md:left-0 max-md:z-40 max-md:shadow-2xl" : ""
+      }`}
+    >
       <nav className="h-full flex flex-col bg-white border-r shadow-sm">
         <div className="p-4 pb-2 flex justify-between items-center">
           <img
@@ -32,11 +39,11 @@ export default function Sidebar({ children }) {
           <ul className="flex-1 px-3">{children}</ul>
         </SidebarContext.Provider>
 
-        <div className="border-t flex p-3">
+        <div className={`border-t flex p-3 ${expanded ? "" : "flex-col items-center gap-3"}`}>
           <img
             src={SmallProLogo}
             alt=""
-            className="w-10 h-10 rounded-md"
+            className="w-10 h-10 rounded-md shrink-0"
           />
           <div
             className={`
@@ -44,15 +51,18 @@ export default function Sidebar({ children }) {
               overflow-hidden transition-all ${expanded ? "w-52 ml-3" : "w-0"}
           `}
           >
-            <div className="leading-4">
+            <div className="leading-4 min-w-0">
               <h4 className="font-semibold">Pro Salon Cart</h4>
-              <span className="text-xs text-gray-600">enquiry@theprofessionalworld.com</span>
+              <span className="text-xs text-gray-600 break-all">enquiry@theprofessionalworld.com</span>
             </div>
-            <CustomPopover />
+            {expanded && <CustomPopover />}
           </div>
+          {/* keep logout reachable when the sidebar is collapsed */}
+          {!expanded && <CustomPopover />}
         </div>
       </nav>
     </aside>
+    </>
   )
 }
 

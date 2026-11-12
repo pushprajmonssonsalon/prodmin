@@ -59,7 +59,7 @@ const Layout = ({ children }) => {
           </>
         )}
       </Sidebar>
-      <main className="flex-grow bg-panel bg-cover box-border">{children}</main>
+      <main className="flex-grow min-w-0 bg-panel bg-cover box-border">{children}</main>
     </div>
   );
 };
