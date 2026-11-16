@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, isCrm, portal }) => {
 
     if (!token || isTokenExpired(token)) {
         if (token) clearSession();
-        return <Navigate to="/login" replace />;
+        return <Navigate to="/" replace />;
     }
     return <Component />;
 }

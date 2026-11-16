@@ -33,7 +33,7 @@ export default function CustomPopover() {
 
     }
 
-    navigate("/login");
+    navigate("/");
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;

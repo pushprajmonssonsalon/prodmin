@@ -30,11 +30,11 @@ export const isTokenExpired = (token) => {
 };
 
 export const handleSessionExpired = () => {
-  if (redirecting || window.location.pathname === "/login") return;
+  if (redirecting || window.location.pathname === "/") return;
   redirecting = true;
   clearSession();
   toast.error("Session expired. Please log in again.");
-  setTimeout(() => window.location.replace("/login"), 600);
+  setTimeout(() => window.location.replace("/"), 600);
 };
 
 const LOGIN_URL = /login/i;
