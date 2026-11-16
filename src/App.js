@@ -45,16 +45,15 @@ const App = () => {
   // Define the routes for which the class should apply
 
   // Determine if the current route matches any CRM route
-  const isCrmRoute = location.pathname.startsWith("/franchise")
-  
+  const isCrmRoute = location.pathname.startsWith("/franchise");
+
   return (
     <div className={`${!isCrmRoute ? "main" : ""}`}>
-
       <Routes>
-
-
         <Route path="/" element={<Selection />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/pro-salon-cart/login" element={<Login />} />
+        <Route path="/crm/login" element={<Login />} />
+        <Route path="/franchise/login" element={<Login />} />
         {/* crm routes */}
         <Route
           path="/dash-board"
@@ -208,7 +207,7 @@ const App = () => {
           path="/productupdate"
           element={<PrivateRoute isCrm={false} component={ProductUpdate} />}
         />
-       
+
         <Route
           path="/orderdetails"
           element={<PrivateRoute isCrm={false} component={OrderDetails} />}
@@ -218,22 +217,30 @@ const App = () => {
           path="/productlist"
           element={<PrivateRoute isCrm={false} component={ProductList} />}
         />
-        
 
-        <Route path="/franchise/*" element={<PrivateRoute portal="franchise" component={FranchiseRoutes} />} />
-
+        <Route
+          path="/franchise/*"
+          element={
+            <PrivateRoute portal="franchise" component={FranchiseRoutes} />
+          }
+        />
       </Routes>
     </div>
-
   );
 };
-
 
 const FranchiseRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<FranchiseLayout><FranchiseDashboard /></FranchiseLayout>} /> {/* Default path */}
-
+      <Route
+        path="/"
+        element={
+          <FranchiseLayout>
+            <FranchiseDashboard />
+          </FranchiseLayout>
+        }
+      />{" "}
+      {/* Default path */}
     </Routes>
   );
 };
