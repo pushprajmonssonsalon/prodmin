@@ -1,10 +1,15 @@
-import { BsBoxes, BsList, BsQrCode,BsUpload } from "react-icons/bs";
+import { BsBoxes, BsList, BsQrCode, BsUpload } from "react-icons/bs";
 import { FaEdit, FaFileInvoiceDollar, FaRegEdit, FaUser } from "react-icons/fa";
 import { GiShop } from "react-icons/gi";
 import { GrDeliver, GrDocumentStore } from "react-icons/gr";
 import { IoIosDocument } from "react-icons/io";
 import { IoBagAdd, IoNotifications } from "react-icons/io5";
-import { MdAddBusiness, MdCardMembership, MdCreate, MdDesignServices } from "react-icons/md";
+import {
+  MdAddBusiness,
+  MdCardMembership,
+  MdCreate,
+  MdDesignServices,
+} from "react-icons/md";
 import { RiVideoAddFill } from "react-icons/ri";
 import { TbCreditCardRefund, TbPasswordUser } from "react-icons/tb";
 
@@ -22,8 +27,7 @@ const finance = [
   {
     text: "Add Distributer",
     activeItem: "create-distributer",
-    icon: <FaUser size={20} />
-
+    icon: <FaUser size={20} />,
   },
   {
     text: "PO Orders",
@@ -39,12 +43,12 @@ const finance = [
   //   text: "SOP Form",
   //   activeItem: "sopform",
   //   icon: <GrDocumentStore size={20} />,
-  // }, 
+  // },
   {
     text: "SOP List",
     activeItem: "soplist",
     icon: <GrDocumentStore size={20} />,
-  }, 
+  },
 ];
 const operations = [
   {
@@ -53,9 +57,9 @@ const operations = [
     icon: <GiShop size={20} />,
   },
   {
-     text:"App Orders",
-     activeItem:'app-orders',
-     icon:<GrDeliver size={20} />
+    text: "App Orders",
+    activeItem: "app-orders",
+    icon: <GrDeliver size={20} />,
   },
   {
     text: "Salon Details (crm)",
@@ -149,7 +153,7 @@ export const prokeys = [
     activeItem: "Add",
     icon: <MdCreate size={20} />,
   },
- 
+
   {
     text: "Product QrCodes",
     activeItem: "productqr",
@@ -159,14 +163,12 @@ export const prokeys = [
     text: "Product List",
     activeItem: "productlist",
     icon: <BsList size={20} />,
-   
   },
   {
-     text: "Product Update",
+    text: "Product Update",
     activeItem: "productupdate",
     icon: <BsUpload size={20} />,
   },
-
 ];
 
 export const crmLinks = [
@@ -187,8 +189,8 @@ export const crmLinks = [
 export const salonTypes = {
   "Smart Salon": "Smart Salon",
   "Monsoon Pro": "Monsoon Salon Pro",
-  Monsoon: "Monsoon Salon",
-}
+  "Monsoon salon": "Monsoon Salon",
+};
 export const crmroles = {
   finance,
   admin: [...finance, ...operations],
@@ -200,24 +202,32 @@ export const dateFilters = {
   YESTERDAY: "YesterDay",
   LAST_7_DAYS: "Last 7 days",
   CURRENT_MONTH: "Current month",
-  PAST_MONTH: "Past month"
-}
+  PAST_MONTH: "Past month",
+};
 
 export const productOptions = {
   brand: ["Loreal", "Argatin", "Skinconyc", "Spring H2O"],
   category: ["Beauty", "Personal Care", "Hair care", "Skin Care"],
   subCategory: [
-    'Beauty fragrance', 'Bleach cream',
-    'Conditioner', 'Essential oil',
-    'Facial kit', 'Hair care',
-    'Hair color', 'Hair conditioner',
-    'Hair mask', 'Hair oil',
-    'Hair repair shampoo', 'Hair shampoo',
-    'Keratin treatment', 'Menicure and pedicure',
-    'Oil', 'Shampoo',
-    'Skin care', 'Skin mask',
-    'Sunscreen', 'Treatment'
-  ]
-
+    "Beauty fragrance",
+    "Bleach cream",
+    "Conditioner",
+    "Essential oil",
+    "Facial kit",
+    "Hair care",
+    "Hair color",
+    "Hair conditioner",
+    "Hair mask",
+    "Hair oil",
+    "Hair repair shampoo",
+    "Hair shampoo",
+    "Keratin treatment",
+    "Menicure and pedicure",
+    "Oil",
+    "Shampoo",
+    "Skin care",
+    "Skin mask",
+    "Sunscreen",
+    "Treatment",
+  ],
 };
-

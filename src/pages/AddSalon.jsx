@@ -12,8 +12,7 @@ const initialData = {
   address2: "",
   city: "",
   pincode: "",
-  landmark:"",
-
+  landmark: "",
 
   // geoLocation: [{ long: 0, lat: 0 }],
   active: false,
@@ -43,7 +42,7 @@ const AddSalon = () => {
     address2: "Address 2",
     city: "City",
     pincode: "Pincode",
-    landmark:"Landmark",
+    landmark: "Landmark",
 
     // geoLocation: "Geo Location",
     active: "Active",
@@ -78,7 +77,6 @@ const AddSalon = () => {
           } else if (name === "phoneNumber" || name === "contactNumber") {
             const phoneValue = value.toString().slice(0, 10); // Limit to 10 digits
             return Number(phoneValue); // Convert back to a number
-      
           }
           return value;
         } else if (type === "radio") {
@@ -92,10 +90,22 @@ const AddSalon = () => {
     });
   };
 
+  const optionalFields = [
+    // "latitude",
+    // "longitude",
+    "live",
+    "landmark",
+    "address2",
+    // "rating",
+    // "active",
+    "uniqueCode",
+  ];
   const handleSubmit = (e) => {
     e.preventDefault();
-    const isSomeEmpty = Object.values(salon).some(
-      (elm) => elm === "" || elm === undefined || elm === null
+    const isSomeEmpty = Object.entries(salon).some(
+      ([key, value]) =>
+        !optionalFields.includes(key) &&
+        (value === "" || value === undefined || value === null),
     );
     if (isSomeEmpty) return toast.error("fill all the fields");
     const data = {
@@ -103,7 +113,6 @@ const AddSalon = () => {
     };
     CREATE_SALON(data)
       .then((res) => {
-        
         if (res) {
           toast.success("salon created");
           setSalon({ ...initialData });
@@ -242,8 +251,8 @@ const AddSalon = () => {
                         typeof salon[key] === "number"
                           ? "number"
                           : key === "email"
-                          ? "mail"
-                          : "text"
+                            ? "mail"
+                            : "text"
                       }
                       id={key}
                       min={0}
