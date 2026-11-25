@@ -1,3 +1,4 @@
+import { handleError } from "../../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import MonthPicker from "../commoncomponents/MonthPicker";
@@ -41,14 +42,16 @@ const ChildComponent = ({ closeModal, salonId, show }) => {
     const [selectedFile, setSelectedFile] = useState(null);
     const [selectedParlorDetail, setSelectedParlorDetail] = useState([]);
     const fetchApi = async () => {
-        if (salonId && month && year && show) {
-            const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
-            const selectedDate = updatingDate;
-            const singleParlourDetails = await SINGLE_PARLOUR_DETAILS({ salonId, selectedDate });
-            if (singleParlourDetails) {
-                setSelectedParlorDetail(singleParlourDetails)
-            }
-        }
+      try {
+          if (salonId && month && year && show) {
+              const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
+              const selectedDate = updatingDate;
+              const singleParlourDetails = await SINGLE_PARLOUR_DETAILS({ salonId, selectedDate });
+              if (singleParlourDetails) {
+                  setSelectedParlorDetail(singleParlourDetails)
+              }
+          }
+      } catch (error) { handleError(error); }
     }
     const deleteFileApiCall = async () => {
         if (selectedFile) {
@@ -61,9 +64,7 @@ const ChildComponent = ({ closeModal, salonId, show }) => {
                     toast.error("File not deleted, Please try again!");
                 }
 
-            } catch (error) {
-                toast.error("File not deleted, Please try again!");
-            }
+            } catch (error) { handleError(error); }
         }
         else {
             toast.error("File not deleted, Please try again!");
@@ -83,13 +84,15 @@ const ChildComponent = ({ closeModal, salonId, show }) => {
 
     }
     const uploadFileApiCall = async (formData) => {
-        const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
-        if (uploadPDF) {
-            toast.success("File Uploaded");
-            fetchApi()
-        } else {
-            toast.error("File not uploaded, Please try again!");
-        }
+      try {
+          const uploadPDF = await PARLOUR_UPLOADSPDF(formData);
+          if (uploadPDF) {
+              toast.success("File Uploaded");
+              fetchApi()
+          } else {
+              toast.error("File not uploaded, Please try again!");
+          }
+      } catch (error) { handleError(error); }
     };
     const handleFileUpload = async (file) => {
         if (file && salonId) {
@@ -107,6 +110,7 @@ const ChildComponent = ({ closeModal, salonId, show }) => {
 
                 // Refresh the data or update UI accordingly
             } catch (error) {
+                handleError(error);
                 console.error("File upload failed", error);
             }
         }

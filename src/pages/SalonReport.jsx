@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -123,7 +124,7 @@ const SalonReport = () => {
       .then((res) => {
         setSalons(res);
       })
-      .catch(() => {});
+      .catch((error) => { handleError(error); });
   }, [type]);
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -168,7 +169,7 @@ const SalonReport = () => {
         }));
         setPaymentMethodReport(paymentReport);
       })
-      .catch(() => {});
+      .catch((error) => { handleError(error); });
   };
 
   const credits = membershipCredit[0]?.membershipCreditUsed;

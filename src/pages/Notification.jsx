@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -46,7 +47,8 @@ const Notification = () => {
             url: "",
           });
         })
-        .catch(() => {
+        .catch((error) => {
+          handleError(error);
           setLoading(false);
         });
     } else {

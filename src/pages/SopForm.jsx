@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useMemo, useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Layout from "../components/Layout";
@@ -77,7 +78,7 @@ const SopForm = () => {
         }));
         toast.success("SOP loaded", { id: toastId });
       } catch (error) {
-        toast.error(error.message || "Failed to load SOP", { id: toastId });
+        handleError(error, { id: toastId });
       }
     };
 
@@ -318,7 +319,7 @@ const SopForm = () => {
       toast.success(id ? "SOP updated successfully!" : "SOP saved successfully!", { id: toastId });
       navigate("/soplist");
     } catch (error) {
-      toast.error(error.message || "Something went wrong", { id: toastId });
+      handleError(error, { id: toastId });
     } finally {
       setLoading(false);
     }

@@ -1,22 +1,15 @@
 import axios from "axios";
+import { withErrorHandling } from "./errorHandler";
 
 const API_REQUEST = async (url, method, data= null, authString= null) => {
     
-    const response = await axios({
+    return withErrorHandling(() => axios({
         method,
         url,
         data,
         headers: authString ? { 'Authorization': `Bearer ${authString}` } : {},
         timeout: 10000
-    })
-        .then((res) => res.data)
-        .catch((error) => {
-            const errMessage = error.message;
-            
-        })
-
-    if (response?.success) return response?.data;
-    return response?.data;
+    }), (response) => response?.data);
 }
 
 export default API_REQUEST;

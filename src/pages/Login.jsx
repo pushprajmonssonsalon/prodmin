@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import { FaLock, FaUser } from "react-icons/fa";
 import { MdMail } from "react-icons/md";
@@ -16,43 +17,45 @@ const Login = () => {
 
 
   const handleLogin=async(e)=>{
-    e.preventDefault();
-    if(tab==='crm'){
-      const user = await LOGIN_USERS({userName,password});
-      if(user){
-        localStorage.setItem('crmtoken',user.token)
-        
-        localStorage.setItem('role',user.role==="1"?"admin":user.role==="2"?"finance":"operations")
-        navigate("/dash-board")
-      }else{
-        toast.error("")
-      }
-    }else if(tab==="franchise"){
-      try {
-        const user =await apiRequest('post','login',{email:userName,password})
+    try {
+      e.preventDefault();
+      if(tab==='crm'){
+        const user = await LOGIN_USERS({userName,password});
         if(user){
-          localStorage.setItem('frntoken',user?.token)
-          navigate('/franchise')
+          localStorage.setItem('crmtoken',user.token)
+
+          localStorage.setItem('role',user.role==="1"?"admin":user.role==="2"?"finance":"operations")
+          navigate("/dash-board")
+        }else{
+          toast.error("Login failed. Please check your credentials and try again.")
         }
-      } catch (error) {
-        toast.error('')
+      }else if(tab==="franchise"){
+        try {
+          const user =await apiRequest('post','login',{email:userName,password})
+          if(user){
+            localStorage.setItem('frntoken',user?.token)
+            navigate('/franchise')
+          }
+        } catch (error) {
+          handleError(error)
+        }
+
+
       }
 
+      else{
+        const user = await PRO_LOGIN_USERS({phoneNumber:userName,password});
+        if(user){
+          localStorage.setItem('protoken',user.token)
+          localStorage.setItem('prorole',user.role)
 
-    }
-    
-    else{
-      const user = await PRO_LOGIN_USERS({phoneNumber:userName,password});
-      if(user){
-        localStorage.setItem('protoken',user.token)
-        localStorage.setItem('prorole',user.role)
-        
-        navigate("/Dashboard")
-      }else{
-        toast.error('')
+          navigate("/Dashboard")
+        }else{
+          toast.error("Login failed. Please check your credentials and try again.")
 
+        }
       }
-    }
+    } catch (error) { handleError(error); }
   }
 
   return (

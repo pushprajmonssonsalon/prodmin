@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -117,7 +118,7 @@ const SingleSalon = () => {
             setSalon(obj);
           }
         })
-        .catch(() => {});
+        .catch((error) => { handleError(error); });
     }
     fetchApi();
   }, [params.shortUrl]);
@@ -141,10 +142,12 @@ const SingleSalon = () => {
               toast.success("Successfully updated!");
             }
           } catch (error) {
+            handleError(error);
             console.error("Failed to upload images:", error);
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          handleError(error);
           console.error("Failed to upload images:");
         });
     }
@@ -200,7 +203,7 @@ const SingleSalon = () => {
       .then((res) => {
         if (res) toast.success("salon updated");
       })
-      .catch(() => {});
+      .catch((error) => { handleError(error); });
   };
 
   return (

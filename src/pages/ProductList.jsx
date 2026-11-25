@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import React, { useEffect, useState, useRef } from "react";
 import ReactPaginate from "react-paginate";
 import Layout from "../components/Layout";
@@ -39,7 +40,7 @@ const ProductList = () => {
                 setData(res?.data || []);
                 setTotalRows(res?.total || 0);
             })
-            .catch((err) => console.error("API Error:", err))
+            .catch((err) => { handleError(err); })
             .finally(() => setLoading(false));
 
     }, [currentPage, brand, isActive]);
@@ -160,8 +161,8 @@ const ProductList = () => {
 
             alert(`Successfully exported ${allData.length} products!`);
         } catch (error) {
+            handleError(error);
             console.error("Export Error:", error);
-            alert("Failed to export data. Please try again.");
         } finally {
             setExporting(false);
         }

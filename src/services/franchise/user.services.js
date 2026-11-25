@@ -1,5 +1,6 @@
 import axios from "axios";
 import { attachSessionInterceptor } from "../utils/session";
+import { withErrorHandling } from "../utils/errorHandler";
 
   
   // const BASE_URL='http://192.168.2.102:4000/api'
@@ -20,19 +21,13 @@ attachSessionInterceptor(axiosInstance);
 
 const apiRequest = async (method="post", url, data = null, params = null,) => {
   const authString =localStorage.getItem("frntoken");
-  try {
-    const response = await axiosInstance.request({
+  return withErrorHandling(() => axiosInstance.request({
       method,
       url,
       data,
       params,
       headers:authString?{ 'Authorization': `Bearer ${authString}` }:{}
-    });
-    return response.data; // Return the API response data
-  } catch (error) {
-    console.error("API Request Error:", error.message);
-    throw error.response?.data || error.message; // Throw error response or message
-  }
+    }));
 };
 
 export default apiRequest;

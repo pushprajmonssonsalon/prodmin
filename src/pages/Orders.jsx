@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import TopBar from '../components/commoncomponents/TopBar';
@@ -228,24 +229,26 @@ const Orders = () => {
   };
 
   const onSubmit = async (sdValue, edValue) => {
-    const res = await ORDERS_DETAILS({
-      startDate: sdValue ? sdValue : startDate,
-      endDate: edValue ? edValue : endDate,
-      page,
-      limit: rowsPerPage,
-    });
+    try {
+      const res = await ORDERS_DETAILS({
+        startDate: sdValue ? sdValue : startDate,
+        endDate: edValue ? edValue : endDate,
+        page,
+        limit: rowsPerPage,
+      });
 
-    if (res) {
-      setOrdersDetails(res?.orders || []);
-      setTotalOrders(res?.totalOrders || 0);
-      let statusReport = res?.statusReport;
-      setStatusReport((prev) => ({
-        ...prev,
-        cancelled: statusReport?.find((elm) => elm._id == "2")?.count || 0,
-        placed: statusReport?.find((elm) => elm._id == "1")?.count || 0,
-        confirmed: statusReport?.find((elm) => elm._id == "8")?.count || 0
-      }))
-    }
+      if (res) {
+        setOrdersDetails(res?.orders || []);
+        setTotalOrders(res?.totalOrders || 0);
+        let statusReport = res?.statusReport;
+        setStatusReport((prev) => ({
+          ...prev,
+          cancelled: statusReport?.find((elm) => elm._id == "2")?.count || 0,
+          placed: statusReport?.find((elm) => elm._id == "1")?.count || 0,
+          confirmed: statusReport?.find((elm) => elm._id == "8")?.count || 0
+        }))
+      }
+    } catch (error) { handleError(error); }
   };
 
   useEffect(() => {
@@ -312,32 +315,36 @@ const Orders = () => {
 
   useEffect(() => {
     async function fetchApi() {
-      if (!orderId) return;
-      const singleOrderDetail = await SINGLE_ORDERS_DETAILS({ id: orderId });
-      setSingleOrdersDetails(singleOrderDetail);
+      try {
+        if (!orderId) return;
+        const singleOrderDetail = await SINGLE_ORDERS_DETAILS({ id: orderId });
+        setSingleOrdersDetails(singleOrderDetail);
+      } catch (error) { handleError(error); }
     }
 
     fetchApi();
   }, [orderId]);
 
   const handleExportExcel = async () => {
-    const excel = await ORDERS_DETAILS_FOR_EXCEL({ startDate, endDate });
+    try {
+      const excel = await ORDERS_DETAILS_FOR_EXCEL({ startDate, endDate });
 
-    const transformedOrders = (excel?.orders || []).map((order) => {
-      return {
-        ...order,
-        orderId: order?.numericOrderId,
-        statusLabel: mapStatus(order?.status),
-        source: order?.source || 'Direct',
-        medium: order?.medium || 'NA',
-        couponApplied: order?.couponApplied ? 'YES' : 'NO',
-        coupon: order?.coupon || 'NA',
-        products: order?.products?.map((product) => product.name).join(', '),
-        addresses: formatAddress(order?.addresses),
-      };
-    });
+      const transformedOrders = (excel?.orders || []).map((order) => {
+        return {
+          ...order,
+          orderId: order?.numericOrderId,
+          statusLabel: mapStatus(order?.status),
+          source: order?.source || 'Direct',
+          medium: order?.medium || 'NA',
+          couponApplied: order?.couponApplied ? 'YES' : 'NO',
+          coupon: order?.coupon || 'NA',
+          products: order?.products?.map((product) => product.name).join(', '),
+          addresses: formatAddress(order?.addresses),
+        };
+      });
 
-    exportToExcel(transformedOrders, 'Orders', 'orders.xlsx');
+      exportToExcel(transformedOrders, 'Orders', 'orders.xlsx');
+    } catch (error) { handleError(error); }
   };
 
   const onDateSelect = (selectedDate) => {
@@ -347,26 +354,28 @@ const Orders = () => {
 
   useEffect(() => {
     async function fetchOrders() {
-      const res = await ORDERS_DETAILS({
-        startDate,
-        endDate,
-        page,
-        status: statusFilter === "all" ? null : statusFilter,
-        couponApplied: couponFilter === "0" ? null : couponFilter === "1" ? true : false,
-        limit: rowsPerPage,
-      });
+      try {
+        const res = await ORDERS_DETAILS({
+          startDate,
+          endDate,
+          page,
+          status: statusFilter === "all" ? null : statusFilter,
+          couponApplied: couponFilter === "0" ? null : couponFilter === "1" ? true : false,
+          limit: rowsPerPage,
+        });
 
-      if (res) {
-        setOrdersDetails(res?.orders || []);
-        setTotalOrders(res?.totalOrders || 0);
-        let statusReport = res?.statusReport;
-        setStatusReport((prev) => ({
-          ...prev,
-          cancelled: statusReport?.find((elm) => elm._id == "2")?.count || 0,
-          placed: statusReport?.find((elm) => elm._id == "1")?.count || 0,
-          confirmed: statusReport?.find((elm) => elm._id == "8")?.count || 0
-        }))
-      }
+        if (res) {
+          setOrdersDetails(res?.orders || []);
+          setTotalOrders(res?.totalOrders || 0);
+          let statusReport = res?.statusReport;
+          setStatusReport((prev) => ({
+            ...prev,
+            cancelled: statusReport?.find((elm) => elm._id == "2")?.count || 0,
+            placed: statusReport?.find((elm) => elm._id == "1")?.count || 0,
+            confirmed: statusReport?.find((elm) => elm._id == "8")?.count || 0
+          }))
+        }
+      } catch (error) { handleError(error); }
     }
 
     fetchOrders();

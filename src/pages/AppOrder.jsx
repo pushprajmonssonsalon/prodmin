@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import TopBar from '../components/commoncomponents/TopBar';
@@ -87,12 +88,14 @@ const AppOrder = () => {
   }
  
   const onSubmit = async (sd, ed) => {
+    try {
 
-    const res = await APP_ORDERS_DETAILS({ startDate: sd ? sd : startDate, endDate: ed ? ed : endDate, page: page, limit: rowsPerPage });
-    if (res) {
-      setOrdersDetails(res?.orders)
-      setTotalOrders(res?.totalOrders)
-    }
+      const res = await APP_ORDERS_DETAILS({ startDate: sd ? sd : startDate, endDate: ed ? ed : endDate, page: page, limit: rowsPerPage });
+      if (res) {
+        setOrdersDetails(res?.orders)
+        setTotalOrders(res?.totalOrders)
+      }
+    } catch (error) { handleError(error); }
   };
 
 
@@ -140,19 +143,19 @@ const AppOrder = () => {
   
 
   const handleExportExcel = async () => {
-    const excel = await ORDERS_DETAILS_FOR_EXCEL({ startDate, endDate });
+    try {
+      const excel = await ORDERS_DETAILS_FOR_EXCEL({ startDate, endDate });
 
-    const transformedOrders = excel.orders.map(order => {
-      return {
-        ...order,
-        products: order.products.map(product => product.name).join(', '),
-        addresses: order.addresses.address
-      };
-    });
+      const transformedOrders = excel.orders.map(order => {
+        return {
+          ...order,
+          products: order.products.map(product => product.name).join(', '),
+          addresses: order.addresses.address
+        };
+      });
 
-    exportToExcel(transformedOrders, "Orders", "orders.xlsx");
-
-
+      exportToExcel(transformedOrders, "Orders", "orders.xlsx");
+    } catch (error) { handleError(error); }
   }
  
   useEffect(() => {

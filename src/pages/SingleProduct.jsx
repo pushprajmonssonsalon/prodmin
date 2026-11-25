@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -96,12 +97,14 @@ const SingleProduct = () => {
 
   useEffect(() => {
     async function fetchApi() {
-      const product = await SINGLE_PRODUCT_DETAILS({
-        shortUrl: params.shortUrl,
-      });
-      setProductDetails(product);
-      setNewImages(product?.images);
-      setNewDesImages(product?.desImages);
+      try {
+        const product = await SINGLE_PRODUCT_DETAILS({
+          shortUrl: params.shortUrl,
+        });
+        setProductDetails(product);
+        setNewImages(product?.images);
+        setNewDesImages(product?.desImages);
+      } catch (error) { handleError(error); }
     }
     fetchApi();
   }, [params.shortUrl]);
@@ -123,6 +126,7 @@ const SingleProduct = () => {
           toast.success("Successfully updated!");
         }
       } catch (error) {
+        handleError(error);
         console.error("Failed to upload images:", error);
       }
     }
@@ -143,6 +147,7 @@ const SingleProduct = () => {
           toast.success("Successfully updated!");
         }
       } catch (error) {
+        handleError(error);
         console.error("Failed to upload images:", error);
       }
     }
@@ -158,22 +163,24 @@ const SingleProduct = () => {
   
 
   const handleSubmitDetails = async (e) => {
-    e.preventDefault();
+    try {
+      e.preventDefault();
 
-    
-    const allDetails = await EDIT_PRODUCT_DETAILS({
-      obj: {
-        images: newImages,
-        desImages: newDesImages,
-        ...editDetails,
-      },
-      id: productDetails?._id,
-    });
-    
-    if (allDetails) {
-      setEditDetails({});
-      toast.success("Successfully Updated!");
-    }
+
+      const allDetails = await EDIT_PRODUCT_DETAILS({
+        obj: {
+          images: newImages,
+          desImages: newDesImages,
+          ...editDetails,
+        },
+        id: productDetails?._id,
+      });
+
+      if (allDetails) {
+        setEditDetails({});
+        toast.success("Successfully Updated!");
+      }
+    } catch (error) { handleError(error); }
   };
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;

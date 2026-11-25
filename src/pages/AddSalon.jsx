@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -118,9 +119,7 @@ const AddSalon = () => {
           setSalon({ ...initialData });
         }
       })
-      .catch(() => {
-        toast.error("salon not created");
-      });
+      .catch((error) => { handleError(error); });
   };
 
   return (

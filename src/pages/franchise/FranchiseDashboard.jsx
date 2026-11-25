@@ -1,10 +1,11 @@
+import { handleError } from "../../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import apiRequest from "../../services/franchise/user.services";
 import TableComponent from "../../components/table/TableComponent";
 import { subDays, startOfMonth, endOfMonth, format } from 'date-fns';
 import { dateFilters } from "../../services/utils/roles";
 import exportToExcel from "../../services/utils/exportToExcel";
-import toast from "react-hot-toast";
+
 
 const FranchiseDashboard = () => {
     const defaultStartDate = new Date();
@@ -87,7 +88,7 @@ const FranchiseDashboard = () => {
             setTotalItems(result?.totalLeads)
         } catch (err) {
             setLoading(false)
-            toast.error("no result")
+            handleError(err)
 
             console.error("Error submitting form:", err);
         }

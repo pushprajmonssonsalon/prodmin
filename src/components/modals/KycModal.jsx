@@ -1,3 +1,4 @@
+import { handleError } from "../../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Modal from "../modal/Modal";
 import { DELETE_FILE, PARLOUR_UPLOADSKYC, SINGLE_PARLOUR_KYC } from "../../services/crm/user.service";
@@ -26,24 +27,28 @@ const ChildComponent = ({ closeModal, show, salonId }) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [selectedFile, setSelectedFile] = useState(null);
     const fetchApi = async () => {
-        if (show && salonId) {
-            const singleParlourDetails = await SINGLE_PARLOUR_KYC({ salonId });
-            if (singleParlourDetails) {
-                setSelectedParlorDetail(singleParlourDetails)
-            }
-            else {
-                setSelectedParlorDetail([])
-            }
-        }
+      try {
+          if (show && salonId) {
+              const singleParlourDetails = await SINGLE_PARLOUR_KYC({ salonId });
+              if (singleParlourDetails) {
+                  setSelectedParlorDetail(singleParlourDetails)
+              }
+              else {
+                  setSelectedParlorDetail([])
+              }
+          }
+      } catch (error) { handleError(error); }
     }
     const uploadFileApiCall = async (formData) => {
-        const uploadPDF = await PARLOUR_UPLOADSKYC(formData);
-        if (uploadPDF) {
-            toast.success("File Uploaded");
-            fetchApi()
-        } else {
-            toast.error("File name already exists");
-        }
+      try {
+          const uploadPDF = await PARLOUR_UPLOADSKYC(formData);
+          if (uploadPDF) {
+              toast.success("File Uploaded");
+              fetchApi()
+          } else {
+              toast.error("File name already exists");
+          }
+      } catch (error) { handleError(error); }
     };
     const handleFileUpload = async (file) => {
         if (file) {
@@ -58,6 +63,7 @@ const ChildComponent = ({ closeModal, show, salonId }) => {
 
                 // Refresh the data or update UI accordingly
             } catch (error) {
+                handleError(error);
                 console.error("File upload failed", error);
             }
         }
@@ -73,9 +79,7 @@ const ChildComponent = ({ closeModal, show, salonId }) => {
                     toast.error("File not deleted, Please try again!");
                 }
 
-            } catch (error) {
-                toast.error("File not deleted, Please try again!");
-            }
+            } catch (error) { handleError(error); }
         }
         else {
             toast.error("File not deleted, Please try again!");

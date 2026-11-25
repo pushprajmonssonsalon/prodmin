@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import TopBar from "../components/commoncomponents/TopBar";
 import Layout from "../components/Layout";
@@ -43,8 +44,8 @@ const AddVedio = () => {
     CREATE_VEDIO(videoData).then(()=>{
       setVideoData(initialData)
       toast.success("Vedio Saved")
-    }).catch(()=>{
-      toast.error("Error Uploading")
+    }).catch((error)=>{
+      handleError(error)
     })
 
     // Handle form submission logic here
@@ -65,9 +66,7 @@ const AddVedio = () => {
               setVideoData((prev) => ({ ...prev, url: res }));
             }
           })
-          .catch(() => {
-            
-          });
+          .catch((error) => { handleError(error); });
       } else {
         formData.append("thumbnail", file);
 
@@ -80,9 +79,7 @@ const AddVedio = () => {
               }));
             }
           })
-          .catch(() => {
-            
-          });
+          .catch((error) => { handleError(error); });
       }
 
       // Create a temporary video element to get video metadata

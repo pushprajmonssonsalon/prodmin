@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -14,8 +15,10 @@ const Products = () => {
   
   useEffect(() => {
     async function fetchApi() {
-      const product = await SEARCH_PRODUCT({ name });
-      setProduct(product);
+      try {
+        const product = await SEARCH_PRODUCT({ name });
+        setProduct(product);
+      } catch (error) { handleError(error); }
     }
     fetchApi();
   }, [name]);

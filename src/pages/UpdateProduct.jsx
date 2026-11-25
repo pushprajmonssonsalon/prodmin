@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import TopBar from "../components/commoncomponents/TopBar";
 import Layout from "../components/Layout";
@@ -85,8 +86,8 @@ const UpdateProduct = () => {
         }
         return false;
       })
-      .catch(() => {
-        toast.error("error updating");
+      .catch((error) => {
+        handleError(error);
         return false;
       });
   };
@@ -99,9 +100,7 @@ const UpdateProduct = () => {
         if (res) {
           setBrands(res);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) { handleError(error); }
     })();
   }, []);
   useEffect(() => {
@@ -122,15 +121,16 @@ const UpdateProduct = () => {
 
   const fetchProducts = async () => {
     try {
-      const data = {
-        page: currentPage,
-        limit: itemsPerPage,
-        ...formData, // Include formData in API request
-      };
-      const resp = await GET_ALL_PRODUCTS(data, itemsPerPage, currentPage);
-      setProducts(resp?.products);
-      setTotalCount(resp?.total);
+        const data = {
+          page: currentPage,
+          limit: itemsPerPage,
+          ...formData, // Include formData in API request
+        };
+        const resp = await GET_ALL_PRODUCTS(data, itemsPerPage, currentPage);
+        setProducts(resp?.products);
+        setTotalCount(resp?.total);
     } catch (error) {
+      handleError(error);
       console.error("Error fetching products:", error);
     }
   };

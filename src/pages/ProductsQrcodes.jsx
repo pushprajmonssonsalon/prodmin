@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useMemo, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -49,7 +50,7 @@ const ProductsQrcodes = () => {
         .then((res) => {
           setProducts(res);
         })
-        .catch(() => {});
+        .catch((error) => { handleError(error); });
     })();
   }, [brand]);
   const handleSearch = (e) => {
@@ -95,9 +96,7 @@ const ProductsQrcodes = () => {
           toast.success("Qr Added");
         }
       })
-      .catch((err) => {
-        
-      });
+      .catch((err) => { handleError(err); });
   };
   const handleSubmit = (index) => {
     const payload = {
@@ -123,9 +122,7 @@ const ProductsQrcodes = () => {
           toast.success("Video Added");
         }
       })
-      .catch((err) => {
-        
-      });
+      .catch((err) => { handleError(err); });
   };
   const rows = useMemo(() => {
     return fileredProducts?.map((elm) => {
@@ -199,9 +196,7 @@ const ProductsQrcodes = () => {
         .then((res) => {
           setVideos(res);
         })
-        .catch(() => {
-          
-        });
+        .catch((error) => { handleError(error); });
     })();
   }, []);
   return (

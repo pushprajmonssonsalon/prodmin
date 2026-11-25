@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -49,7 +50,7 @@ const EditMembersip = () => {
       .then((res) => {
         setUserDetails(res);
       })
-      .catch((err) => {});
+      .catch((err) => { handleError(err); });
   };
 
   const handleChangePhone = (e) => {
@@ -75,7 +76,7 @@ const EditMembersip = () => {
       }
       throw new Error("Update failed");
     } catch (error) {
-      throw new Error("Update failed");
+      throw error;
     }
   };
 

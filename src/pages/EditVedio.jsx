@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -65,9 +66,7 @@ const EditVedio = () => {
             setSelectedVideo(null);
           }
         })
-        .catch(() => {
-          toast.error("error updating");
-        });
+        .catch((error) => { handleError(error); });
     })();
   };
 
@@ -78,9 +77,7 @@ const EditVedio = () => {
        
           setVideos(res);
         })
-        .catch(() => {
-          
-        });
+        .catch((error) => { handleError(error); });
     })();
   }, [videoData]);
   const rows =videos.map((elm)=>({

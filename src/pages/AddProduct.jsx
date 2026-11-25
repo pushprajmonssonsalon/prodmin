@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -143,9 +144,7 @@ const AddProduct = () => {
       }
        
 
-      } catch (error) {
-
-      }
+      } catch (error) { handleError(error); }
     })();
   };
   const checkboxFields=[

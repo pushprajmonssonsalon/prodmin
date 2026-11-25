@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -31,7 +32,7 @@ const AddService = () => {
   useEffect(() => {
     GET_SERVICE_CATEGORIES().then((res) => {
       if (Array.isArray(res)) setCategories(res);
-    });
+    }).catch(handleError);
   }, []);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const AddService = () => {
       gender: service.gender,
     }).then((res) => {
       if (Array.isArray(res)) setSubCategories(res);
-    });
+    }).catch(handleError);
   }, [service.category, service.gender]);
 
   const categoryNames = [
@@ -91,9 +92,7 @@ const AddService = () => {
           toast.error("service not created, it may already exist");
         }
       })
-      .catch(() => {
-        toast.error("service not created");
-      })
+      .catch((error) => { handleError(error); })
       .finally(() => setSubmitting(false));
   };
 

@@ -64,7 +64,7 @@ export default function CustomTable({orders=false,distributer=false,headings,row
                   <TableRow hover role="checkbox" tabIndex={-1} key={row?.code}>
                     {headings.map((column) => {
                       const value = row[column.id];
-                      console.log(orders,row["status"],"orders")
+                      // console.log(orders,row["status"],"orders")
                       return (
                         <TableCell key={column.id} align={column.align} sx={{cursor:"pointer",backgroundColor:(orders&&row["status"])==="Cancelled"?"#FF7070":""}}  onClick={()=>handleDoubleFunction(row,column)}>
                           {isValidElement(value) 

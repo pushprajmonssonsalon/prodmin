@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -11,9 +12,9 @@ const SalonCredentials = () => {
 
   const fetchSalons = async () => {
     try {
-      const res = await GET_SALONS_CREDENTIALS();
-      setSalons(res);
-    } catch (error) {}
+        const res = await GET_SALONS_CREDENTIALS();
+        setSalons(res);
+    } catch (error) { handleError(error); }
   };
 
   useEffect(() => {

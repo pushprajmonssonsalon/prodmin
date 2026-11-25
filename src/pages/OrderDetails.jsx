@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from 'react'
 import TopBar from '../components/commoncomponents/TopBar'
 import Wrapper from '../components/commoncomponents/Wrapper'
@@ -39,8 +40,8 @@ const OrderDetails = () => {
    }
 
   const handleUpdate = async () => {
- setLoading(true);
     if(!order?.numericOrderId)return toast.error("invalid order")
+ setLoading(true);
     try {
        const data={
         orderId:order?.numericOrderId
@@ -60,7 +61,7 @@ const OrderDetails = () => {
     } catch (error) {
               setLoading(false)
 
-       toast.error(error.message)
+              handleError(error)
     }
   }
   const handleOrder=async()=>{
@@ -81,6 +82,7 @@ const OrderDetails = () => {
            toast.error("order not fetched")
         }
      } catch (error) {
+      handleError(error);
       setOrder(null)
      }
     }

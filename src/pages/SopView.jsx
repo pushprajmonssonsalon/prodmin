@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -23,7 +24,7 @@ const SopView = () => {
         setSop(data);
         toast.dismiss(t);
       } catch (err) {
-        toast.error(err.message || "Failed to load SOP", { id: t });
+        handleError(err, { id: t });
       } finally {
         setLoading(false);
       }

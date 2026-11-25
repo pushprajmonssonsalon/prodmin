@@ -76,7 +76,10 @@ export const attachSessionInterceptor = (instance) => {
         // eslint-disable-next-line no-console
         console.warn("[session] 401 from", error?.config?.url, error?.response?.data);
       }
-      if (isSessionExpiry(error)) handleSessionExpired();
+      if (isSessionExpiry(error) && window.location.pathname !== "/") {
+        error.sessionExpired = true;
+        handleSessionExpired();
+      }
       return Promise.reject(error);
     }
   );

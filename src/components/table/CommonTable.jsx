@@ -1,3 +1,4 @@
+import { handleError } from "../../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -33,7 +34,7 @@ const CommonTable = ({ rows, cols, onUpdate }) => {
             );
           }
         })
-        .catch(() => {});
+        .catch((error) => { handleError(error); });
     }
   };
 

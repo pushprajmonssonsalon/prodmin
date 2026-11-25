@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from 'react';
 import Layout from '../components/Layout';
 import TopBar from '../components/commoncomponents/TopBar';
@@ -63,33 +64,35 @@ const CreateDistributer = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const isSomeEmpty = Object.values(distributer).some(
-      (elm) => elm === "" || elm === undefined || elm === null
-    );
-    if (isSomeEmpty) return toast.error("fill all the fields");
-     const payload = {
-      distributer
-     }
-    const res = await CREATE_DISTRIBUTER(payload);
-    if (res) {
-      toast.success("Distributer Created Successfully");
-      setDistributer({
-        name: "",
-        phoneNumber: "",
-        contactNumber: "",
-        email: "",
-        gender: "",
-        role: "",
-        address1: "",
-        state: "",
-        city: "",
-        pincode: "",
-        active: false,
-        trade: "",
-        gstNumber: "",
-      });
-    }
+    try {
+      e.preventDefault();
+      const isSomeEmpty = Object.values(distributer).some(
+        (elm) => elm === "" || elm === undefined || elm === null
+      );
+      if (isSomeEmpty) return toast.error("fill all the fields");
+       const payload = {
+        distributer
+       }
+      const res = await CREATE_DISTRIBUTER(payload);
+      if (res) {
+        toast.success("Distributer Created Successfully");
+        setDistributer({
+          name: "",
+          phoneNumber: "",
+          contactNumber: "",
+          email: "",
+          gender: "",
+          role: "",
+          address1: "",
+          state: "",
+          city: "",
+          pincode: "",
+          active: false,
+          trade: "",
+          gstNumber: "",
+        });
+      }
+    } catch (error) { handleError(error); }
   };
 
   const distributerTypes = [

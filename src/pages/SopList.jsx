@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -22,7 +23,7 @@ const SopList = () => {
             setSops(res || []);
         } catch (err) {
             console.error(err);
-            toast.error("Failed to load SOPs");
+            handleError(err);
         } finally {
             setLoading(false);
         }
@@ -38,9 +39,7 @@ const SopList = () => {
             await TOGGLE_SOP(id);
             toast.success("Status updated");
             fetchSops();
-        } catch {
-            toast.error("Toggle failed");
-        }
+        } catch (error) { handleError(error); }
     };
 
   // 3. Duplicate SOP
@@ -49,9 +48,7 @@ const SopList = () => {
             await DUPLICATE_SOP(id);
             toast.success("SOP Duplicated");
             fetchSops();
-        } catch {
-            toast.error("Duplication failed");
-        }
+        } catch (error) { handleError(error); }
     };
 
   // 4. Delete SOP
@@ -62,9 +59,7 @@ const SopList = () => {
             await DELETE_SOP(id);
             toast.success("SOP deleted");
             fetchSops();
-        } catch {
-            toast.error("Delete failed");
-        }
+        } catch (error) { handleError(error); }
     };
 
   return (

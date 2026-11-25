@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import TopBar from "../components/commoncomponents/TopBar";
 import Wrapper from "../components/commoncomponents/Wrapper";
@@ -49,7 +50,7 @@ const AllSalonData = () => {
       .then((resp) => {
         setSalonDetails(resp);
       })
-      .catch(() => {});
+      .catch((error) => { handleError(error); });
   };
   const cols = [
     {
@@ -144,7 +145,7 @@ const AllSalonData = () => {
       .then((res) => {
         setSalons(res);
       })
-      .catch(() => {});
+      .catch((error) => { handleError(error); });
   }, [type]);
 
   return (

@@ -1,3 +1,4 @@
+import { handleError } from "../../services/utils/errorHandler";
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -56,12 +57,14 @@ export default function TransitionsModal({open,setOpen,handleOpen,handleClose,ne
     },[open])
     useEffect(()=>{
         const fetchApi=async()=>{
-            const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
-            const selectedDate = updatingDate;
-            const singleParlourDetails = await SINGLE_PARLOUR_DETAILS({salonId,selectedDate});
-            if(singleParlourDetails){
-                setSelectedParlorDetail(singleParlourDetails)
-            }
+          try {
+              const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
+              const selectedDate = updatingDate;
+              const singleParlourDetails = await SINGLE_PARLOUR_DETAILS({salonId,selectedDate});
+              if(singleParlourDetails){
+                  setSelectedParlorDetail(singleParlourDetails)
+              }
+          } catch (error) { handleError(error); }
         }
         fetchApi()
     },[open,month,year,newUpload])

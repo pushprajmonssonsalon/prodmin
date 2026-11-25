@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -49,18 +50,21 @@ const UpdateProducts = () => {
         reader.readAsText(file);
 
         reader.onload = async () => {
-          // Get the file content
-          const text = reader.result;
+          try {
+            // Get the file content
+            const text = reader.result;
 
-          // Convert CSV to JSON
-          const jsonData = csvToJson(text);
-          const res = await EDIT_INVENTORY({ products: jsonData });
-          if (res) {
-            toast.success("File uploaded");
-          }
-          
+            // Convert CSV to JSON
+            const jsonData = csvToJson(text);
+            const res = await EDIT_INVENTORY({ products: jsonData });
+            if (res) {
+              toast.success("File uploaded");
+            }
 
-          // You can set this data to your state or perform other actions
+
+            // You can set this data to your state or perform other actions
+
+          } catch (error) { handleError(error); }
         };
 
         reader.onerror = (error) => {
@@ -72,6 +76,7 @@ const UpdateProducts = () => {
       //   await axios.post('/your-backend-endpoint', json);
       // alert("Data sent to backend successfully!");
     } catch (error) {
+      handleError(error);
       console.error("Error uploading file", error);
     }
   };

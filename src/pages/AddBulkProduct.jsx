@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -55,9 +56,7 @@ const AddBulkProduct = () => {
         if (!brands?.includes(brand)) setBrands((prev) => [...(prev || []), brand]);
         setProductData(initialData);
         toast.success("product created")
-      } catch (error) {
-        
-      }
+      } catch (error) { handleError(error); }
     })();
   };
   const handleChange = (e) => {
@@ -137,35 +136,36 @@ const AddBulkProduct = () => {
   };
   const handleUpload = async (e) => {
     try {
-      const { files, name } = e.target;
-      const file = files[0];
+        const { files, name } = e.target;
+        const file = files[0];
 
-      if (file) {
-        // Use FileReader to read the file
-        const reader = new FileReader();
-        reader.readAsText(file);
+        if (file) {
+          // Use FileReader to read the file
+          const reader = new FileReader();
+          reader.readAsText(file);
 
-        reader.onload = async () => {
-          // Get the file content
-          const text = reader.result;
+          reader.onload = async () => {
+            // Get the file content
+            const text = reader.result;
 
-          // Convert CSV to JSON
-          const jsonData = csvToJson(text);
+            // Convert CSV to JSON
+            const jsonData = csvToJson(text);
 
-          setProductData((prev) => ({ ...prev, products: jsonData }));
+            setProductData((prev) => ({ ...prev, products: jsonData }));
 
-          // You can set this data to your state or perform other actions
-        };
+            // You can set this data to your state or perform other actions
+          };
 
-        reader.onerror = (error) => {
-          console.error("Error reading file:", error.message);
-        };
-      }
+          reader.onerror = (error) => {
+            console.error("Error reading file:", error.message);
+          };
+        }
 
-      // Send JSON to backend
-      //   await axios.post('/your-backend-endpoint', json);
-      // alert("Data sent to backend successfully!");
+        // Send JSON to backend
+        //   await axios.post('/your-backend-endpoint', json);
+        // alert("Data sent to backend successfully!");
     } catch (error) {
+      handleError(error);
       console.error("Error uploading file", error);
     }
   };
@@ -178,9 +178,7 @@ const AddBulkProduct = () => {
         if (res) {
           setBrands(res);
         }
-      } catch (error) {
-        
-      }
+      } catch (error) { handleError(error); }
     })();
   }, []);
   return (

@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -16,24 +17,27 @@ const EditOrder = () => {
   
 
   const handleStatus = async () => {
-    const orderIds = ids
-      .split(",")
-      .map((id) => id.trim())
-      .filter((id) => id !== "");
+    try {
+      const orderIds = ids
+        .split(",")
+        .map((id) => id.trim())
+        .filter((id) => id !== "");
 
-    const editstatus = await EDIT_ORDER_STATUS({ orderIds, status });
-    if (editstatus) {
-      toast.success("Successfully edited!");
-      setIds("");
-      setStatus("");
-    }
-    
+      const editstatus = await EDIT_ORDER_STATUS({ orderIds, status });
+      if (editstatus) {
+        toast.success("Successfully edited!");
+        setIds("");
+        setStatus("");
+      }
+    } catch (error) { handleError(error); }
   };
 
   const handleQuantityStatus =async()=>{
-    const stockId = stockIds.split(",").map((id)=>id.trim()).filter((id)=>id!=="");
-    const quantitystatus = await EDIT_STOCK_QUANTITY({skucodes:stockId,qty:+quantity});
-    if(quantitystatus) toast.success("Successfully Updated Stocks!")
+    try {
+      const stockId = stockIds.split(",").map((id)=>id.trim()).filter((id)=>id!=="");
+      const quantitystatus = await EDIT_STOCK_QUANTITY({skucodes:stockId,qty:+quantity});
+      if(quantitystatus) toast.success("Successfully Updated Stocks!")
+    } catch (error) { handleError(error); }
   }
   return (
     <Layout>

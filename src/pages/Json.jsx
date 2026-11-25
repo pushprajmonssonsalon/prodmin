@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useEffect, useState } from "react";
 import * as XLSX from "xlsx";
 import Layout from "../components/Layout";
@@ -320,17 +321,22 @@ const Json = () => {
       // setUpdatedRows(mappedData)
       setLoading(true);
       async function UseUpdateApi() {
-        const updatedData = await UPDATE_EXCEL_FILE({
-          salonData: mappedData,
-          month: month.slice(0, 3),
-          year: year,
-        });
-        if (updatedData) {
-          toast.success("Updated Successffuly");
-          setLoading(false);
-          setUpdatedBool(!updatedBool);
-        } else {
-          toast.error("something went wrong");
+        try {
+          const updatedData = await UPDATE_EXCEL_FILE({
+            salonData: mappedData,
+            month: month.slice(0, 3),
+            year: year,
+          });
+          if (updatedData) {
+            toast.success("Updated Successffuly");
+            setLoading(false);
+            setUpdatedBool(!updatedBool);
+          } else {
+            toast.error("something went wrong");
+            setLoading(false);
+          }
+        } catch (error) {
+          handleError(error);
           setLoading(false);
         }
       }
@@ -339,25 +345,30 @@ const Json = () => {
     reader.readAsArrayBuffer(file);
   };
   const handleCreateApiTable = async () => {
-    setCreating(true);
-    const createTable = await CREATE_TABLE({
-      month: month.slice(0, 3),
-      year: +year,
-    });
-    if (createTable) {
-      setCreatedBool(!createdBool);
-      setCreating(false);
-      toast.success("Table is created");
-    } else {
-      toast.error("Table is already created for this month!");
+    try {
+      setCreating(true);
+      const createTable = await CREATE_TABLE({
+        month: month.slice(0, 3),
+        year: +year,
+      });
+      if (createTable) {
+        setCreatedBool(!createdBool);
+        setCreating(false);
+        toast.success("Table is created");
+      } else {
+        toast.error("Table is already created for this month!");
+        setCreating(false);
+      }
+    } catch (error) { handleError(error); } finally {
       setCreating(false);
     }
-    
   };
   useEffect(() => {
     async function fetchGetApi() {
-      const table = await GET_TABLE({ month: month.slice(0, 3), year: +year ,salonType});
-      setGeneratedTable(table);
+      try {
+        const table = await GET_TABLE({ month: month.slice(0, 3), year: +year ,salonType});
+        setGeneratedTable(table);
+      } catch (error) { handleError(error); }
     }
     fetchGetApi();
   }, [month, year, updatedBool, createdBool,salonType]);

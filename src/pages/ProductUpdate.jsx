@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import { useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -91,7 +92,7 @@ const ProductUpdate = () => {
 
         } catch (err) {
             console.error(err);
-            toast.error("Upload failed");
+            handleError(err);
         } finally {
             setLoading(false);
         }

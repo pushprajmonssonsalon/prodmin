@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -44,15 +45,17 @@ const ProDashboard = () => {
 
   useEffect(() => {
     const fetchApi = async () => {
-      const payload = { page: page, limit: rowsPerPage, salonType };
-      const parlors = await PARLOUR_DETAILS(payload);
-      if (parlors) {
-        
-        setSalonsDetails(parlors?.data);
-        setTotalSalons(parlors?.total);
-      } else {
-        
-      }
+      try {
+        const payload = { page: page, limit: rowsPerPage, salonType };
+        const parlors = await PARLOUR_DETAILS(payload);
+        if (parlors) {
+
+          setSalonsDetails(parlors?.data);
+          setTotalSalons(parlors?.total);
+        } else {
+
+        }
+      } catch (error) { handleError(error); }
     };
     fetchApi();
   }, [page, rowsPerPage,salonType]);

@@ -1,3 +1,4 @@
+import { handleError, withErrorHandling } from "../services/utils/errorHandler";
 import React, { useEffect, useRef, useState } from "react";
 import Layout from "../components/Layout";
 import { MdCancel } from "react-icons/md";
@@ -164,17 +165,19 @@ const Settelment = () => {
   }
   useEffect(() => {
     const fetchApi = async () => {
-      const parlors = await POORDERS_FILTER({
-        search:search.trim(),
-        salonType,
-        status,
-        startDate,
-        endDate,
-        page,
-        rowsPerPage,
-      });
-      setSalonsDetails(parlors?.data);
-      setTotalPO(parlors?.total);
+      try {
+        const parlors = await POORDERS_FILTER({
+          search:search.trim(),
+          salonType,
+          status,
+          startDate,
+          endDate,
+          page,
+          rowsPerPage,
+        });
+        setSalonsDetails(parlors?.data);
+        setTotalPO(parlors?.total);
+      } catch (error) { handleError(error); }
     };
     fetchApi();
   }, [
@@ -237,7 +240,7 @@ const Settelment = () => {
       id: id,
     };
     try {
-      const response = await axios.post(
+      const response = await withErrorHandling(() => axios.post(
         "https://crm.smartsalon.in/finance/deletePOtrackimg",
         data,
         {
@@ -245,12 +248,12 @@ const Settelment = () => {
             Authorization: `Bearer ${authString}`,
           },
         }
-      );
+      ), (data, response) => response);
       setImageFile(null);
       if (fileInputRef.current) {
         fileInputRef.current.value = "";
       }
-    } catch {}
+    } catch (error) { handleError(error); }
   };
 
   const handleFileChange = async (e) => {
@@ -263,7 +266,7 @@ const Settelment = () => {
     
 
     try {
-      const response = await axios.post(
+      const response = await withErrorHandling(() => axios.post(
         "https://crm.smartsalon.in/uploadPO",
         formData,
         {
@@ -271,27 +274,30 @@ const Settelment = () => {
             Authorization: `Bearer ${authString}`,
           },
         }
-      );
+      ), (data, response) => response);
 
       if (response) {
         
         setImages(response.data.data);
         const fetchApi = async () => {
-          const parlors = await POORDERS_FILTER({
-            search:search.trim(),
-            salonType,
-            status,
-            startDate,
-            endDate,
-            page,
-            rowsPerPage,
-          });
-          // setSalonsDetails(parlors?.data);
-          setTotalPO(parlors?.total);
+          try {
+            const parlors = await POORDERS_FILTER({
+              search:search.trim(),
+              salonType,
+              status,
+              startDate,
+              endDate,
+              page,
+              rowsPerPage,
+            });
+            // setSalonsDetails(parlors?.data);
+            setTotalPO(parlors?.total);
+          } catch (error) { handleError(error); }
         };
         fetchApi();
       }
     } catch (error) {
+      handleError(error);
       console.error("Error uploading image:", error);
     }
   };

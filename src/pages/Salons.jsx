@@ -1,3 +1,4 @@
+import { handleError } from "../services/utils/errorHandler";
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
 import TopBar from "../components/commoncomponents/TopBar";
@@ -45,7 +46,7 @@ const Salons = () => {
             setTotalSalons(0);
           }
         })
-        .catch(() => {});
+        .catch((error) => { handleError(error); });
     };
     fetchApi();
   }, [page, rowsPerPage, pathname]);

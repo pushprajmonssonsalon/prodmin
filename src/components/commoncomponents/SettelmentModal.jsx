@@ -1,3 +1,4 @@
+import { handleError } from "../../services/utils/errorHandler";
 import Backdrop from "@mui/material/Backdrop";
 import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
@@ -98,14 +99,16 @@ export default function SettelmentModal({
     }
     else{
       const fetchApi = async () => {
-        const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
-        const selectedDate = updatingDate;
-        const singleParlourDetails = await SINGLE_POORDER({ id: salonId });
-        
-        setSelectedParlorDetail(singleParlourDetails);
-  
-        if (singleParlourDetails) {
-        }
+        try {
+          const updatingDate = new Date(Date.UTC(year, months.indexOf(month)));
+          const selectedDate = updatingDate;
+          const singleParlourDetails = await SINGLE_POORDER({ id: salonId });
+
+          setSelectedParlorDetail(singleParlourDetails);
+
+          if (singleParlourDetails) {
+          }
+        } catch (error) { handleError(error); }
       };
       fetchApi();
     }
@@ -152,19 +155,20 @@ export default function SettelmentModal({
   }, [selectedParlorDetail]);
 
   const handleApplyStatus = async () => {
-    if(isDistributer){
+    try {
+      if(isDistributer){
 
-    }else{
-      const changestatus = await CHANGE_PO_STATUS({
-        status: +status,
-        id: salonId,
-      });
-      if (changestatus) {
-        toast.success("Status Changed Successfully!");
-        setStatus("");
+      }else{
+        const changestatus = await CHANGE_PO_STATUS({
+          status: +status,
+          id: salonId,
+        });
+        if (changestatus) {
+          toast.success("Status Changed Successfully!");
+          setStatus("");
+        }
       }
-    }
-    
+    } catch (error) { handleError(error); }
   };
   const orderTotal = rows
     ?.reduce((acc, item) => acc + item?.total, 0)
